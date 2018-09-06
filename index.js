@@ -24,36 +24,37 @@ global.scenario.record = function(name, scenarioCallback) {
 
 }
 
-global.measure = async function(name, measureCallback) {
+global.measure = async function(rootName, measureCallback) {
     const config = new Config();
 
     measureCallback(config);
-    _performance.start(name, {root: true});
+    _performance.start(rootName);
 
     Promise.all(Object.keys(scenarios).map(async function(scenarioName) {
         const chromelauncher = new ChromeLauncher(config);
         const scenario = scenarios[scenarioName].toString();
-        const parser = new Parser(scenarioName, scenario);
+        const parser = new Parser(rootName, scenarioName, scenario);
 
         await chromelauncher.launch();
 
         parser.extractLocations();
         const parsedScenario = parser.evaluateScenario();
 
-        _performance.start(scenarioName, {parent: true});
+        const scenarioTimelineKey = `${rootName}.${scenarioName}`;
+        _performance.start(scenarioTimelineKey);
         await parsedScenario(chromelauncher.page);
-        _performance.end(scenarioName);
+        _performance.end(scenarioTimelineKey);
 
         // getting navigation performance
-        _performance.navigation = await chromelauncher.page.evaluate(function() {
-            return performance.getEntriesByType('navigation')[0].toJSON();
-        });
-
-        console.table(_performance.navigation);
+        // _performance.navigation = await chromelauncher.page.evaluate(function() {
+        //     return performance.getEntriesByType('navigation')[0].toJSON();
+        // });
+        //
+        // console.table(_performance.navigation);
         await chromelauncher.close();
     }))
     .then(async function() {
-        _performance.end(name);
+        _performance.end(rootName);
         _performance.print();
     })
 }

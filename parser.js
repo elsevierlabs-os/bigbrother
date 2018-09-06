@@ -6,19 +6,20 @@ const safeEval = require('safe-eval');
 
 class Parser {
 
-    constructor(scenarioName, scenario) {
+    constructor(rootName, scenarioName, scenario) {
         this.ALLOWED_TYPES = ['AwaitExpression'];
         this.locations = {};
 
+        this.rootName = rootName;
         this.name = scenarioName;
         this.scenario = scenario;
     }
 
-    getNodeParser(name) {
+    getNodeParser(rootName, name) {
         return function(node, meta) {
             const generated = escodegen.generate(node);
             if (this.ALLOWED_TYPES.includes(node.type)) {
-                let functionName = `${name}_${node.argument.callee.property.name}`;
+                let functionName = `${rootName}.${name}.${node.argument.callee.property.name}`;
                 let index = 1;
                 while (this.locations[functionName]) {
                     if (!this.locations[functionName + index]) {
@@ -55,7 +56,7 @@ class Parser {
     }
 
     extractLocations() {
-        esprima.parse(this.scenario, constants.ESPRIMA_OPTIONS, this.getNodeParser(this.name).bind(this));
+        esprima.parse(this.scenario, constants.ESPRIMA_OPTIONS, this.getNodeParser(this.rootName, this.name).bind(this));
     }
 
     evaluateScenario() {

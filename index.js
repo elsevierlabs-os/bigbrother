@@ -20,10 +20,6 @@ global.scenario = function(name, scenarioCallback) {
     scenarios[name] = scenarioCallback;
 }
 
-global.scenario.record = function(name, scenarioCallback) {
-
-}
-
 global.measure = async function(rootName, measureCallback) {
     const config = new Config();
 
@@ -57,6 +53,12 @@ global.measure = async function(rootName, measureCallback) {
         _performance.end(rootName);
         _performance.print();
     })
+}
+
+global.measure.record = async function(rootName, measureCallback) {
+    _performance.startRecording(rootName);
+
+    await measure(rootName, measureCallback);
 }
 
 const filename = process.argv[2];

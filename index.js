@@ -8,11 +8,12 @@ const Config = require('./config');
 const Parser = require('./parser');
 const colors = require('colors');
 const fs = require('fs');
+const glob = require('glob');
 
 global.NETWORK = constants.NETWORK;
+global.CPU = constants.CPU;
 global._performance = new P.Performance();
 
-// this should be cleared at the end of every stuff
 let scenarios = {};
 let measurements = {};
 
@@ -41,12 +42,10 @@ global.measure = async function(rootName, measureCallback) {
         await parsedScenario(chromelauncher.page);
         _performance.end(scenarioTimelineKey);
 
-        // getting navigation performance
-        // _performance.navigation = await chromelauncher.page.evaluate(function() {
-        //     return performance.getEntriesByType('navigation')[0].toJSON();
-        // });
-        //
-        // console.table(_performance.navigation);
+        const navigation = await chromelauncher.getNavigationInfo();
+        const key = `${rootName}.${scenarioName}`;
+        _performance.setNavigationInfo(key, navigation);
+
         await chromelauncher.close();
     }))
     .then(async function() {

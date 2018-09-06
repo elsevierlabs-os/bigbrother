@@ -9,7 +9,7 @@ class ChromeLauncher {
         this.config = config;
 
         this.NETWORK_CONDITIONS_MESSAGE = 'Network.emulateNetworkConditions';
-        this.CPU_CONDITIONS_MESSAGE = '';
+        this.CPU_CONDITIONS_MESSAGE = 'Emulation.setCPUThrottlingRate';
     }
 
     setNetworkConditions(client) {
@@ -18,13 +18,35 @@ class ChromeLauncher {
         }
     }
 
+    setCpuConditions(client) {
+        if (client) {
+            return client.send(this.CPU_CONDITIONS_MESSAGE, this.config.cpu);
+        }
+    }
+
+    setConditions(client) {
+        this.setNetworkConditions(client);
+        this.setCpuConditions(client);
+    }
+
+    async getNavigationInfo() {
+        if (this.page) {
+            const navigation = await this.page.evaluate(function() {
+               return performance.getEntriesByType('navigation')[0].toJSON();
+            });
+
+            return navigation;
+        }
+        return {};
+    }
+
     async onTargetChanged(target) {
         const page = await target.page();
 
         if (page && page.target().url() === this.config.url) {
             await page.target()
                 .createCDPSession()
-                .then(this.setNetworkConditions.bind(this))
+                .then(this.setConditions.bind(this))
                 .catch(err => console.error(err));
         }
     }

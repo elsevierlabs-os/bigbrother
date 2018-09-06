@@ -1,18 +1,14 @@
 measure('advanced form', (config) => {
 
-    config.setUrl('https://www.sciencedirect.com/search/advanced');
+    config.setURL('https://www.sciencedirect.com/search/advanced');
     // config.setUrl('http://www.local.sdfe.sciencedirect.com:5025/search/advanced');
-    config.setNetwork({
-        offline: false,
-        latency: 500,
-        downloadThroughput: 1500000,
-        uploadThroughput: 384000
-    });
+    config.setNetwork(NETWORK.WIFI);
+    config.setCPU({ rate: 1 });
 
     scenario('submit', async (page) => {
-        await page.click('input#qs');
-        await page.type('input#qs', 'cell');
-        await page.type('input#authors', 'smit');
+        await page.click('input[name="qs"]');
+        await page.type('input[name="qs"]', 'cell');
+        await page.type('input[name="authors"]', 'smit');
         await page.keyboard.sendCharacter('\n');
     });
 
@@ -35,15 +31,39 @@ measure('advanced form', (config) => {
     scenario('onboarding', async (page) => {
         await page.type('input#qs', '*');
         await page.waitForSelector('label.info-message-label');
-        await page.type('input#qs', 'cell');
+        await page.type('input#qs', '');
+        await page.click('input#authors');
+
         await page.type('input#qs', '*');
         await page.waitForSelector('label.info-message-label');
-        await page.type('input#qs', 'cell');
+        await page.type('input#qs', '');
+        await page.click('input#authors');
+
         await page.type('input#qs', '*');
         await page.waitForSelector('label.info-message-label');
-        await page.type('input#qs', 'cell');
+        await page.type('input#qs', '');
+        await page.click('input#authors');
+
         await page.type('input#qs', '*');
         await page.waitForSelector('label.info-message-label');
-        await page.type('input#qs', 'cell');
+        await page.type('input#qs', '');
+        await page.click('input#authors');
+
+        await page.type('input#qs', '*');
+        await page.waitForSelector('label.info-message-label');
+        await page.type('input#qs', '');
+        await page.click('input#authors');
+
+        await page.type('input#qs', '*');
+        await page.waitForSelector('label.info-message-label');
+        await page.type('input#qs', '');
+        await page.click('input#authors');
+
+        await page.type('input#qs', '*');
+        await page.waitForSelector('label.info-message-label');
+        await page.type('input#qs', '');
+        await page.click('input#authors');
+
+
     });
 });

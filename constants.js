@@ -55,6 +55,39 @@ const NETWORK = {
     }
 }
 
+const CPU = {
+    DEFAULT: {
+        rate: 1
+    },
+    SLOW_2: {
+        rate: 2
+    },
+    SLOW_3: {
+        rate: 3
+    },
+    SLOW_4: {
+        rate: 4
+    },
+    SLOW_5: {
+        rate: 5
+    },
+    SLOW_6: {
+        rate: 6
+    },
+    SLOW_7: {
+        rate: 7
+    },
+    SLOW_8: {
+        rate: 8
+    },
+    SLOW_9: {
+        rate: 9
+    },
+    SLOW_10: {
+        rate: 10
+    }
+}
+
 const ESPRIMA_OPTIONS = {
     range: true,
     loc: true,
@@ -63,11 +96,12 @@ const ESPRIMA_OPTIONS = {
 };
 
 const PUPPETEER = {
-    headless: true
+    headless: false
 }
 
 module.exports = {
     NETWORK: NETWORK,
+    CPU: CPU,
     ESPRIMA_OPTIONS: ESPRIMA_OPTIONS,
     PUPPETEER: PUPPETEER
 };

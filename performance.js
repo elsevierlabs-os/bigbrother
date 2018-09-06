@@ -7,6 +7,9 @@ class Performance {
         this.timeline = {};
         this.entries = [];
 
+        // storing navigation info from page
+        this.navigation = {};
+
         this.recording = null;
         this.recordingFolder = '.recordings';
     }
@@ -14,6 +17,20 @@ class Performance {
     startRecording(scenario) {
         this.recording = scenario;
         fs.existsSync(this.recordingFolder) || fs.mkdirSync(this.recordingFolder);
+    }
+
+    setNavigationInfo(name, data) {
+        const toStore = {
+            domInteractive: data.domInteractive + ' ms',
+            domComplete: data.domComplete + ' ms',
+            redirectCount: data.redirectCount,
+            transferSize: (data.transferSize / 1024) + ' kb',
+            encodedBodySize: (data.encodedBodySize / 1024) + ' kb',
+            decodedBodySize: (data.decodedBodySize / 1024) + ' kb',
+            location: data.name,
+        }
+
+        vivify.set(name, toStore, this.navigation);
     }
 
     start(name, option) {
@@ -84,7 +101,7 @@ class Performance {
             comparison = vivify.get(`${fullkey}.duration`, this.recordings);
         }
 
-        if (_duration < comparison) {
+        if (!comparison || _duration <= (comparison * 1.40)) {
             if (depth === 1) {
                 console.log(`${toPrint}`.underline, '√'.green, duration.green);
             } else {
@@ -98,6 +115,18 @@ class Performance {
                 console.log(`${toPrint}`.red, 'x'.red, duration.red, expected.yellow)
             }
         }
+
+        if (depth == 2) {
+            this._printNavigation(vivify.get(fullkey, this.navigation));
+        }
+    }
+
+    _printNavigation(data) {
+        console.log('\t\t', Array(50).join('-').green);
+        Object.keys(data).forEach(function(key) {
+            console.log('\t\t', key.bold, data[key].toString().green);
+        });
+        console.log('\t\t', Array(50).join('-').green);
     }
 
     _explore(object, name, depth) {

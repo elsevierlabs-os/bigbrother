@@ -1,12 +1,14 @@
+const constants = require('./constants');
+
 class Config {
 
     constructor() {
         this.url = 'http://sciencedirect.com/search/advanced';
-        this.network = NETWORK.WIFI;
-        this.cpu = {};
+        this.network = constants.NETWORK.WIFI;
+        this.cpu = constants.CPU.DEFAULT;
     }
 
-    setUrl(newUrl) {
+    setURL(newUrl) {
         if (newUrl && typeof newUrl === 'string') {
             this.url = newUrl;
         }
@@ -18,7 +20,7 @@ class Config {
         }
     }
 
-    setCpu(config) {
+    setCPU(config) {
         if (config && typeof config === 'object') {
             this.cpu = config;
         }

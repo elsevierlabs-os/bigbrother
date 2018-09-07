@@ -96,7 +96,7 @@ const ESPRIMA_OPTIONS = {
 };
 
 const PUPPETEER = {
-    headless: false
+    headless: true
 }
 
 module.exports = {

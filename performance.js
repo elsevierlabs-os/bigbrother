@@ -10,12 +10,14 @@ class Performance {
         // storing navigation info from page
         this.navigation = {};
 
-        this.recording = null;
+        this.recordings = [];
         this.recordingFolder = '.recordings';
     }
 
     startRecording(scenario) {
-        this.recording = scenario;
+        if (!this.recordings.includes(scenario)) {
+            this.recordings.push(scenario);
+        }
         fs.existsSync(this.recordingFolder) || fs.mkdirSync(this.recordingFolder);
     }
 
@@ -56,13 +58,21 @@ class Performance {
         vivify.set(name, entry, this.timeline);
     }
 
-    _storeRecording() {
-        const json = JSON.stringify(this.timeline[this.recording]);
-        fs.writeFile(`${this.recordingFolder}/${this.recording}.json`, json, 'utf8', function(err) {
+    _storeSingleRecording(scenario) {
+        const json = JSON.stringify(this.timeline[scenario]);
+        fs.writeFile(`${this.recordingFolder}/${scenario}.json`, json, 'utf8', function(err) {
             if (err) {
-                console.log('[ERR] error occurred while storing recording'.red, err);
+                console.log('[ERR] error occurred while storing recording'.red, scenario, err);
             }
         });
+    }
+
+    _storeRecordings() {
+        if (!this.recordings.length) {
+            return;
+        }
+
+        this.recordings.forEach(this._storeSingleRecording.bind(this));
     }
 
     _readRecording(name) {
@@ -143,8 +153,8 @@ class Performance {
     }
 
     print() {
-        if (this.recording) {
-            this._storeRecording();
+        if (this.recordings.length) {
+            this._storeRecordings();
         } else {
             this._readAndSquashRecordings();
         }
@@ -154,11 +164,11 @@ class Performance {
 }
 
 const getStart = function(name) {
-    return `;_performance.start('${name}');\n`;
+    return `;performance.start('${name}');\n`;
 };
 
 const getEnd = function(name) {
-    return `;_performance.end('${name}');\n`;
+    return `;performance.end('${name}');\n`;
 };
 
 module.exports = {

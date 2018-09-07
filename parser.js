@@ -60,7 +60,8 @@ class Parser {
     }
 
     evaluateScenario() {
-        return safeEval(this.getParsedScenarioCode(), { _performance: global._performance });
+        this.extractLocations();
+        return safeEval(this.getParsedScenarioCode(), { performance: global.performance });
     }
 }
 

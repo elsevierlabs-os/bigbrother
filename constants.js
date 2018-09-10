@@ -52,6 +52,12 @@ const NETWORK = {
         latency: 800,
         downloadThroughput: 280000,
         uploadThroughput: 256000
+    },
+    OFFLINE: {
+        offline: false,
+        latency: 10000,
+        downloadThroughput: 0,
+        uploadThroughput: 0
     }
 }
 

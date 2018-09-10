@@ -1,4 +1,5 @@
 const vivify = require('./vivify');
+const logger = require('./logger');
 const fs = require('fs');
 
 class Performance {
@@ -11,14 +12,19 @@ class Performance {
         this.navigation = {};
 
         this.recordings = [];
+        this.squashedRecordings = {};
         this.recordingFolder = '.recordings';
+
+        // storing failures
+        this.failures = 0;
     }
 
     startRecording(scenario) {
         if (!this.recordings.includes(scenario)) {
             this.recordings.push(scenario);
         }
-        fs.existsSync(this.recordingFolder) || fs.mkdirSync(this.recordingFolder);
+
+        this.recordingsFolderExists() || fs.mkdirSync(this.recordingFolder);
     }
 
     setNavigationInfo(name, data) {
@@ -58,46 +64,69 @@ class Performance {
         vivify.set(name, entry, this.timeline);
     }
 
-    _storeSingleRecording(scenario) {
+    hasRecordings() {
+        return this.recordings.length > 0;
+    }
+
+    storeSingleRecording(scenario) {
         const json = JSON.stringify(this.timeline[scenario]);
-        fs.writeFile(`${this.recordingFolder}/${scenario}.json`, json, 'utf8', function(err) {
+        logger.debug(typeof json === 'string');
+        logger.debug(this.recordings);
+        logger.info(`Writing on ${this.recordingFolder}/${scenario}.json`);
+        fs.writeFileSync(`${this.recordingFolder}/${scenario}.json`, json, 'utf8', function(err) {
+            logger.info(`Finished writing on ${this.recordingFolder}/${scenario}.txt`);
             if (err) {
-                console.log('[ERR] error occurred while storing recording'.red, scenario, err);
+                logger.error('Error occurred while storing recording' + scenario);
+                logger.debug(err);
             }
         });
     }
 
-    _storeRecordings() {
+    storeRecordings() {
         if (!this.recordings.length) {
             return;
         }
-
-        this.recordings.forEach(this._storeSingleRecording.bind(this));
+        logger.info('Storing recordings.');
+        this.recordings.forEach(this.storeSingleRecording.bind(this));
     }
 
-    _readRecording(name) {
+    readRecording(name) {
         const content = {};
         const key = name.split('.json')[0];
-        content[key] = JSON.parse(fs.readFileSync(`${this.recordingFolder}/${name}`, 'utf8'))
+        const json = fs.readFileSync(`${this.recordingFolder}/${name}`, 'utf8');
+        try {
+            content[key] = JSON.parse(json);
+        } catch (e) {
+            content[key] = {};
+        }
 
         return content;
     }
 
-
-    _readAndSquashRecordings() {
-        const content = fs.readdirSync(this.recordingFolder);
-        const jsons = content.map(this._readRecording.bind(this));
-        let recordings = {};
-
-        jsons.forEach(function(json) {
-            Object.assign(recordings, json);
-        });
-
-        this.recordings = recordings;
-
+    recordingsFolderExists() {
+        return fs.existsSync(this.recordingFolder);
     }
 
-    _printNode(depth, _duration, name, fullkey) {
+    readAndSquashRecordings() {
+        if (this.recordingsFolderExists()) {
+            logger.info('Reading and squashing recordings.');
+            const content = fs.readdirSync(this.recordingFolder);
+            const jsons = content.map(this.readRecording.bind(this));
+            let recordings = {};
+
+            jsons.forEach(function(json) {
+                Object.assign(recordings, json);
+            });
+
+            this.squashedRecordings = recordings;
+        }
+    }
+
+    increaseFailures() {
+        this.failures ++;
+    }
+
+    printNode(depth, _duration, name, fullkey) {
         const newLines = (depth < 3 ) ? '\n' : '';
         const toPrint = newLines
             .concat(Array(depth)
@@ -107,31 +136,24 @@ class Performance {
         let comparison = 100000;
         const duration = _duration.toString().concat(' ms');
 
-        if (this.recordings && Object.keys(this.recordings).length) {
-            comparison = vivify.get(`${fullkey}.duration`, this.recordings);
+        if (this.squashedRecordings && Object.keys(this.squashedRecordings).length) {
+            comparison = vivify.get(`${fullkey}.duration`, this.squashedRecordings);
         }
 
         if (!comparison || _duration <= (comparison * 1.40)) {
-            if (depth === 1) {
-                console.log(`${toPrint}`.underline, '√'.green, duration.green);
-            } else {
-                console.log(`${toPrint}`.grey, '√'.green, duration.green)
-            }
+            logger.passed(depth, toPrint, duration);
         } else {
             const expected = comparison.toString().concat(' ms');
-            if (depth === 1) {
-                console.log(`${toPrint}`.underline, 'x'.red, duration.red, expected.yellow);
-            } else {
-                console.log(`${toPrint}`.red, 'x'.red, duration.red, expected.yellow)
-            }
+            this.increaseFailures();
+            logger.failed(depth, toPrint, duration, expected);
         }
 
         if (depth == 2) {
-            this._printNavigation(vivify.get(fullkey, this.navigation));
+            this.printNavigation(vivify.get(fullkey, this.navigation));
         }
     }
 
-    _printNavigation(data) {
+    printNavigation(data) {
         console.log('\t\t', Array(50).join('-').green);
         Object.keys(data).forEach(function(key) {
             console.log('\t\t', key.bold, data[key].toString().green);
@@ -139,27 +161,34 @@ class Performance {
         console.log('\t\t', Array(50).join('-').green);
     }
 
-    _explore(object, name, depth) {
+    explore(object, name, depth) {
         const newDepth = depth + 1;
         Object.keys(object).forEach((function(key) {
             if (typeof object[key] === 'object') {
-                this._explore(object[key], key, newDepth);
+                this.explore(object[key], key, newDepth);
             } else if (key === 'duration') {
                 const fullkey = object.__key;
                 const duration = object[key];
-                this._printNode(newDepth, duration, name, fullkey);
+                this.printNode(newDepth, duration, name, fullkey);
             }
         }).bind(this));
     }
 
-    print() {
-        if (this.recordings.length) {
-            this._storeRecordings();
+    evaluate() {
+        if (this.hasRecordings()) {
+            this.storeRecordings();
         } else {
-            this._readAndSquashRecordings();
+            this.readAndSquashRecordings();
         }
-        this._explore(this.timeline, '', -1);
+        this.explore(this.timeline, '', -1);
 
+        // printing final results
+        const successCount = Object.keys(this.timeline).length - this.failures + 1;
+
+        return {
+            failures: this.failures,
+            success: successCount
+        }
     }
 }
 

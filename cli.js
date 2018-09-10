@@ -1,25 +1,20 @@
-const esprima = require('esprima');
-const escodegen = require('escodegen');
-const childprocess = require('child_process');
 const constants = require('./constants');
-const ChromeLauncher = require('./chromelauncher');
 const P = require('./performance');
 const Config = require('./config');
-const Parser = require('./parser');
 const colors = require('colors');
 const fs = require('fs');
 const glob = require('glob');
+const yargs = require('yargs')
 const safeEval = require('safe-eval');
 const logger = require('./logger');
+const arbiter = require('./arbiter');
 
 global.NETWORK = constants.NETWORK;
 global.CPU = constants.CPU;
 global.performance = new P.Performance();
 
-let scenarios = {};
-
 global.scenario = function(name, scenarioCallback) {
-    scenarios[name] = scenarioCallback;
+    arbiter.storeScenario(name, scenarioCallback);
 }
 
 global.measure = async function(rootName, measureCallback) {
@@ -29,31 +24,14 @@ global.measure = async function(rootName, measureCallback) {
     performance.start(rootName);
 
     return new Promise(function(resolve, reject) {
-        Promise.all(Object.keys(scenarios).map(async function(scenarioName) {
-            const chromelauncher = new ChromeLauncher(config);
-            const scenario = scenarios[scenarioName].toString();
-            const parser = new Parser(rootName, scenarioName, scenario);
-
-            await chromelauncher.launch();
-
-            const scenarioTimelineKey = `${rootName}.${scenarioName}`;
-            performance.start(scenarioTimelineKey);
-            await parser.evaluateScenario()(chromelauncher.page);
-            performance.end(scenarioTimelineKey);
-
-            const navigation = await chromelauncher.getNavigationInfo();
-            const key = `${rootName}.${scenarioName}`;
-            performance.setNavigationInfo(key, navigation);
-
-            await chromelauncher.close();
-        }))
-        .then(function() {
-            performance.end(rootName);
-            resolve();
-        })
-        .catch(function(err) {
-            reject(err);
-        })
+        arbiter.evaluateScenarios(config, rootName)
+            .then(function() {
+                performance.end(rootName);
+                resolve();
+            })
+            .catch(function(err) {
+                reject(err);
+            })
     });
 }
 
@@ -63,22 +41,28 @@ global.measure.record = async function(rootName, measureCallback) {
     await measure(rootName, measureCallback);
 }
 
-const pattern = process.argv[2];
-console.log(pattern);
+var argv = require('yargs')
+    .demandOption(['p'])
+    .argv;
 
-glob(pattern, {}, function(err, files) {
+glob(argv.p, {}, function(err, files) {
 
     if (err) {
         logger.usage();
-        logger.error('ERROR - something went wrong reading your pattern.');
+        logger.error('Something went wrong reading your pattern.');
+        logger.debug(err);
         process.exit(1);
     }
 
     if (files.length === 0) {
         logger.usage();
-        logger.error('ERROR - 0 files found.');
+        logger.error('0 files found.');
         process.exit(1);
     }
+
+    logger.setVerboseMode(argv.v);
+
+    logger.info('Starting measurements.');
 
     Promise.all(files.map(function(filename) {
         const content = fs.readFileSync(filename, 'utf8');
@@ -93,9 +77,13 @@ glob(pattern, {}, function(err, files) {
     }))
     .then(function() {
         logger.info('Measurements done!');
-        performance.print();
+        const CODE = arbiter.evaluateResults();
+
+        process.exit(CODE);
     })
     .catch(function(err) {
-        logger.error('ERROR - Something went really bad');
+        logger.error('Something went really bad');
+        logger.debug(err);
+        process.exit(1);
     });
 });

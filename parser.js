@@ -3,6 +3,7 @@ const escodegen = require('escodegen');
 const constants = require('./constants');
 const P = require('./performance');
 const safeEval = require('safe-eval');
+const logger = require('./logger');
 
 class Parser {
 
@@ -60,6 +61,7 @@ class Parser {
     }
 
     evaluateScenario() {
+        logger.info(`Evaluating scenario ${this.name}.`);
         this.extractLocations();
         return safeEval(this.getParsedScenarioCode(), { performance: global.performance });
     }

@@ -11,6 +11,8 @@ class ChromeLauncher {
 
         this.NETWORK_CONDITIONS_MESSAGE = 'Network.emulateNetworkConditions';
         this.CPU_CONDITIONS_MESSAGE = 'Emulation.setCPUThrottlingRate';
+        this.NAVIGATION_INFO_TYPE = 'navigation';
+        this.PAINT_INFO_TYPE = 'paint';
     }
 
     setNetworkConditions(client) {
@@ -32,16 +34,29 @@ class ChromeLauncher {
         this.setCpuConditions(client);
     }
 
-    async getNavigationInfo() {
-        logger.info('Retrieving navigation info.');
+    async getInfo(type) {
+        logger.info(`Retrieving ${type} info`);
         if (this.page) {
-            const navigation = await this.page.evaluate(function() {
-               return performance.getEntriesByType('navigation')[0].toJSON();
-            });
+            const info = await this.page.evaluate(function(type) {
+                let entries = performance.getEntriesByType(type);
+                if (entries.length == 1) {
+                    return entries[0].toJSON();
+                } else {
+                    return [entries[0].toJSON(), entries[1].toJSON()];
+                }
+            }, type);
 
-            return navigation;
+            return info;
         }
-        return {};
+        return [];
+    }
+
+    async getNavigationInfo() {
+        return await this.getInfo(this.NAVIGATION_INFO_TYPE);
+    }
+
+    async getPaintInfo() {
+        return await this.getInfo(this.PAINT_INFO_TYPE);
     }
 
     async onTargetChanged(target) {

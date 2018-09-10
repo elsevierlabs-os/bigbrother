@@ -36,6 +36,9 @@ class Bigbrother {
         const navigation = await chromelauncher.getNavigationInfo();
         performance.setNavigationInfo(KEY, navigation);
 
+        const paint = await chromelauncher.getPaintInfo();
+        performance.setPaintInfo(KEY, paint);
+
         await chromelauncher.close();
     }
 

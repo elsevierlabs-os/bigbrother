@@ -30,6 +30,14 @@ class Logger {
             .concat('\n\n'));
     }
 
+    newLines(amount) {
+        if (amount && amount > 0) {
+            console.log(Array(amount).join('\n'));
+        } else {
+            console.log('\n');
+        }
+    }
+
     success(count) {
         console.log('\t', '√'.green, (count + ' tests passed.').green);
     }

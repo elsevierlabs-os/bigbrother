@@ -10,6 +10,7 @@ class Performance {
 
         // storing navigation info from page
         this.navigation = {};
+        this.paint = {};
 
         this.recordings = [];
         this.squashedRecordings = {};
@@ -39,6 +40,15 @@ class Performance {
         }
 
         vivify.set(name, toStore, this.navigation);
+    }
+
+    setPaintInfo(name, data) {
+        const toStore = {};
+        data.forEach(function(entry) {
+            toStore[entry.name.replace(/\-/g, ' ')] = entry.startTime + ' ms';
+        });
+
+        vivify.set(name, toStore, this.paint);
     }
 
     start(name, option) {
@@ -149,11 +159,13 @@ class Performance {
         }
 
         if (depth == 2) {
-            this.printNavigation(vivify.get(fullkey, this.navigation));
+            this.printData(vivify.get(fullkey, this.navigation));
+            logger.newLines(2);
+            this.printData(vivify.get(fullkey, this.paint));
         }
     }
 
-    printNavigation(data) {
+    printData(data) {
         console.log('\t\t', Array(50).join('-').green);
         Object.keys(data).forEach(function(key) {
             console.log('\t\t', key.bold, data[key].toString().green);

@@ -70,11 +70,11 @@ class Performance {
 
     storeSingleRecording(scenario) {
         const json = JSON.stringify(this.timeline[scenario]);
-        logger.debug(typeof json === 'string');
-        logger.debug(this.recordings);
-        logger.info(`Writing on ${this.recordingFolder}/${scenario}.json`);
-        fs.writeFileSync(`${this.recordingFolder}/${scenario}.json`, json, 'utf8', function(err) {
-            logger.info(`Finished writing on ${this.recordingFolder}/${scenario}.txt`);
+        const fileName = `${this.recordingFolder}/${scenario}.json`;
+
+        logger.info(`Writing on ${fileName}`);
+        fs.writeFileSync(fileName, json, 'utf8', function(err) {
+            logger.info(`Finished writing on ${fileName}`);
             if (err) {
                 logger.error('Error occurred while storing recording' + scenario);
                 logger.debug(err);

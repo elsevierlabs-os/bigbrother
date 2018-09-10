@@ -1,10 +1,15 @@
 const logger = require('./logger');
 const ChromeLauncher = require('./chromelauncher');
 const Parser = require('./parser');
+const safeEval = require('safe-eval');
+const fs = require('fs');
 
 const ZERO_SCENARIOS = '0 Scenarios found to evaluate.';
+const MISSING_PATTERN = 'Something went wrong reading your pattern.';
+const ZERO_FILES = '0 files were found.';
+const EXPLOSION = '';
 
-class Arbiter {
+class Bigbrother {
     constructor() {
         this.scenarios = {};
     }
@@ -62,6 +67,46 @@ class Arbiter {
             return 0;
         }
     }
+
+    start(err, files) {
+        if (err) {
+            logger.usage();
+            logger.error(MISSING_PATTERN);
+            logger.debug(err);
+            process.exit(1);
+        }
+
+        if (files.length === 0) {
+            logger.usage();
+            logger.error(ZERO_FILES);
+            process.exit(1);
+        }
+
+        logger.info('Starting measurements.');
+
+        Promise.all(files.map(function(filename) {
+            const content = fs.readFileSync(filename, 'utf8');
+
+            return safeEval(content, {
+                measure: global.measure,
+                scenario: global.scenario,
+                performance: global.performance,
+                NETWORK: global.NETWORK,
+                CPU: global.CPU
+            });
+        }))
+        .then((function() {
+            logger.info('Measurements done!');
+            const CODE = this.evaluateResults();
+
+            process.exit(CODE);
+        }).bind(this))
+        .catch(function(err) {
+            logger.error(EXPLOSION);
+            logger.debug(err);
+            process.exit(1);
+        });
+    }
 }
 
-module.exports = new Arbiter();
+module.exports = new Bigbrother();

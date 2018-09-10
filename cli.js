@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const constants = require('./constants');
 const P = require('./performance');
 const Config = require('./config');

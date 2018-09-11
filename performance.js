@@ -160,17 +160,17 @@ class Performance {
 
         if (depth == 2) {
             this.printData(vivify.get(fullkey, this.navigation));
-            logger.newLines(2);
+            console.log(logger.newLines(2));
             this.printData(vivify.get(fullkey, this.paint));
         }
     }
 
     printData(data) {
-        console.log('\t\t', Array(50).join('-').green);
+        console.log(logger.tab(3), logger.line());
         Object.keys(data).forEach(function(key) {
-            console.log('\t\t', key.bold, data[key].toString().green);
+            console.log(logger.tab(3), key.grey.bold, data[key].toString().green)
         });
-        console.log('\t\t', Array(50).join('-').green);
+        console.log(logger.tab(3), logger.line());
     }
 
     explore(object, name, depth) {

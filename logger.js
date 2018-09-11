@@ -30,12 +30,29 @@ class Logger {
             .concat('\n\n'));
     }
 
-    newLines(amount) {
-        if (amount && amount > 0) {
-            console.log(Array(amount).join('\n'));
-        } else {
-            console.log('\n');
+    repeatCharacter(amount, char, color) {
+        let string = char.toString();
+        if (amount > 0) {
+            string = Array(amount).join(string);
         }
+
+        if (color) {
+            return string[color];
+        }
+        return string;
+    }
+
+    newLines(amount) {
+        return this.repeatCharacter(amount, '\n');
+    }
+
+    tab(amount) {
+        return this.repeatCharacter(amount, '\t');
+    }
+
+    line(length) {
+        const amount = length || 50;
+        return this.repeatCharacter(amount, '-', 'yellow');
     }
 
     success(count) {

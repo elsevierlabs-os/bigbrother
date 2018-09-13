@@ -1,6 +1,6 @@
 {
   "name": "bigbrother",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Simple performance tool",
   "main": "cli.js",
   "scripts": {

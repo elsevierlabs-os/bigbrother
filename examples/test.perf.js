@@ -6,7 +6,10 @@ measure('sciencedirect', function(config) {
 
     scenario('form', async (page) => {
         await page.type('input#qs', 'marco');
+
         await page.type('input#authors', 'marco');
+
         await page.type('input#date', '1990');
+
     });
 });

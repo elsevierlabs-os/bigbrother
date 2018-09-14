@@ -1,5 +1,4 @@
 const esprima = require('esprima');
-const escodegen = require('escodegen');
 const constants = require('./constants');
 const P = require('./performance');
 const safeEval = require('safe-eval');
@@ -18,7 +17,6 @@ class Parser {
 
     getNodeParser(rootName, name) {
         return function(node, meta) {
-            const generated = escodegen.generate(node);
             if (this.ALLOWED_TYPES.includes(node.type)) {
                 let functionName = `${rootName}.${name}.${node.argument.callee.property.name}`;
                 let index = 1;

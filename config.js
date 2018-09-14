@@ -6,6 +6,12 @@ class Config {
         this.url = 'http://sciencedirect.com/search/advanced';
         this.network = constants.NETWORK.WIFI;
         this.cpu = constants.CPU.DEFAULT;
+
+        this.headless = false;
+    }
+
+    setHeadless(flag) {
+        this.headless = !!flag;
     }
 
     setURL(newUrl) {

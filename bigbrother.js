@@ -61,12 +61,12 @@ class Bigbrother {
         const results = performance.evaluate();
 
         logger.debug('\n\n');
-        logger.success(results.success);
         if (results.failures) {
             logger.failure(results.failures);
             logger.debug('\n')
             return 1;
         } else {
+            logger.success(results.success);
             return 0;
         }
     }

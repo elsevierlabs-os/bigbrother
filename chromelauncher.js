@@ -72,7 +72,8 @@ class ChromeLauncher {
 
     async launch() {
         logger.info('Launching puppeteer instance.');
-        this.browser = await puppeteer.launch(constants.PUPPETEER);
+        const options = Object.assign(constants.PUPPETEER, { headless: this.config.headless })
+        this.browser = await puppeteer.launch(options);
         this.browser.on('targetchanged', this.onTargetChanged.bind(this));
 
         this.page = await this.browser.newPage();

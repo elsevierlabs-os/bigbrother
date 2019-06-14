@@ -15,6 +15,7 @@ class ChromeLauncher {
         this.PAINT_INFO_TYPE = 'paint';
     }
 
+    // done
     setNetworkConditions(client) {
         if (client) {
             logger.info('Setting network conditions.');
@@ -22,6 +23,7 @@ class ChromeLauncher {
         }
     }
 
+    // done
     setCpuConditions(client) {
         if (client) {
             logger.info('Setting cpu conditions.');
@@ -29,6 +31,7 @@ class ChromeLauncher {
         }
     }
 
+    // done
     setConditions(client) {
         this.setNetworkConditions(client);
         this.setCpuConditions(client);
@@ -59,6 +62,7 @@ class ChromeLauncher {
         return await this.getInfo(this.PAINT_INFO_TYPE);
     }
 
+    // done
     async onTargetChanged(target) {
         const page = await target.page();
 
@@ -70,6 +74,7 @@ class ChromeLauncher {
         }
     }
 
+    // done
     async launch() {
         logger.info('Launching puppeteer instance.');
         const options = Object.assign(constants.PUPPETEER, { headless: this.config.headless })

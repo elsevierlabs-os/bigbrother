@@ -213,7 +213,7 @@ Here is an example:
 
 Once every scenario has been executed, the following ouTput will be provided.
 
-![](output.png)
+![](old/output.png)
 
 ### Contributing
 

@@ -1,15 +1,23 @@
 #!/usr/bin/env node
-const Browser = require('./bigbrother').Browser;
-const PageBuilder = require('./bigbrother').PageBuilder;
+const minimist = require('minimist');
+const colors = require('colors');
+const Runner = require('./bigbrother').Runner;
 
-const browser = new Browser({ headless: false });
-const builder = new PageBuilder(browser);
-browser
-    .launch()
-    .then(async () => {
-       const page = builder
-            .withUrl('http://google.com')
-            .build();
-    })
-    .catch(console.log);
+const argv = minimist(process.argv.slice(2));
 
+const pattern = argv._[0];
+const verboseMode = argv.verbose || argv.v;
+const help = argv.help || argv.h;
+
+if (help) {
+    // print usage then return
+    process.exit(1);
+}
+
+if (!pattern) {
+    console.log('Bigbrother requires a pattern'.red);
+    process.exit(1);
+}
+
+// start runner here
+new Runner(pattern).start();

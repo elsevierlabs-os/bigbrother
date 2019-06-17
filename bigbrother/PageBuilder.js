@@ -19,6 +19,12 @@ var _PageWrapper = _interopRequireDefault(require("./PageWrapper"));
 
 var _constants = require("./constants");
 
+var DEFAULT_OPTIONS = {
+  cpu: _constants.CPU.DEFAULT,
+  network: _constants.NETWORK.WIFI,
+  url: ''
+};
+
 var PageBuilder =
 /*#__PURE__*/
 function () {
@@ -26,11 +32,7 @@ function () {
     (0, _classCallCheck2.default)(this, PageBuilder);
 
     if (browser) {
-      this.options = {
-        cpu: _constants.CPU.DEFAULT,
-        network: _constants.NETWORK.WIFI,
-        url: ''
-      };
+      this.options = DEFAULT_OPTIONS;
       this.browser = browser;
     } else {
       return new Error('PageBuilder needs a valid browser instance');
@@ -38,6 +40,11 @@ function () {
   }
 
   (0, _createClass2.default)(PageBuilder, [{
+    key: "reset",
+    value: function reset() {
+      this.options = DEFAULT_OPTIONS;
+    }
+  }, {
     key: "withCpu",
     value: function withCpu(cpu) {
       this.options.cpu = cpu;
@@ -67,7 +74,7 @@ function () {
             switch (_context.prev = _context.next) {
               case 0:
                 if (!this.options.url) {
-                  _context.next = 12;
+                  _context.next = 13;
                   break;
                 }
 
@@ -85,12 +92,14 @@ function () {
                 return this.browser.setConditions(pageWrapper);
 
               case 9:
+                // we should probably restore options to original values
+                this.reset();
                 return _context.abrupt("return", page);
 
-              case 12:
+              case 13:
                 throw new Error('cannnot create new page with url');
 
-              case 13:
+              case 14:
               case "end":
                 return _context.stop();
             }

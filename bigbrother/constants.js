@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CPU = exports.NETWORK = void 0;
+exports.PATTERN_DOESNT_MATCH_ERROR = exports.CPU = exports.NETWORK = void 0;
 var NETWORK = {
   WIFI: {
     offline: false,
@@ -109,3 +109,5 @@ var ESPRIMA_OPTIONS = {
 var PUPPETEER = {
   headless: true
 };
+var PATTERN_DOESNT_MATCH_ERROR = 'Provided pattern doesn\' match any file.';
+exports.PATTERN_DOESNT_MATCH_ERROR = PATTERN_DOESNT_MATCH_ERROR;

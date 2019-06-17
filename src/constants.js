@@ -104,3 +104,5 @@ const ESPRIMA_OPTIONS = {
 const PUPPETEER = {
     headless: true
 };
+
+export const PATTERN_DOESNT_MATCH_ERROR = 'Provided pattern doesn\' match any file.';

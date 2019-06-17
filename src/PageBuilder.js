@@ -1,20 +1,26 @@
 import PageWrapper from './PageWrapper';
 import { CPU, NETWORK } from './constants';
 
+const DEFAULT_OPTIONS = {
+    cpu: CPU.DEFAULT,
+    network: NETWORK.WIFI,
+    url: ''
+};
+
 class PageBuilder {
 
     constructor(browser) {
         if (browser) {
-            this.options = {
-                cpu: CPU.DEFAULT,
-                network: NETWORK.WIFI,
-                url: ''
-            };
+            this.options = DEFAULT_OPTIONS;
 
             this.browser = browser;
         } else {
             return new Error('PageBuilder needs a valid browser instance');
         }
+    }
+
+    reset() {
+        this.options = DEFAULT_OPTIONS;
     }
 
     withCpu(cpu) {
@@ -40,6 +46,9 @@ class PageBuilder {
 
             await pageWrapper.load();
             await this.browser.setConditions(pageWrapper);
+
+            // we should probably restore options to original values
+            this.reset();
 
             return page
 

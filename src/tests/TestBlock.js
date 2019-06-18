@@ -25,12 +25,12 @@ class TestBlock {
         this._afterEach = f => f;
     };
 
-    createBlock = (browser) => (key, cb) => {
+    createBlock = (browser) => async (key, cb) => {
         const blockKey = `${this.block}.${key}`;
         const block = new TestBlock(blockKey, cb);
         this.blocks.push(block);
 
-        block.execute(browser);
+        await block.execute(browser);
     }
 
     createTest = (key, cb) => {
@@ -45,25 +45,23 @@ class TestBlock {
         this._beforeEach = cb;
     }
 
-    execute(browser) {
+    async execute(browser) {
         // this should inject the right it inside the test
         // it should also create the test
         // executing callback
         const executor = new Function('it', 'describe', 'beforeEach', `(${this.cb.toString()})()`);
         executor(this.createTest, this.createBlock(browser), this.beforeEach);
 
-        // const block = safeEval(this.cb.toString(), {
-        //     it: this.createTest,
-        //     describe: this.createBlock(browser)
-        // });
-        // console.log('after saf eval', block);
-        // when callback is done, it means we can call each test in our tests list
-        this._before();
-        this.tests.forEach(test => {
+        const promises = this.tests.map(async (test) => {
             this._beforeEach();
-            test.execute(browser);
+            const output = await test.execute(browser);
             this._afterEach();
+
+            return output;
         });
+
+        this._before();
+        await Promise.all(promises);
         this._after();
     }
 }

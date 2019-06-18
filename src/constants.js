@@ -105,4 +105,10 @@ const PUPPETEER = {
     headless: true
 };
 
+export const TARGET_CHANGED_EVENT = 'targetchanged';
+export const NETWORK_CONDITIONS_MESSAGE = 'Network.emulateNetworkConditions';
+export const CPU_CONDITIONS_MESSAGE = 'Emulation.setCPUThrottlingRate';
+export const NAVIGATION_INFO_TYPE = 'navigation';
+export const PAINT_INFO_TYPE = 'paint';
+
 export const PATTERN_DOESNT_MATCH_ERROR = 'Provided pattern doesn\' match any file.';

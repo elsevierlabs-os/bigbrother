@@ -7,6 +7,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -31,14 +35,38 @@ function () {
 
     (0, _classCallCheck2.default)(this, TestBlock);
     (0, _defineProperty2.default)(this, "createBlock", function (browser) {
-      return function (key, cb) {
-        var blockKey = "".concat(_this.block, ".").concat(key);
-        var block = new TestBlock(blockKey, cb);
+      return (
+        /*#__PURE__*/
+        function () {
+          var _ref = (0, _asyncToGenerator2.default)(
+          /*#__PURE__*/
+          _regenerator.default.mark(function _callee(key, cb) {
+            var blockKey, block;
+            return _regenerator.default.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    blockKey = "".concat(_this.block, ".").concat(key);
+                    block = new TestBlock(blockKey, cb);
 
-        _this.blocks.push(block);
+                    _this.blocks.push(block);
 
-        block.execute(browser);
-      };
+                    _context.next = 5;
+                    return block.execute(browser);
+
+                  case 5:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            }, _callee);
+          }));
+
+          return function (_x, _x2) {
+            return _ref.apply(this, arguments);
+          };
+        }()
+      );
     });
     (0, _defineProperty2.default)(this, "createTest", function (key, cb) {
       // this is for it calls
@@ -75,32 +103,80 @@ function () {
 
   (0, _createClass2.default)(TestBlock, [{
     key: "execute",
-    value: function execute(browser) {
-      var _this2 = this;
+    value: function () {
+      var _execute = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee3(browser) {
+        var _this2 = this;
 
-      // this should inject the right it inside the test
-      // it should also create the test
-      // executing callback
-      var executor = new Function('it', 'describe', 'beforeEach', "(".concat(this.cb.toString(), ")()"));
-      executor(this.createTest, this.createBlock(browser), this.beforeEach); // const block = safeEval(this.cb.toString(), {
-      //     it: this.createTest,
-      //     describe: this.createBlock(browser)
-      // });
-      // console.log('after saf eval', block);
-      // when callback is done, it means we can call each test in our tests list
+        var executor, promises;
+        return _regenerator.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                // this should inject the right it inside the test
+                // it should also create the test
+                // executing callback
+                executor = new Function('it', 'describe', 'beforeEach', "(".concat(this.cb.toString(), ")()"));
+                executor(this.createTest, this.createBlock(browser), this.beforeEach);
+                promises = this.tests.map(
+                /*#__PURE__*/
+                function () {
+                  var _ref2 = (0, _asyncToGenerator2.default)(
+                  /*#__PURE__*/
+                  _regenerator.default.mark(function _callee2(test) {
+                    var output;
+                    return _regenerator.default.wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                            _this2._beforeEach();
 
-      this._before();
+                            _context2.next = 3;
+                            return test.execute(browser);
 
-      this.tests.forEach(function (test) {
-        _this2._beforeEach();
+                          case 3:
+                            output = _context2.sent;
 
-        test.execute(browser);
+                            _this2._afterEach();
 
-        _this2._afterEach();
-      });
+                            return _context2.abrupt("return", output);
 
-      this._after();
-    }
+                          case 6:
+                          case "end":
+                            return _context2.stop();
+                        }
+                      }
+                    }, _callee2);
+                  }));
+
+                  return function (_x4) {
+                    return _ref2.apply(this, arguments);
+                  };
+                }());
+
+                this._before();
+
+                _context3.next = 6;
+                return Promise.all(promises);
+
+              case 6:
+                this._after();
+
+              case 7:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function execute(_x3) {
+        return _execute.apply(this, arguments);
+      }
+
+      return execute;
+    }()
   }]);
   return TestBlock;
 }();

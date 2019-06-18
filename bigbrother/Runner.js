@@ -17,7 +17,7 @@ var _glob = _interopRequireDefault(require("glob"));
 
 var _fs = _interopRequireDefault(require("fs"));
 
-var _safeEval = _interopRequireDefault(require("safe-eval"));
+require("colors");
 
 var _constants = require("./constants");
 
@@ -40,14 +40,16 @@ function () {
         content: content
       };
     });
-    (0, _defineProperty2.default)(this, "executeTestSuites", function (_ref) {
-      var filename = _ref.filename,
-          content = _ref.content;
-      var suite = new _TestSuite.default(filename, content, _this.browser);
-
-      _this.suites.push(suite);
-
-      suite.execute();
+    (0, _defineProperty2.default)(this, "executeTestSuites", function () {
+      var tests = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      _this.suites = tests.map(function (_ref) {
+        var filename = _ref.filename,
+            content = _ref.content;
+        return new _TestSuite.default(filename, content, _this.browser);
+      });
+      Promise.all(_this.suites.map(function (s) {
+        return s.execute();
+      })).then(_this.evaluateResults);
     });
     (0, _defineProperty2.default)(this, "onFilesFound", function (err) {
       var files = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -62,7 +64,15 @@ function () {
         process.exit(1);
       }
 
-      files.map(_this.readFile).map(_this.executeTestSuites);
+      var tests = files.map(_this.readFile);
+
+      _this.executeTestSuites(tests);
+    });
+    (0, _defineProperty2.default)(this, "evaluateResults", function (suites) {
+      var message = "Done running ".concat(suites.length, " suites").green;
+      console.log(message);
+
+      _this.stop();
     });
     this.pattern = pattern;
     this.browser = null;
@@ -71,14 +81,23 @@ function () {
 
   (0, _createClass2.default)(Runner, [{
     key: "start",
-    value: function start() {
+    value: function start(_ref2) {
       var _this2 = this;
 
+      var _ref2$headless = _ref2.headless,
+          headless = _ref2$headless === void 0 ? true : _ref2$headless;
       this.browser = new _Browser.default({
-        headless: false
+        headless: headless
       });
       this.browser.launch().then(function () {
         return (0, _glob.default)(_this2.pattern, {}, _this2.onFilesFound);
+      });
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      this.browser.close().then(function () {
+        return process.exit(0);
       });
     }
   }]);

@@ -16,19 +16,23 @@ class TestSuite {
         this.blocks = [];
     }
 
-    createBlock = (browser) => (key, cb) => {
+    createBlock = async (key, cb) => {
         const blockKey = `${this.filename}.${key}`;
         const block = new TestBlock(blockKey, cb);
         this.blocks.push(block);
 
-        block.execute(browser);
+        // await block.execute(browser);
     }
 
-    execute() {
+    async execute() {
         // safe eval content
         safeEval(this.content, {
-            describe: this.createBlock(this.browser)
+            describe: this.createBlock
         });
+
+        await Promise.all(this.blocks.map(b => b.execute(this.browser)));
+
+        return this.blocks;
     }
 }
 

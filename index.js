@@ -19,5 +19,10 @@ if (!pattern) {
     process.exit(1);
 }
 
-// start runner here
-new Runner(pattern).start();
+const headless = process.env.HEADLESS === 'true';
+const runnerOptions = {
+    verboseMode: verboseMode,
+    headless: headless
+};
+
+new Runner(pattern).start(runnerOptions);

@@ -33,6 +33,7 @@ function () {
 
     if (browser) {
       this.options = DEFAULT_OPTIONS;
+      this.pages = [];
       this.browser = browser;
     } else {
       return new Error('PageBuilder needs a valid browser instance');
@@ -74,7 +75,7 @@ function () {
             switch (_context.prev = _context.next) {
               case 0:
                 if (!this.options.url) {
-                  _context.next = 13;
+                  _context.next = 14;
                   break;
                 }
 
@@ -84,22 +85,23 @@ function () {
               case 3:
                 page = _context.sent;
                 pageWrapper = new _PageWrapper.default(page, this.options);
-                _context.next = 7;
+                this.pages.push(pageWrapper);
+                _context.next = 8;
                 return pageWrapper.load();
 
-              case 7:
-                _context.next = 9;
+              case 8:
+                _context.next = 10;
                 return this.browser.setConditions(pageWrapper);
 
-              case 9:
+              case 10:
                 // we should probably restore options to original values
                 this.reset();
                 return _context.abrupt("return", page);
 
-              case 13:
+              case 14:
                 throw new Error('cannnot create new page with url');
 
-              case 14:
+              case 15:
               case "end":
                 return _context.stop();
             }
@@ -113,6 +115,13 @@ function () {
 
       return build;
     }()
+  }, {
+    key: "closeAll",
+    value: function closeAll() {
+      return Promise.all(this.pages.map(function (p) {
+        return p.close();
+      }));
+    }
   }]);
   return PageBuilder;
 }();

@@ -1,7 +1,6 @@
 import glob from 'glob';
 import fs from 'fs';
-import safeEval from 'safe-eval';
-
+import 'colors';
 import { PATTERN_DOESNT_MATCH_ERROR } from './constants';
 import TestSuite from './tests/TestSuite';
 import Browser from './Browser';
@@ -20,11 +19,14 @@ class Runner {
         return { filename, content };
     }
 
-    executeTestSuites = ({ filename, content }) => {
-        const suite = new TestSuite(filename, content, this.browser);
-        this.suites.push(suite);
+    executeTestSuites = (tests = []) => {
+        this.suites = tests.map(({ filename, content}) => (
+            new TestSuite(filename, content, this.browser)
+        ));
 
-        suite.execute();
+        Promise
+            .all(this.suites.map(s => s.execute()))
+            .then(this.evaluateResults);
     }
 
     onFilesFound = (err, files = []) => {
@@ -39,16 +41,29 @@ class Runner {
             process.exit(1);
         }
 
-        files
-            .map(this.readFile)
-            .map(this.executeTestSuites);
+        const tests = files.map(this.readFile);
+
+        this.executeTestSuites(tests);
     }
 
-    start() {
-        this.browser = new Browser({ headless: true });
+    evaluateResults = (suites) => {
+        const message = `Done running ${suites.length} suites`.green;
+        console.log(message);
+
+        this.stop();
+    }
+
+    start({ headless = true }) {
+        this.browser = new Browser({ headless });
         this.browser
             .launch()
             .then(() => glob(this.pattern, {}, this.onFilesFound));
+    }
+
+    stop() {
+        this.browser
+            .close()
+            .then(() => process.exit(0));
     }
 }
 

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --out-dir bigbrother",
-    "start": "npm run build && ./index.js '**/*.perf.js'"
+    "start": "npm run build && HEADLESS=true ./index.js '**/*.perf.js'",
+    "start:nonheadless": "npm run build && HEADLESS=false ./index.js '**/*.perf.js'"
   },
   "bin": {
     "bigbrother": "index.js"

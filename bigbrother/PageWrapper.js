@@ -19,10 +19,12 @@ var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/de
 
 var _constants = require("./constants");
 
+var _PerformanceAnalyzer = _interopRequireDefault(require("./PerformanceAnalyzer"));
+
 var PageWrapper =
 /*#__PURE__*/
 function () {
-  function PageWrapper(page) {
+  function PageWrapper(page, testKey) {
     var _this = this;
 
     (0, _classCallCheck2.default)(this, PageWrapper);
@@ -65,8 +67,7 @@ function () {
     })));
     this.options = {};
     this.page = page;
-    this.NETWORK_CONDITIONS_MESSAGE = 'Network.emulateNetworkConditions';
-    this.CPU_CONDITIONS_MESSAGE = 'Emulation.setCPUThrottlingRate';
+    this.testKey = testKey;
 
     if (!this.page) {
       throw new Error('PageWrapper requires a puppeteer Page');
@@ -109,14 +110,14 @@ function () {
     key: "setNetworkConditions",
     value: function setNetworkConditions(client, networkOptions) {
       if (client) {
-        return client.send(this.NETWORK_CONDITIONS_MESSAGE, networkOptions);
+        return client.send(_constants.NETWORK_CONDITIONS_MESSAGE, networkOptions);
       }
     }
   }, {
     key: "setCpuConditions",
     value: function setCpuConditions(client, cpuOptions) {
       if (client) {
-        return client.send(this.CPU_CONDITIONS_MESSAGE, cpuOptions);
+        return client.send(_constants.CPU_CONDITIONS_MESSAGE, cpuOptions);
       }
     }
   }, {
@@ -188,10 +189,12 @@ function () {
               case 0:
                 return _context4.abrupt("return", new Promise(function (resolve, reject) {
                   if (_this2.hasPage()) {
-                    var now = +new Date(); // now we click on the thing and we measure perf
+                    var key = _PerformanceAnalyzer.default.startTracking(_this2.testKey, 'click'); // now we click on the thing and we measure perf
 
-                    var end = +new Date();
-                    resolve(end - now);
+
+                    var duration = _PerformanceAnalyzer.default.stopTracking(key);
+
+                    resolve(duration);
                   } else {
                     reject('Page has not been initialised.');
                   }
@@ -210,6 +213,144 @@ function () {
       }
 
       return click;
+    }()
+  }, {
+    key: "tap",
+    value: function () {
+      var _tap = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee5(select) {
+        return _regenerator.default.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }));
+
+      function tap(_x3) {
+        return _tap.apply(this, arguments);
+      }
+
+      return tap;
+    }()
+  }, {
+    key: "setUserAgent",
+    value: function () {
+      var _setUserAgent = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee6(userAgent) {
+        return _regenerator.default.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }));
+
+      function setUserAgent(_x4) {
+        return _setUserAgent.apply(this, arguments);
+      }
+
+      return setUserAgent;
+    }()
+  }, {
+    key: "type",
+    value: function () {
+      var _type = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee7(selector, text) {
+        return _regenerator.default.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7);
+      }));
+
+      function type(_x5, _x6) {
+        return _type.apply(this, arguments);
+      }
+
+      return type;
+    }()
+  }, {
+    key: "keyboard",
+    value: function () {
+      var _keyboard = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee8(event) {
+        return _regenerator.default.wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8);
+      }));
+
+      function keyboard(_x7) {
+        return _keyboard.apply(this, arguments);
+      }
+
+      return keyboard;
+    }()
+  }, {
+    key: "screenshot",
+    value: function () {
+      var _screenshot = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee9() {
+        return _regenerator.default.wrap(function _callee9$(_context9) {
+          while (1) {
+            switch (_context9.prev = _context9.next) {
+              case 0:
+              case "end":
+                return _context9.stop();
+            }
+          }
+        }, _callee9);
+      }));
+
+      function screenshot() {
+        return _screenshot.apply(this, arguments);
+      }
+
+      return screenshot;
+    }()
+  }, {
+    key: "waitFor",
+    value: function () {
+      var _waitFor = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee10(selector) {
+        return _regenerator.default.wrap(function _callee10$(_context10) {
+          while (1) {
+            switch (_context10.prev = _context10.next) {
+              case 0:
+              case "end":
+                return _context10.stop();
+            }
+          }
+        }, _callee10);
+      }));
+
+      function waitFor(_x8) {
+        return _waitFor.apply(this, arguments);
+      }
+
+      return waitFor;
     }()
   }]);
   return PageWrapper;

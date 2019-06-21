@@ -2,6 +2,7 @@
 const minimist = require('minimist');
 const colors = require('colors');
 const Runner = require('./bigbrother').Runner;
+const ora = require('ora');
 
 const argv = minimist(process.argv.slice(2));
 

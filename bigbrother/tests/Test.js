@@ -17,27 +17,27 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _PageWrapper = _interopRequireDefault(require("../PageWrapper"));
 
-/*
-* this represents a single it
-* */
+var _Spinner = _interopRequireDefault(require("../Spinner"));
+
 var Test =
 /*#__PURE__*/
 function () {
-  function Test(name, cb) {
+  function Test(name, cb, displayName) {
     (0, _classCallCheck2.default)(this, Test);
     // this requires a browser instance to get the pageBuilder
     // this also requires the block were it belongs
     this.name = name;
     this.cb = cb;
+    this.displayName = displayName || name;
   }
 
   (0, _createClass2.default)(Test, [{
-    key: "execute",
+    key: "createPageWrapper",
     value: function () {
-      var _execute = (0, _asyncToGenerator2.default)(
+      var _createPageWrapper = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee(browser) {
-        var page, pageWrapper;
+        var page;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -47,18 +47,9 @@ function () {
 
               case 2:
                 page = _context.sent;
-                pageWrapper = new _PageWrapper.default(page);
-                _context.next = 6;
-                return this.cb(pageWrapper);
+                return _context.abrupt("return", new _PageWrapper.default(page, this.name));
 
-              case 6:
-                // closing all pages when we're done.
-                console.log(this.name); // we should close page
-                // should return test output
-
-                return _context.abrupt("return", {});
-
-              case 8:
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -66,7 +57,60 @@ function () {
         }, _callee, this);
       }));
 
-      function execute(_x) {
+      function createPageWrapper(_x) {
+        return _createPageWrapper.apply(this, arguments);
+      }
+
+      return createPageWrapper;
+    }()
+  }, {
+    key: "execute",
+    value: function () {
+      var _execute = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2(browser) {
+        var spinner, pageWrapper;
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                // callback will receive a PageBuilder
+                spinner = new _Spinner.default(this.displayName);
+                _context2.prev = 1;
+                _context2.next = 4;
+                return this.createPageWrapper(browser);
+
+              case 4:
+                pageWrapper = _context2.sent;
+                _context2.next = 7;
+                return this.cb(pageWrapper);
+
+              case 7:
+                _context2.next = 9;
+                return pageWrapper.close();
+
+              case 9:
+                spinner.complete();
+                _context2.next = 15;
+                break;
+
+              case 12:
+                _context2.prev = 12;
+                _context2.t0 = _context2["catch"](1);
+                spinner.exception(_context2.t0);
+
+              case 15:
+                return _context2.abrupt("return", {});
+
+              case 16:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[1, 12]]);
+      }));
+
+      function execute(_x2) {
         return _execute.apply(this, arguments);
       }
 

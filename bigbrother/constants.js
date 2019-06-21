@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PATTERN_DOESNT_MATCH_ERROR = exports.CPU = exports.NETWORK = void 0;
+exports.PATTERN_DOESNT_MATCH_ERROR = exports.PAINT_INFO_TYPE = exports.NAVIGATION_INFO_TYPE = exports.CPU_CONDITIONS_MESSAGE = exports.NETWORK_CONDITIONS_MESSAGE = exports.TARGET_CHANGED_EVENT = exports.CPU = exports.NETWORK = void 0;
 var NETWORK = {
   WIFI: {
     offline: false,
@@ -109,5 +109,15 @@ var ESPRIMA_OPTIONS = {
 var PUPPETEER = {
   headless: true
 };
+var TARGET_CHANGED_EVENT = 'targetchanged';
+exports.TARGET_CHANGED_EVENT = TARGET_CHANGED_EVENT;
+var NETWORK_CONDITIONS_MESSAGE = 'Network.emulateNetworkConditions';
+exports.NETWORK_CONDITIONS_MESSAGE = NETWORK_CONDITIONS_MESSAGE;
+var CPU_CONDITIONS_MESSAGE = 'Emulation.setCPUThrottlingRate';
+exports.CPU_CONDITIONS_MESSAGE = CPU_CONDITIONS_MESSAGE;
+var NAVIGATION_INFO_TYPE = 'navigation';
+exports.NAVIGATION_INFO_TYPE = NAVIGATION_INFO_TYPE;
+var PAINT_INFO_TYPE = 'paint';
+exports.PAINT_INFO_TYPE = PAINT_INFO_TYPE;
 var PATTERN_DOESNT_MATCH_ERROR = 'Provided pattern doesn\' match any file.';
 exports.PATTERN_DOESNT_MATCH_ERROR = PATTERN_DOESNT_MATCH_ERROR;

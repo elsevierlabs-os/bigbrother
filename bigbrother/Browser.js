@@ -39,12 +39,7 @@ function () {
     this.pageOptions = {
       cacheEnabled: cacheEnabled
     };
-    this.pages = []; // constants
-    // this.TARGET_CHANGED_EVENT = 'targetchanged';
-    // this.NETWORK_CONDITIONS_MESSAGE = 'Network.emulateNetworkConditions';
-    // this.CPU_CONDITIONS_MESSAGE = 'Emulation.setCPUThrottlingRate';
-    // this.NAVIGATION_INFO_TYPE = 'navigation';
-    // this.PAINT_INFO_TYPE = 'paint';
+    this.pages = [];
   }
 
   (0, _createClass2.default)(Browser, [{

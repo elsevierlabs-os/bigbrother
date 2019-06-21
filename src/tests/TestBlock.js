@@ -36,7 +36,7 @@ class TestBlock {
     createTest = (key, cb) => {
         // this is for it calls
         const testKey = `${this.block}.${key}`;
-        const test = new  Test(testKey, cb, this.block);
+        const test = new  Test(testKey, cb, key);
 
         this.tests.push(test);
     }

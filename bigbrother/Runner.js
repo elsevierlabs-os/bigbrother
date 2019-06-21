@@ -25,6 +25,8 @@ var _TestSuite = _interopRequireDefault(require("./tests/TestSuite"));
 
 var _Browser = _interopRequireDefault(require("./Browser"));
 
+var _PerformanceAnalyzer = _interopRequireDefault(require("./PerformanceAnalyzer"));
+
 var Runner =
 /*#__PURE__*/
 function () {
@@ -71,6 +73,7 @@ function () {
     (0, _defineProperty2.default)(this, "evaluateResults", function (suites) {
       var message = "Done running ".concat(suites.length, " suites").green;
       console.log(message);
+      console.log(_PerformanceAnalyzer.default.toJSON());
 
       _this.stop();
     });

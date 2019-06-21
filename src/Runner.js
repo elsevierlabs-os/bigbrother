@@ -4,6 +4,7 @@ import 'colors';
 import { PATTERN_DOESNT_MATCH_ERROR } from './constants';
 import TestSuite from './tests/TestSuite';
 import Browser from './Browser';
+import performanceAnalyzer from './PerformanceAnalyzer';
 
 class Runner {
 
@@ -49,6 +50,8 @@ class Runner {
     evaluateResults = (suites) => {
         const message = `Done running ${suites.length} suites`.green;
         console.log(message);
+
+        console.log(performanceAnalyzer.toJSON());
 
         this.stop();
     }

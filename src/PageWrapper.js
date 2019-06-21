@@ -5,13 +5,16 @@ import {
     NETWORK_CONDITIONS_MESSAGE
 } from './constants';
 
+import performanceAnalyzer from './PerformanceAnalyzer';
+
 class PageWrapper {
 
-    constructor(page) {
+    constructor(page, testKey) {
 
         this.options = {};
 
         this.page = page;
+        this.testKey = testKey;
 
         if (!this.page) {
             throw new Error('PageWrapper requires a puppeteer Page');
@@ -71,10 +74,12 @@ class PageWrapper {
     async click(selector) {
         return new Promise((resolve, reject) => {
             if (this.hasPage()) {
-                const now = +(new Date());
+                const key = performanceAnalyzer.startTracking(this.testKey, 'click');
                 // now we click on the thing and we measure perf
-                const end = +(new Date());
-                resolve(end - now);
+
+               const duration = performanceAnalyzer.stopTracking(key);
+
+               resolve(duration);
             } else {
                 reject('Page has not been initialised.');
             }

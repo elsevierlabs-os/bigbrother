@@ -71,7 +71,7 @@ function () {
     (0, _defineProperty2.default)(this, "createTest", function (key, cb) {
       // this is for it calls
       var testKey = "".concat(_this.block, ".").concat(key);
-      var test = new _Test.default(testKey, cb, _this.block);
+      var test = new _Test.default(testKey, cb, key);
 
       _this.tests.push(test);
     });

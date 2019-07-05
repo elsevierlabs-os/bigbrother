@@ -5,13 +5,14 @@
 * */
 import TestBlock from './TestBlock';
 import safeEval from 'safe-eval';
+import { cleanFileName } from '../lib/pathutils';
 
 class TestSuite {
 
     constructor(filename, content, browser) {
         // this holds the content of the file
         this.content = content;
-        this.filename = filename;
+        this.filename = cleanFileName(filename);
         this.browser = browser;
         this.blocks = [];
     }

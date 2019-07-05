@@ -72,8 +72,7 @@ function () {
     });
     (0, _defineProperty2.default)(this, "evaluateResults", function (suites) {
       var message = "Done running ".concat(suites.length, " suites").green;
-      console.log(message);
-      console.log(_PerformanceAnalyzer.default.toJSON());
+      console.log(message); // console.log(performanceAnalyzer.toJSON());
 
       _this.stop();
     });

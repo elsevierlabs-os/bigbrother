@@ -21,6 +21,8 @@ var _TestBlock = _interopRequireDefault(require("./TestBlock"));
 
 var _safeEval = _interopRequireDefault(require("safe-eval"));
 
+var _pathutils = require("../lib/pathutils");
+
 /*
 *   this represents an entire file
 *
@@ -64,7 +66,7 @@ function () {
     }());
     // this holds the content of the file
     this.content = content;
-    this.filename = filename;
+    this.filename = (0, _pathutils.cleanFileName)(filename);
     this.browser = browser;
     this.blocks = [];
   }

@@ -7,6 +7,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -29,8 +33,8 @@ function () {
     value: function store() {// we should store information about this specific run
     }
   }, {
-    key: "getKey",
-    value: function getKey(key) {
+    key: "getUniqueKey",
+    value: function getUniqueKey(key) {
       var inc = 1;
       var _key = key;
 
@@ -49,9 +53,9 @@ function () {
     }
   }, {
     key: "startTracking",
-    value: function startTracking(key, action) {
+    value: function startTracking(key) {
       var timestamp = +new Date();
-      var uniqueKey = this.getKey("".concat(key, ".").concat(action));
+      var uniqueKey = this.getUniqueKey(key);
       (0, _objectutils.deepSet)("".concat(uniqueKey, ".start"), timestamp, this.data);
       return uniqueKey;
     }
@@ -61,16 +65,60 @@ function () {
       var action = (0, _objectutils.deepGet)("".concat(key), this.data);
       var end = +new Date();
       var duration = end - action.start;
-      (0, _objectutils.deepSet)("".concat(key), (0, _objectSpread2.default)({}, action, {
+      var value = (0, _objectSpread2.default)({}, action, {
         end: end,
-        duration: duration
-      }), this.data);
-      return duration;
+        duration: duration,
+        key: key
+      });
+      (0, _objectutils.deepSet)("".concat(key), value, this.data);
+      return value;
     }
+  }, {
+    key: "measure",
+    value: function () {
+      var _measure = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(key, targetFunction) {
+        var uniqueKey;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                uniqueKey = this.startTracking(key);
+                _context.prev = 1;
+                _context.next = 4;
+                return targetFunction();
+
+              case 4:
+                _context.next = 9;
+                break;
+
+              case 6:
+                _context.prev = 6;
+                _context.t0 = _context["catch"](1);
+                this.stopTracking(key);
+
+              case 9:
+                return _context.abrupt("return", this.stopTracking(uniqueKey));
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[1, 6]]);
+      }));
+
+      function measure(_x, _x2) {
+        return _measure.apply(this, arguments);
+      }
+
+      return measure;
+    }()
   }, {
     key: "toJSON",
     value: function toJSON() {
-      return JSON.stringify(this.data);
+      return JSON.stringify(this.data, null, 4); // pretty print
     }
   }]);
   return PerformanceAnalyzer;

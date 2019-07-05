@@ -1,8 +1,10 @@
 describe('something else', () => {
 
-    it('should open browser', async (page) => {
+    it('should open google', async (page) => {
         await page.setConditions();
         await page.load('http://www.google.com');
+
+        await page.click('input[type="text"]');
     });
 
     it('should open sciencedirect', async (page) => {

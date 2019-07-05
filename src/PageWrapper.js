@@ -6,6 +6,7 @@ import {
 } from './constants';
 
 import performanceAnalyzer from './PerformanceAnalyzer';
+import {deepSet} from './lib/objectutils';
 
 class PageWrapper {
 
@@ -15,6 +16,8 @@ class PageWrapper {
 
         this.page = page;
         this.testKey = testKey;
+
+        this.measurements = {};
 
         if (!this.page) {
             throw new Error('PageWrapper requires a puppeteer Page');
@@ -28,26 +31,28 @@ class PageWrapper {
         }
     }
 
-    setNetworkConditions(client, networkOptions) {
-        if (client) {
-            return client.send(NETWORK_CONDITIONS_MESSAGE, networkOptions);
+    setNetworkConditions() {
+        if (this.client) {
+            return this.client.send(NETWORK_CONDITIONS_MESSAGE, this.network());
         }
     }
 
-    setCpuConditions(client, cpuOptions) {
-        if (client) {
-            return client.send(CPU_CONDITIONS_MESSAGE, cpuOptions);
+    setCpuConditions() {
+        if (this.client) {
+            return this.client.send(CPU_CONDITIONS_MESSAGE, this.cpu());
         }
     }
 
     setConditions = async ({ cpu = CPU.DEFAULT, network = NETWORK.WIFI } = {}) => {
-        const client = await this.page.target().createCDPSession();
+        this.client = await this.page
+            .target()
+            .createCDPSession();
 
         this.options.cpu = cpu;
         this.options.network = network;
 
-        this.setNetworkConditions(client, this.network());
-        this.setCpuConditions(client, this.cpu());
+        this.setNetworkConditions();
+        this.setCpuConditions();
     }
 
     cpu() {
@@ -62,24 +67,49 @@ class PageWrapper {
         return Boolean(this.page);
     }
 
-    async load(url) {
-        if (this.hasPage() && url) {
-            this.options.url = url;
-            await this.page.goto(url);
-        } else {
-            throw new Error('PageWrapper.load(): url is missing');
-        }
+    getKey(key) {
+        return `${this.testKey}.${key}`;
     }
 
-    async click(selector) {
-        return new Promise((resolve, reject) => {
+    storeMeasurement = (data) => {
+        deepSet(data.key, data, this.measurements);
+    };
+
+    _load = (url) => async () => await this.page.goto(url);
+    _click = (selector, options) => async () => await this.page.click(selector, options);
+    _focus = (selector) => async () => await this.page.focus(selector);
+
+    async load(url) {
+        return new Promise(async (resolve, reject) => {
+            if (this.hasPage() && url) {
+                this.options.url = url;
+                const data = await performanceAnalyzer.measure(this.getKey('load'), this._load(url));
+                this.storeMeasurement(data);
+                resolve(data.duration);
+            } else {
+                reject('Page has not been initialised.');
+            }
+        });
+    }
+
+    async click(selector, options = {}) {
+        return new Promise(async (resolve, reject) => {
             if (this.hasPage()) {
-                const key = performanceAnalyzer.startTracking(this.testKey, 'click');
-                // now we click on the thing and we measure perf
+                const data = await performanceAnalyzer.measure(this.getKey('click'), this._click(selector, options));
+                this.storeMeasurement(data);
+                resolve(data.duration);
+            } else {
+                reject('Page has not been initialised.');
+            }
+        });
+    }
 
-               const duration = performanceAnalyzer.stopTracking(key);
-
-               resolve(duration);
+    async focus(selector) {
+        return new Promise(async (resolve, reject) => {
+            if (this.hasPage()) {
+                const data = await performanceAnalyzer.measure(this.getKey('focus'), this._focus(selector));
+                this.storeMeasurement(data);
+                resolve(data.duration);
             } else {
                 reject('Page has not been initialised.');
             }
@@ -97,6 +127,10 @@ class PageWrapper {
     async screenshot() {}
 
     async waitFor(selector) {}
+
+    toJSON() {
+        return JSON.stringify(this.measurements, null, 4);
+    }
 }
 
 export default PageWrapper;

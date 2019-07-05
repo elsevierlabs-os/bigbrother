@@ -51,7 +51,7 @@ class Runner {
         const message = `Done running ${suites.length} suites`.green;
         console.log(message);
 
-        console.log(performanceAnalyzer.toJSON());
+        // console.log(performanceAnalyzer.toJSON());
 
         this.stop();
     }

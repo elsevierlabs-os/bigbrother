@@ -76,12 +76,12 @@ function () {
               case 0:
                 // callback will receive a PageBuilder
                 spinner = new _Spinner.default(this.displayName);
-                _context2.prev = 1;
-                _context2.next = 4;
+                _context2.next = 3;
                 return this.createPageWrapper(browser);
 
-              case 4:
+              case 3:
                 pageWrapper = _context2.sent;
+                _context2.prev = 4;
                 _context2.next = 7;
                 return this.cb(pageWrapper);
 
@@ -91,23 +91,25 @@ function () {
 
               case 9:
                 spinner.complete();
-                _context2.next = 15;
+                _context2.next = 17;
                 break;
 
               case 12:
                 _context2.prev = 12;
-                _context2.t0 = _context2["catch"](1);
+                _context2.t0 = _context2["catch"](4);
                 spinner.exception(_context2.t0);
+                _context2.next = 17;
+                return pageWrapper.close();
 
-              case 15:
-                return _context2.abrupt("return", {});
+              case 17:
+                return _context2.abrupt("return", pageWrapper.toJSON());
 
-              case 16:
+              case 18:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[1, 12]]);
+        }, _callee2, this, [[4, 12]]);
       }));
 
       function execute(_x2) {

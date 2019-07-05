@@ -11,7 +11,7 @@ class PerformanceAnalyzer {
         // we should store information about this specific run
     }
 
-    getKey(key) {
+    getUniqueKey(key) {
         let inc = 1;
         let _key = key;
 
@@ -28,9 +28,9 @@ class PerformanceAnalyzer {
         return _key;
     }
 
-    startTracking(key, action) {
+    startTracking(key) {
         const timestamp = +new Date();
-        const uniqueKey = this.getKey(`${key}.${action}`);
+        const uniqueKey = this.getUniqueKey(key);
 
         deepSet(`${uniqueKey}.start`, timestamp, this.data);
 
@@ -42,17 +42,30 @@ class PerformanceAnalyzer {
         const end = +new Date();
         const duration = end - action.start;
 
-        deepSet(`${key}`, {
+        const value = {
             ...action,
             end,
-            duration
-        }, this.data);
+            duration,
+            key
+        };
 
-        return duration;
+        deepSet(`${key}`, value, this.data);
+
+        return value;
+    }
+
+    async measure(key, targetFunction) {
+        const uniqueKey = this.startTracking(key);
+        try {
+            await targetFunction();
+        } catch(e) {
+            this.stopTracking(key);
+        }
+        return this.stopTracking(uniqueKey);
     }
 
     toJSON() {
-        return JSON.stringify(this.data);
+        return JSON.stringify(this.data, null, 4); // pretty print
     }
 
 }

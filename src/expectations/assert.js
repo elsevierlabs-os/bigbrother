@@ -13,7 +13,7 @@ const assert = (condition, createMessage, ...extraArgs) => {
         ? formatString(createMessage, extraArgs)
         : createMessage(extraArgs);
 
-    throw new Error(message)
+    throw new Error(message);
 };
 
 export default assert;

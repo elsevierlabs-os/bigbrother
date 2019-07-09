@@ -17,16 +17,56 @@ class Expectation {
         return this;
     }
 
-    toTakeLessThan(time) {
+    toBeLessThan(value) {
         assert(
-            this.value < time,
-            'Expected %s to take less than %s',
+            this.value < value,
+            'Expected %s to be less than %s',
             this.value,
-            time
+            value
         );
 
         return this;
     }
+
+    toBeEqual(value) {
+        assert(
+            this.value === value,
+            (message || 'Expected %s to be equal to %s'),
+            this.value,
+            value
+        );
+
+        return this;
+    }
+
+    toMatchRecording() {
+        // do stuff about recordings
+    }
+
+    toBeWithinRange(min, max) {
+        assert(
+            min < this.value && this.value < max,
+            (message || 'Expected %s to be between %s and %s'),
+            this.value,
+            min,
+            max
+        );
+
+        return this;
+    }
+
+    toBeMoreThan() {
+        assert(
+            this.value > value,
+            'Expected %s to be more than %s',
+            this.value,
+            value
+        );
+
+        return this;
+    }
+
+
 }
 
 export default Expectation;

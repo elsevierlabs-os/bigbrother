@@ -4,15 +4,19 @@ describe('something else', () => {
         await page.setConditions();
         await page.load('http://www.google.com');
 
-        await page.click('input[type="text"]');
+        const time = await page.click('input[type="text"]');
+
+        expect(time).toBeLessThan(30);
     });
 
     it('should open sciencedirect', async (page) => {
-        await page.load('http://www.sciencedirect.com');
+        const loadTime = await page.load('http://www.sciencedirect.com');
 
         await page.click();
         await page.click();
         await page.click();
+
+        expect(loadTime).toBeLessThan(500);
     });
 
     describe('some other scenario', () => {
@@ -22,9 +26,9 @@ describe('something else', () => {
 
             await page.click();
             await page.click();
-            await page.click();
+            const randomClick = await page.click();
 
-            throw new Error('something bad');
+            expect(randomClick).toBeLessThan(100);
         });
     });
 });

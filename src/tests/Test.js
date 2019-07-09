@@ -1,5 +1,7 @@
 import PageWrapper from '../PageWrapper';
 import Spinner from '../Spinner';
+import expect from '../expectations/expect';
+import { AsyncFunction } from '../lib/functions';
 
 class Test {
 
@@ -18,13 +20,13 @@ class Test {
     }
 
     async execute(browser) {
-        // callback will receive a PageBuilder
-
         const spinner = new Spinner(this.displayName);
         const pageWrapper = await this.createPageWrapper(browser);
 
         try {
-            await this.cb(pageWrapper);
+            const executor = new AsyncFunction('expect', 'page', `return Promise.resolve((${this.cb.toString()})(page))`);
+            await executor(expect, pageWrapper);
+
             await pageWrapper.close();
 
             spinner.complete();

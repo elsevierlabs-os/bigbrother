@@ -31,9 +31,9 @@ function () {
       return this;
     }
   }, {
-    key: "toTakeLessThan",
-    value: function toTakeLessThan(time) {
-      (0, _assert.default)(this.value < time, 'Expected %s to take less than %s', this.value, time);
+    key: "toBeLessThan",
+    value: function toBeLessThan(value) {
+      (0, _assert.default)(this.value < value, 'Expected %s to take less than %s', this.value, value);
       return this;
     }
   }]);

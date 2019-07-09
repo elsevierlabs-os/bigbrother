@@ -19,6 +19,10 @@ var _PageWrapper = _interopRequireDefault(require("../PageWrapper"));
 
 var _Spinner = _interopRequireDefault(require("../Spinner"));
 
+var _expect = _interopRequireDefault(require("../expectations/expect"));
+
+var _functions = require("../lib/functions");
+
 var Test =
 /*#__PURE__*/
 function () {
@@ -69,12 +73,11 @@ function () {
       var _execute = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee2(browser) {
-        var spinner, pageWrapper;
+        var spinner, pageWrapper, executor;
         return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                // callback will receive a PageBuilder
                 spinner = new _Spinner.default(this.displayName);
                 _context2.next = 3;
                 return this.createPageWrapper(browser);
@@ -82,34 +85,35 @@ function () {
               case 3:
                 pageWrapper = _context2.sent;
                 _context2.prev = 4;
-                _context2.next = 7;
-                return this.cb(pageWrapper);
+                executor = new _functions.AsyncFunction('expect', 'page', "return Promise.resolve((".concat(this.cb.toString(), ")(page))"));
+                _context2.next = 8;
+                return executor(_expect.default, pageWrapper);
 
-              case 7:
-                _context2.next = 9;
+              case 8:
+                _context2.next = 10;
                 return pageWrapper.close();
 
-              case 9:
+              case 10:
                 spinner.complete();
-                _context2.next = 17;
+                _context2.next = 18;
                 break;
 
-              case 12:
-                _context2.prev = 12;
+              case 13:
+                _context2.prev = 13;
                 _context2.t0 = _context2["catch"](4);
                 spinner.exception(_context2.t0);
-                _context2.next = 17;
+                _context2.next = 18;
                 return pageWrapper.close();
 
-              case 17:
+              case 18:
                 return _context2.abrupt("return", pageWrapper.toJSON());
 
-              case 18:
+              case 19:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[4, 12]]);
+        }, _callee2, this, [[4, 13]]);
       }));
 
       function execute(_x2) {

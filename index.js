@@ -1,14 +1,19 @@
 #!/usr/bin/env node
 const minimist = require('minimist');
-const colors = require('colors');
+require('colors');
 const Runner = require('./bigbrother').Runner;
-const ora = require('ora');
 
 const argv = minimist(process.argv.slice(2));
 
 const pattern = argv._[0];
 const verboseMode = argv.verbose || argv.v;
 const help = argv.help || argv.h;
+const configPath = argv.config || argv.c;
+
+let config = {};
+if (configPath) {
+    config = require(configPath);
+}
 
 if (help) {
     // print usage then return
@@ -20,10 +25,13 @@ if (!pattern) {
     process.exit(1);
 }
 
-const headless = process.env.HEADLESS === 'true';
+const headless = process.env.HEADLESS === 'true' || config.headless || true;
+const cacheEnabled = process.env.CACHE_ENABLED === 'true' ||  config.cacheEnabled || false;
+
 const runnerOptions = {
     verboseMode: verboseMode,
-    headless: headless
+    headless: headless,
+    cacheEnabled: cacheEnabled
 };
 
 new Runner(pattern).start(runnerOptions);

@@ -96,7 +96,6 @@ class PageWrapper {
     async load(url) {
         return new Promise(async (resolve, reject) => {
             if (this.hasPage() && url) {
-                await this.page.setCacheEnabled(false);
                 const data = await performanceAnalyzer.measure(this.getKey('load'), this._load(url));
                 this.options.url = url;
                 this.storeMeasurement(data);

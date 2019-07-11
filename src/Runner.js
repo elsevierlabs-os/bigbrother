@@ -58,8 +58,8 @@ class Runner {
         this.stop();
     }
 
-    start({ headless = true }) {
-        this.browser = new Browser({ headless });
+    start(browserOptions) {
+        this.browser = new Browser(browserOptions);
         this.browser
             .launch()
             .then(() => glob(this.pattern, {}, this.onFilesFound));

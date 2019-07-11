@@ -87,14 +87,10 @@ function () {
 
   (0, _createClass2.default)(Runner, [{
     key: "start",
-    value: function start(_ref2) {
+    value: function start(browserOptions) {
       var _this2 = this;
 
-      var _ref2$headless = _ref2.headless,
-          headless = _ref2$headless === void 0 ? true : _ref2$headless;
-      this.browser = new _Browser.default({
-        headless: headless
-      });
+      this.browser = new _Browser.default(browserOptions);
       this.browser.launch().then(function () {
         return (0, _glob.default)(_this2.pattern, {}, _this2.onFilesFound);
       });

@@ -1,15 +1,6 @@
-measure('sciencedirect', function(config) {
+describe('something', () => {
 
-    config.setURL('https://www.sciencedirect.com/search/advanced');
-    config.setNetwork(NETWORK.WIFI);
-    config.setCPU(CPU.DEFAULT);
-
-    scenario('form', async (page) => {
-        await page.type('input#qs', 'marco');
-
-        await page.type('input#authors', 'marco');
-
-        await page.type('input#date', '1990');
-
+    it('loads sciencedirect', async page => {
+        await page.load('http://sciencedirect.com');
     });
 });

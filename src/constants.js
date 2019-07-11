@@ -1,4 +1,4 @@
-const NETWORK = {
+export const NETWORK = {
     WIFI: {
         offline: false,
         latency: 28,
@@ -59,9 +59,9 @@ const NETWORK = {
         downloadThroughput: 0,
         uploadThroughput: 0
     }
-}
+};
 
-const CPU = {
+export const CPU = {
     DEFAULT: {
         rate: 1
     },
@@ -103,11 +103,13 @@ const ESPRIMA_OPTIONS = {
 
 const PUPPETEER = {
     headless: true
-}
-
-module.exports = {
-    NETWORK: NETWORK,
-    CPU: CPU,
-    ESPRIMA_OPTIONS: ESPRIMA_OPTIONS,
-    PUPPETEER: PUPPETEER
 };
+
+export const TARGET_CHANGED_EVENT = 'targetchanged';
+export const NETWORK_CONDITIONS_MESSAGE = 'Network.emulateNetworkConditions';
+export const CPU_CONDITIONS_MESSAGE = 'Emulation.setCPUThrottlingRate';
+export const NAVIGATION_INFO_TYPE = 'navigation';
+export const PAINT_INFO_TYPE = 'paint';
+export const RESOURCE_INFO_TYPE = 'resource';
+
+export const PATTERN_DOESNT_MATCH_ERROR = 'Provided pattern doesn\' match any file.';

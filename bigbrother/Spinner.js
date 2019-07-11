@@ -28,15 +28,14 @@ function () {
   (0, _createClass2.default)(Spinner, [{
     key: "complete",
     value: function complete() {
-      this.instance.succeed("".concat(this.text, " completed!"));
-    } // fail(e) {
-    //     this.instance.fail(text);
-    // }
-
+      this.instance.succeed(this.text);
+    }
   }, {
     key: "exception",
     value: function exception(e) {
-      this.instance.fail('Exception! ' + e.toString().red);
+      var exception = ' ' + e.toString().red;
+      var message = this.text.concat(exception);
+      this.instance.fail(message);
     }
   }, {
     key: "warn",

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PATTERN_DOESNT_MATCH_ERROR = exports.PAINT_INFO_TYPE = exports.NAVIGATION_INFO_TYPE = exports.CPU_CONDITIONS_MESSAGE = exports.NETWORK_CONDITIONS_MESSAGE = exports.TARGET_CHANGED_EVENT = exports.CPU = exports.NETWORK = void 0;
+exports.PATTERN_DOESNT_MATCH_ERROR = exports.RESOURCE_INFO_TYPE = exports.PAINT_INFO_TYPE = exports.NAVIGATION_INFO_TYPE = exports.CPU_CONDITIONS_MESSAGE = exports.NETWORK_CONDITIONS_MESSAGE = exports.TARGET_CHANGED_EVENT = exports.CPU = exports.NETWORK = void 0;
 var NETWORK = {
   WIFI: {
     offline: false,
@@ -119,5 +119,7 @@ var NAVIGATION_INFO_TYPE = 'navigation';
 exports.NAVIGATION_INFO_TYPE = NAVIGATION_INFO_TYPE;
 var PAINT_INFO_TYPE = 'paint';
 exports.PAINT_INFO_TYPE = PAINT_INFO_TYPE;
+var RESOURCE_INFO_TYPE = 'resource';
+exports.RESOURCE_INFO_TYPE = RESOURCE_INFO_TYPE;
 var PATTERN_DOESNT_MATCH_ERROR = 'Provided pattern doesn\' match any file.';
 exports.PATTERN_DOESNT_MATCH_ERROR = PATTERN_DOESNT_MATCH_ERROR;

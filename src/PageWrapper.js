@@ -2,7 +2,10 @@ import {
     CPU,
     CPU_CONDITIONS_MESSAGE,
     NETWORK,
-    NETWORK_CONDITIONS_MESSAGE
+    NETWORK_CONDITIONS_MESSAGE,
+    NAVIGATION_INFO_TYPE,
+    PAINT_INFO_TYPE,
+    RESOURCE_INFO_TYPE
 } from './constants';
 
 import performanceAnalyzer from './PerformanceAnalyzer';
@@ -25,7 +28,6 @@ class PageWrapper {
     }
 
     async close() {
-        // using the page to close
         if (this.hasPage()) {
             await this.page.close();
         }
@@ -55,13 +57,8 @@ class PageWrapper {
         this.setCpuConditions();
     }
 
-    cpu() {
-        return this.options.cpu;
-    }
-
-    network() {
-        return this.options.network;
-    }
+    cpu = () => this.options.cpu;
+    network = () => this.options.network;
 
     hasPage() {
         return Boolean(this.page);
@@ -75,6 +72,23 @@ class PageWrapper {
         deepSet(data.key, data, this.measurements);
     };
 
+    async getInfo(type) {
+        if (this.page) {
+            return await this.page.evaluate(type => {
+                let entries = performance.getEntriesByType(type);
+                if (entries.length) {
+                    return entries.map(e => e.toJSON());
+                }
+            }, type);
+        } else {
+            return [];
+        }
+    }
+
+    async getPaintInfo() { return await this.getInfo(PAINT_INFO_TYPE); }
+    async getNavigationInfo() { return await this.getInfo(NAVIGATION_INFO_TYPE); }
+    async getResourceInfo() { return await this.getInfo(RESOURCE_INFO_TYPE); }
+
     _load = (url) => async () => await this.page.goto(url);
     _click = (selector, options) => async () => await this.page.click(selector, options);
     _focus = (selector) => async () => await this.page.focus(selector);
@@ -82,8 +96,9 @@ class PageWrapper {
     async load(url) {
         return new Promise(async (resolve, reject) => {
             if (this.hasPage() && url) {
-                this.options.url = url;
+                await this.page.setCacheEnabled(false);
                 const data = await performanceAnalyzer.measure(this.getKey('load'), this._load(url));
+                this.options.url = url;
                 this.storeMeasurement(data);
                 resolve(data.duration);
             } else {

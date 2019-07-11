@@ -25,6 +25,8 @@ var _TestSuite = _interopRequireDefault(require("./tests/TestSuite"));
 
 var _Browser = _interopRequireDefault(require("./Browser"));
 
+var _functions = require("./lib/functions");
+
 var _PerformanceAnalyzer = _interopRequireDefault(require("./PerformanceAnalyzer"));
 
 var Runner =
@@ -49,9 +51,11 @@ function () {
             content = _ref.content;
         return new _TestSuite.default(filename, content, _this.browser);
       });
-      Promise.all(_this.suites.map(function (s) {
-        return s.execute();
-      })).then(_this.evaluateResults);
+      (0, _functions.PromiseSerial)(_this.suites.map(function (s) {
+        return function () {
+          return s.execute();
+        };
+      })).then(_this.evaluateResults).catch(console.log);
     });
     (0, _defineProperty2.default)(this, "onFilesFound", function (err) {
       var files = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];

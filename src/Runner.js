@@ -4,6 +4,7 @@ import 'colors';
 import { PATTERN_DOESNT_MATCH_ERROR } from './constants';
 import TestSuite from './tests/TestSuite';
 import Browser from './Browser';
+import { PromiseSerial } from './lib/functions';
 import performanceAnalyzer from './PerformanceAnalyzer';
 
 class Runner {
@@ -21,13 +22,14 @@ class Runner {
     }
 
     executeTestSuites = (tests = []) => {
-        this.suites = tests.map(({ filename, content}) => (
-            new TestSuite(filename, content, this.browser)
-        ));
+        this.suites = tests.map(({ filename, content}) => {
+            return new TestSuite(filename, content, this.browser);
+        });
 
-        Promise
-            .all(this.suites.map(s => s.execute()))
-            .then(this.evaluateResults);
+        PromiseSerial(this.suites
+            .map( s => () => s.execute()))
+            .then(this.evaluateResults)
+            .catch(console.log);
     }
 
     onFilesFound = (err, files = []) => {

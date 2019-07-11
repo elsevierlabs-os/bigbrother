@@ -6,7 +6,7 @@
 * */
 
 import Test from './Test';
-import safeEval from 'safe-eval';
+import {PromiseSerial} from '../lib/functions';
 
 class TestBlock {
 
@@ -52,7 +52,7 @@ class TestBlock {
         const executor = new Function('it', 'describe', 'beforeEach', `(${this.cb.toString()})()`);
         executor(this.createTest, this.createBlock(browser), this.beforeEach);
 
-        const promises = this.tests.map(async (test) => {
+        const promises = this.tests.map((test) => async () => {
             this._beforeEach();
             const output = await test.execute(browser);
             this._afterEach();
@@ -61,7 +61,7 @@ class TestBlock {
         });
 
         this._before();
-        await Promise.all(promises);
+        await PromiseSerial(promises);
         this._after();
     }
 }

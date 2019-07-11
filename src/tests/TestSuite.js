@@ -6,6 +6,7 @@
 import TestBlock from './TestBlock';
 import safeEval from 'safe-eval';
 import { cleanFileName } from '../lib/pathutils';
+import { PromiseSerial } from '../lib/functions';
 
 class TestSuite {
 
@@ -21,8 +22,6 @@ class TestSuite {
         const blockKey = `${this.filename}.${key}`;
         const block = new TestBlock(blockKey, cb);
         this.blocks.push(block);
-
-        // await block.execute(browser);
     }
 
     async execute() {
@@ -31,7 +30,9 @@ class TestSuite {
             describe: this.createBlock
         });
 
-        await Promise.all(this.blocks.map(b => b.execute(this.browser)));
+        await PromiseSerial(this.blocks.map(b => () => {
+            return b.execute(this.browser);
+        }));
 
         return this.blocks;
     }

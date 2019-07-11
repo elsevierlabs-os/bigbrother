@@ -19,7 +19,7 @@ var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/de
 
 var _Test = _interopRequireDefault(require("./Test"));
 
-var _safeEval = _interopRequireDefault(require("safe-eval"));
+var _functions = require("../lib/functions");
 
 /*
 *  This represents a single Describe block
@@ -119,46 +119,43 @@ function () {
                 // executing callback
                 executor = new Function('it', 'describe', 'beforeEach', "(".concat(this.cb.toString(), ")()"));
                 executor(this.createTest, this.createBlock(browser), this.beforeEach);
-                promises = this.tests.map(
-                /*#__PURE__*/
-                function () {
-                  var _ref2 = (0, _asyncToGenerator2.default)(
-                  /*#__PURE__*/
-                  _regenerator.default.mark(function _callee2(test) {
-                    var output;
-                    return _regenerator.default.wrap(function _callee2$(_context2) {
-                      while (1) {
-                        switch (_context2.prev = _context2.next) {
-                          case 0:
-                            _this2._beforeEach();
+                promises = this.tests.map(function (test) {
+                  return (
+                    /*#__PURE__*/
+                    (0, _asyncToGenerator2.default)(
+                    /*#__PURE__*/
+                    _regenerator.default.mark(function _callee2() {
+                      var output;
+                      return _regenerator.default.wrap(function _callee2$(_context2) {
+                        while (1) {
+                          switch (_context2.prev = _context2.next) {
+                            case 0:
+                              _this2._beforeEach();
 
-                            _context2.next = 3;
-                            return test.execute(browser);
+                              _context2.next = 3;
+                              return test.execute(browser);
 
-                          case 3:
-                            output = _context2.sent;
+                            case 3:
+                              output = _context2.sent;
 
-                            _this2._afterEach();
+                              _this2._afterEach();
 
-                            return _context2.abrupt("return", output);
+                              return _context2.abrupt("return", output);
 
-                          case 6:
-                          case "end":
-                            return _context2.stop();
+                            case 6:
+                            case "end":
+                              return _context2.stop();
+                          }
                         }
-                      }
-                    }, _callee2);
-                  }));
-
-                  return function (_x4) {
-                    return _ref2.apply(this, arguments);
-                  };
-                }());
+                      }, _callee2);
+                    }))
+                  );
+                });
 
                 this._before();
 
                 _context3.next = 6;
-                return Promise.all(promises);
+                return (0, _functions.PromiseSerial)(promises);
 
               case 6:
                 this._after();

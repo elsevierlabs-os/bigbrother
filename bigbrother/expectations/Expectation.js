@@ -33,7 +33,29 @@ function () {
   }, {
     key: "toBeLessThan",
     value: function toBeLessThan(value) {
-      (0, _assert.default)(this.value < value, 'Expected %s to take less than %s', this.value, value);
+      (0, _assert.default)(this.value < value, 'Expected %s to be less than %s', this.value, value);
+      return this;
+    }
+  }, {
+    key: "toBeEqual",
+    value: function toBeEqual(value) {
+      (0, _assert.default)(this.value === value, message || 'Expected %s to be equal to %s', this.value, value);
+      return this;
+    }
+  }, {
+    key: "toMatchRecording",
+    value: function toMatchRecording() {// do stuff about recordings
+    }
+  }, {
+    key: "toBeWithinRange",
+    value: function toBeWithinRange(min, max) {
+      (0, _assert.default)(min < this.value && this.value < max, message || 'Expected %s to be between %s and %s', this.value, min, max);
+      return this;
+    }
+  }, {
+    key: "toBeMoreThan",
+    value: function toBeMoreThan() {
+      (0, _assert.default)(this.value > value, 'Expected %s to be more than %s', this.value, value);
       return this;
     }
   }]);

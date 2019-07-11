@@ -11,15 +11,13 @@ class Spinner {
     }
 
     complete() {
-        this.instance.succeed(`${this.text} completed!`);
+        this.instance.succeed(this.text);
     }
 
-    // fail(e) {
-    //     this.instance.fail(text);
-    // }
-
     exception(e) {
-        this.instance.fail('Exception! ' + e.toString().red);
+        const exception = ' ' + e.toString().red;
+        const message = this.text.concat(exception)
+        this.instance.fail(message);
     }
 
     warn(text) {

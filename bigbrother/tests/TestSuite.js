@@ -23,6 +23,8 @@ var _safeEval = _interopRequireDefault(require("safe-eval"));
 
 var _pathutils = require("../lib/pathutils");
 
+var _functions = require("../lib/functions");
+
 /*
 *   this represents an entire file
 *
@@ -49,8 +51,7 @@ function () {
                 blockKey = "".concat(_this.filename, ".").concat(key);
                 block = new _TestBlock.default(blockKey, cb);
 
-                _this.blocks.push(block); // await block.execute(browser);
-
+                _this.blocks.push(block);
 
               case 3:
               case "end":
@@ -88,8 +89,10 @@ function () {
                   describe: this.createBlock
                 });
                 _context2.next = 3;
-                return Promise.all(this.blocks.map(function (b) {
-                  return b.execute(_this2.browser);
+                return (0, _functions.PromiseSerial)(this.blocks.map(function (b) {
+                  return function () {
+                    return b.execute(_this2.browser);
+                  };
                 }));
 
               case 3:

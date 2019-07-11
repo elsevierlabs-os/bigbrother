@@ -5,7 +5,9 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.AsyncFunction = void 0;
+exports.PromiseSerial = exports.AsyncFunction = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -27,3 +29,16 @@ _regenerator.default.mark(function _callee() {
   }, _callee);
 }))).constructor;
 exports.AsyncFunction = AsyncFunction;
+
+var PromiseSerial = function PromiseSerial() {
+  var promises = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  return promises.reduce(function (promiseChain, currentTask) {
+    return promiseChain.then(function (chainResults) {
+      return currentTask().then(function (currentResult) {
+        return [].concat((0, _toConsumableArray2.default)(chainResults), [currentResult]);
+      });
+    });
+  }, Promise.resolve([]));
+};
+
+exports.PromiseSerial = PromiseSerial;

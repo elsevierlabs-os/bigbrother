@@ -2,6 +2,7 @@
 const minimist = require('minimist');
 require('colors');
 const Runner = require('./bigbrother').Runner;
+const usageMessage = require('./usage');
 
 const argv = minimist(process.argv.slice(2));
 
@@ -10,6 +11,10 @@ const verboseMode = argv.verbose || argv.v;
 const help = argv.help || argv.h;
 const configPath = argv.config || argv.c;
 
+const printUsage = () => {
+    console.log(usageMessage);
+};
+
 let config = {};
 if (configPath) {
     config = require(configPath);
@@ -17,11 +22,13 @@ if (configPath) {
 
 if (help) {
     // print usage then return
+    printUsage();
     process.exit(1);
 }
 
 if (!pattern) {
     console.log('Bigbrother requires a pattern'.red);
+    printUsage();
     process.exit(1);
 }
 

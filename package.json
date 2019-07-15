@@ -14,6 +14,7 @@
     "build": "npm run clean && babel src --out-dir bigbrother",
     "clean": "rimraf -rf ./bigbrother",
     "start": "npm run build && ./index.js --config=./bigbrother.config.js '**/*.perf.js'",
+    "start:noconfig": "npm run build && ./index.js '**/*.perf.js'",
     "start:nonheadless": "npm run build && HEADLESS=false ./index.js --config=./bigbrother.config.js '**/*.perf.js'"
   },
   "bin": {

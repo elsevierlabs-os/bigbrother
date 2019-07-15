@@ -18,6 +18,10 @@ const printUsage = () => {
 let config = {};
 if (configPath) {
     config = require(configPath);
+} else {
+    console.log('\n\n');
+    console.log('Loading default configuration'.yellow);
+    console.log('\n\n');
 }
 
 if (help) {

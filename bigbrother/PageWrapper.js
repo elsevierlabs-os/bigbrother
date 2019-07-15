@@ -376,31 +376,27 @@ function () {
                         switch (_context10.prev = _context10.next) {
                           case 0:
                             if (!(_this2.hasPage() && url)) {
-                              _context10.next = 11;
+                              _context10.next = 9;
                               break;
                             }
 
                             _context10.next = 3;
-                            return _this2.page.setCacheEnabled(false);
-
-                          case 3:
-                            _context10.next = 5;
                             return _PerformanceAnalyzer.default.measure(_this2.getKey('load'), _this2._load(url));
 
-                          case 5:
+                          case 3:
                             data = _context10.sent;
                             _this2.options.url = url;
 
                             _this2.storeMeasurement(data);
 
                             resolve(data.duration);
-                            _context10.next = 12;
+                            _context10.next = 10;
                             break;
 
-                          case 11:
+                          case 9:
                             reject('Page has not been initialised.');
 
-                          case 12:
+                          case 10:
                           case "end":
                             return _context10.stop();
                         }

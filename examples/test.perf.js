@@ -1,15 +1,11 @@
-measure('sciencedirect', function(config) {
+describe('something', () => {
 
-    config.setURL('https://www.sciencedirect.com/search/advanced');
-    config.setNetwork(NETWORK.WIFI);
-    config.setCPU(CPU.DEFAULT);
+    it('loads sciencedirect', async page => {
+        await page.load('https://sciencedirect.com');
 
-    scenario('form', async (page) => {
-        await page.type('input#qs', 'marco');
+        const assets = await page.getAssetsInfo();
 
-        await page.type('input#authors', 'marco');
-
-        await page.type('input#date', '1990');
+        console.log(assets.get('style'));
 
     });
 });

@@ -1,4 +1,4 @@
-const NETWORK = {
+export const NETWORK = {
     WIFI: {
         offline: false,
         latency: 28,
@@ -59,9 +59,9 @@ const NETWORK = {
         downloadThroughput: 0,
         uploadThroughput: 0
     }
-}
+};
 
-const CPU = {
+export const CPU = {
     DEFAULT: {
         rate: 1
     },
@@ -92,22 +92,24 @@ const CPU = {
     SLOW_10: {
         rate: 10
     }
-}
-
-const ESPRIMA_OPTIONS = {
-    range: true,
-    loc: true,
-    tokens: true,
-    jsx: true
 };
 
-const PUPPETEER = {
-    headless: true
-}
-
-module.exports = {
-    NETWORK: NETWORK,
-    CPU: CPU,
-    ESPRIMA_OPTIONS: ESPRIMA_OPTIONS,
-    PUPPETEER: PUPPETEER
+export const PAGE_LOAD_OPTIONS = {
+    waitUntil: 'networkidle0'
 };
+
+export const TARGET_CHANGED_EVENT = 'targetchanged';
+export const NETWORK_ENABLE = 'Network.enable';
+export const NETWORK_RESPONSE_RECEIVED = 'Network.responseReceived';
+export const NETWORK_DATA_RECEIVED = 'Network.dataReceived';
+export const NETWORK_CONDITIONS_MESSAGE = 'Network.emulateNetworkConditions';
+export const NETWORK_ASSETS_MIMETYPES = ['javascript', 'css', 'png', 'svg', 'tff'];
+
+export const CPU_CONDITIONS_MESSAGE = 'Emulation.setCPUThrottlingRate';
+export const NAVIGATION_INFO_TYPE = 'navigation';
+export const PAINT_INFO_TYPE = 'paint';
+export const RESOURCE_INFO_TYPE = 'resource';
+
+export const PATTERN_DOESNT_MATCH_ERROR = 'Provided pattern doesn\' match any file.';
+export const PAGEWRAPPER_MISSING_PAGE_ERROR = 'PageWrapper requires a puppeteer page';
+export const PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR = 'Page has not been initialised.';

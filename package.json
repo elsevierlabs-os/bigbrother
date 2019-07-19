@@ -13,6 +13,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run clean && babel src --out-dir bigbrother",
     "clean": "rimraf -rf ./bigbrother",
+    "version": "npm run build && git add .",
+    "postversion": "git push --no-verify && git push --tags --no-verify",
     "start": "npm run build && ./index.js --config=./bigbrother.config.js '**/*.perf.js'",
     "start:file": "npm run build && ./index.js --config=./bigbrother.config.js",
     "start:noconfig": "npm run build && ./index.js '**/*.perf.js'",

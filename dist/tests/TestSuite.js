@@ -19,7 +19,9 @@ var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/de
 
 var _TestBlock = _interopRequireDefault(require("./TestBlock"));
 
-var _safeEval = _interopRequireDefault(require("safe-eval"));
+var _safeEval = _interopRequireDefault(require("../lib/safeEval"));
+
+var _path = _interopRequireDefault(require("path"));
 
 var _pathutils = require("../lib/pathutils");
 
@@ -29,6 +31,13 @@ var _functions = require("../lib/functions");
 *   this represents an entire file
 *
 *   a single suite contains multiple blocks
+*
+*   one single testsuite instead of test, testsuite and testblock
+*
+*   wrap everything in a function, inject describe, it, afterEach, after, before, beforeEach
+*
+*   after this evaluate the function.
+*
 * */
 var TestSuite =
 /*#__PURE__*/
@@ -80,25 +89,39 @@ function () {
       _regenerator.default.mark(function _callee2() {
         var _this2 = this;
 
+        var executor;
         return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 // safe eval content
-                (0, _safeEval.default)(this.content, {
-                  describe: this.createBlock
-                });
-                _context2.next = 3;
+                // if (!process.browser) {
+                //     const cwd = process.cwd();
+                //     console.log(cwd);
+                //     module.paths.push(cwd);
+                //     module.paths.push(path.resolve('./'));
+                //     console.log(module.paths);
+                //     console.log(require.cache);
+                // }
+                // safeEval(this.content, {
+                //     describe: this.createBlock,
+                //     require,
+                //     module
+                // });
+                executor = new Function('describe', 'require', 'module', this.content);
+                console.log(executor.toString());
+                executor.call(null, this.createBlock, require, module);
+                _context2.next = 5;
                 return (0, _functions.PromiseSerial)(this.blocks.map(function (b) {
                   return function () {
                     return b.execute(_this2.browser);
                   };
                 }));
 
-              case 3:
+              case 5:
                 return _context2.abrupt("return", this.blocks);
 
-              case 4:
+              case 6:
               case "end":
                 return _context2.stop();
             }

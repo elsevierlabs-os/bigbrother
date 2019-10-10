@@ -23,9 +23,29 @@ Object.defineProperty(exports, "Runner", {
     return _Runner.default;
   }
 });
+Object.defineProperty(exports, "CPU", {
+  enumerable: true,
+  get: function get() {
+    return _constants.CPU;
+  }
+});
+Object.defineProperty(exports, "NETWORK", {
+  enumerable: true,
+  get: function get() {
+    return _constants.NETWORK;
+  }
+});
+Object.defineProperty(exports, "USER_AGENTS", {
+  enumerable: true,
+  get: function get() {
+    return _constants.USER_AGENTS;
+  }
+});
 
 var _Browser = _interopRequireDefault(require("./Browser"));
 
 var _PageWrapper = _interopRequireDefault(require("./PageWrapper"));
 
 var _Runner = _interopRequireDefault(require("./Runner"));
+
+var _constants = require("./constants");

@@ -54,7 +54,7 @@ function () {
     }
   }, {
     key: "toBeMoreThan",
-    value: function toBeMoreThan() {
+    value: function toBeMoreThan(value) {
       (0, _assert.default)(this.value > value, 'Expected %s to be more than %s', this.value, value);
       return this;
     }

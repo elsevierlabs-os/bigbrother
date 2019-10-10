@@ -16,7 +16,7 @@ class Spinner {
 
     exception(e) {
         const exception = ' ' + e.toString().red;
-        const message = this.text.concat(exception)
+        const message = this.text.concat(exception);
         this.instance.fail(message);
     }
 

@@ -55,7 +55,7 @@ class Expectation {
         return this;
     }
 
-    toBeMoreThan() {
+    toBeMoreThan(value) {
         assert(
             this.value > value,
             'Expected %s to be more than %s',

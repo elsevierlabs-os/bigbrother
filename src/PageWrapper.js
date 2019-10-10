@@ -44,22 +44,22 @@ class PageWrapper {
 
     createCDPSession = async () => await this.page.target().createCDPSession();
 
-    async setNetworkConditions(network = this.network()) {
+    async setNetworkSpeed(network = NETWORK.WIFI) {
         const client = await this.createCDPSession();
         await client.send(NETWORK_CONDITIONS_MESSAGE, network);
     }
 
-    async setCpuConditions(cpu = this.cpu()) {
+    async setCpuSpeed(cpu = CPU.DEFAULT) {
         const client = await this.createCDPSession();
         await client.send(CPU_CONDITIONS_MESSAGE, cpu);
     }
 
-    setConditions = async ({ cpu = CPU.DEFAULT, network = NETWORK.WIFI } = {}) => {
+    async setSpeed({ cpu = CPU.DEFAULT, network = NETWORK.WIFI } = {}) {
         this.options.cpu = cpu;
         this.options.network = network;
 
-        await this.setNetworkConditions();
-        await this.setCpuConditions();
+        await this.setNetworkSpeed(network);
+        await this.setCpuSpeed(cpu);
     }
 
     cpu = () => this.options.cpu;
@@ -177,7 +177,9 @@ class PageWrapper {
 
     async tap(select) {}
 
-    async setUserAgent(userAgent) {}
+    async setUserAgent(userAgent) {
+        // we should have a list of available user agents stored somewhere in constatns
+    }
 
     async type(selector, text) {}
 

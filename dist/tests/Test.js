@@ -87,7 +87,7 @@ function () {
                 _context2.prev = 4;
                 executor = new _functions.AsyncFunction('expect', 'page', "return Promise.resolve((".concat(this.cb.toString(), ")(page))"));
                 _context2.next = 8;
-                return executor(_expect.default, pageWrapper);
+                return executor.call(null, _expect.default, pageWrapper);
 
               case 8:
                 _context2.next = 10;

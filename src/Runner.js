@@ -1,11 +1,21 @@
 import glob from 'glob';
 import fs from 'fs';
-import 'colors';
-import { PATTERN_DOESNT_MATCH_ERROR } from './constants';
-import TestSuite from './tests/TestSuite';
+import Suite from './tests/Suite';
 import Browser from './Browser';
 import { PromiseSerial } from './lib/functions';
-import performanceAnalyzer from './PerformanceAnalyzer';
+
+import {
+    printDelimiter,
+    printRunnerFailure,
+    printNewLines,
+    printRunnerSuccess,
+    printFailedTest,
+    printTitleTest,
+    printBigBrother,
+    printFilePatternError,
+    printError,
+    printException
+} from './lib/printer';
 
 class Runner {
 
@@ -23,24 +33,23 @@ class Runner {
 
     executeTestSuites = (tests = []) => {
         this.suites = tests.map(({ filename, content}) => {
-            return new TestSuite(filename, content, this.browser);
+            return new Suite(filename, content, this.browser);
         });
 
         PromiseSerial(this.suites
             .map( s => () => s.execute()))
             .then(this.evaluateResults)
-            .catch(console.log);
+            .catch(printException);
     }
 
     onFilesFound = (err, files = []) => {
-
         if (err) {
-            console.log(err);
+            printError(err);
             process.exit(1);
         }
 
         if (!files.length) {
-            console.log(PATTERN_DOESNT_MATCH_ERROR.red, this.pattern);
+            printFilePatternError(this.pattern);
             process.exit(1);
         }
 
@@ -50,25 +59,45 @@ class Runner {
     }
 
     evaluateResults = (suites) => {
-        const message = `Done running ${suites.length} suites`.green;
-        console.log(message);
+        let failed = suites.reduce((total, suite) => (
+            [...total, ...suite.filter(test => !test.success)]
+        ), []);
+        const failedCount = failed.length;
+        const suitesCount = suites.length;
 
-        // console.log(performanceAnalyzer.toJSON());
+        printDelimiter();
 
-        this.stop();
-    }
+        if (failedCount > 0) {
+            printRunnerFailure(suitesCount, failedCount);
+            this.printFailures(failed);
+        } else {
+            printRunnerSuccess(suitesCount);
+        }
+
+        this.stop(failedCount);
+    };
+
+    printFailures = (failed) => {
+        printNewLines();
+        failed.forEach(test => {
+            printTitleTest(test.title);
+            printFailedTest(test.reason.message);
+            printNewLines(1)
+        });
+    };
 
     start(browserOptions) {
+        printBigBrother();
         this.browser = new Browser(browserOptions);
         this.browser
             .launch()
             .then(() => glob(this.pattern, {}, this.onFilesFound));
     }
 
-    stop() {
+    stop(status) {
         this.browser
             .close()
-            .then(() => process.exit(0));
+            .then(() => process.exit(status));
     }
 }
 

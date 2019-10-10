@@ -58,39 +58,6 @@ function () {
         }
       }, _callee);
     })));
-    (0, _defineProperty2.default)(this, "setConditions",
-    /*#__PURE__*/
-    (0, _asyncToGenerator2.default)(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee2() {
-      var _ref3,
-          _ref3$cpu,
-          cpu,
-          _ref3$network,
-          network,
-          _args2 = arguments;
-
-      return _regenerator.default.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _ref3 = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}, _ref3$cpu = _ref3.cpu, cpu = _ref3$cpu === void 0 ? _constants.CPU.DEFAULT : _ref3$cpu, _ref3$network = _ref3.network, network = _ref3$network === void 0 ? _constants.NETWORK.WIFI : _ref3$network;
-              _this.options.cpu = cpu;
-              _this.options.network = network;
-              _context2.next = 5;
-              return _this.setNetworkConditions();
-
-            case 5:
-              _context2.next = 7;
-              return _this.setCpuConditions();
-
-            case 7:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    })));
     (0, _defineProperty2.default)(this, "cpu", function () {
       return _this.options.cpu;
     });
@@ -112,16 +79,16 @@ function () {
     (0, _defineProperty2.default)(this, "storeResponse", function (id, response) {
       return _this.responses[id] = response;
     });
-    (0, _defineProperty2.default)(this, "handleNetworkResponseReceived", function (_ref4) {
-      var response = _ref4.response,
-          requestId = _ref4.requestId;
+    (0, _defineProperty2.default)(this, "handleNetworkResponseReceived", function (_ref2) {
+      var response = _ref2.response,
+          requestId = _ref2.requestId;
       return _this.storeResponse(requestId, response);
     });
-    (0, _defineProperty2.default)(this, "handleNetworkDataReceived", function (_ref5) {
-      var requestId = _ref5.requestId,
-          encodedDataLength = _ref5.encodedDataLength,
-          dataLength = _ref5.dataLength,
-          rest = (0, _objectWithoutProperties2.default)(_ref5, ["requestId", "encodedDataLength", "dataLength"]);
+    (0, _defineProperty2.default)(this, "handleNetworkDataReceived", function (_ref3) {
+      var requestId = _ref3.requestId,
+          encodedDataLength = _ref3.encodedDataLength,
+          dataLength = _ref3.dataLength,
+          rest = (0, _objectWithoutProperties2.default)(_ref3, ["requestId", "encodedDataLength", "dataLength"]);
       var _this$responses$reque = _this.responses[requestId],
           url = _this$responses$reque.url,
           mimeType = _this$responses$reque.mimeType;
@@ -147,13 +114,38 @@ function () {
         /*#__PURE__*/
         (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
+        _regenerator.default.mark(function _callee2() {
+          return _regenerator.default.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  _context2.next = 2;
+                  return _this.page.goto(url, _constants.PAGE_LOAD_OPTIONS);
+
+                case 2:
+                  return _context2.abrupt("return", _context2.sent);
+
+                case 3:
+                case "end":
+                  return _context2.stop();
+              }
+            }
+          }, _callee2);
+        }))
+      );
+    });
+    (0, _defineProperty2.default)(this, "_click", function (selector, options) {
+      return (
+        /*#__PURE__*/
+        (0, _asyncToGenerator2.default)(
+        /*#__PURE__*/
         _regenerator.default.mark(function _callee3() {
           return _regenerator.default.wrap(function _callee3$(_context3) {
             while (1) {
               switch (_context3.prev = _context3.next) {
                 case 0:
                   _context3.next = 2;
-                  return _this.page.goto(url, _constants.PAGE_LOAD_OPTIONS);
+                  return _this.page.click(selector, options);
 
                 case 2:
                   return _context3.abrupt("return", _context3.sent);
@@ -167,7 +159,7 @@ function () {
         }))
       );
     });
-    (0, _defineProperty2.default)(this, "_click", function (selector, options) {
+    (0, _defineProperty2.default)(this, "_focus", function (selector) {
       return (
         /*#__PURE__*/
         (0, _asyncToGenerator2.default)(
@@ -178,7 +170,7 @@ function () {
               switch (_context4.prev = _context4.next) {
                 case 0:
                   _context4.next = 2;
-                  return _this.page.click(selector, options);
+                  return _this.page.focus(selector);
 
                 case 2:
                   return _context4.abrupt("return", _context4.sent);
@@ -189,31 +181,6 @@ function () {
               }
             }
           }, _callee4);
-        }))
-      );
-    });
-    (0, _defineProperty2.default)(this, "_focus", function (selector) {
-      return (
-        /*#__PURE__*/
-        (0, _asyncToGenerator2.default)(
-        /*#__PURE__*/
-        _regenerator.default.mark(function _callee5() {
-          return _regenerator.default.wrap(function _callee5$(_context5) {
-            while (1) {
-              switch (_context5.prev = _context5.next) {
-                case 0:
-                  _context5.next = 2;
-                  return _this.page.focus(selector);
-
-                case 2:
-                  return _context5.abrupt("return", _context5.sent);
-
-                case 3:
-                case "end":
-                  return _context5.stop();
-              }
-            }
-          }, _callee5);
         }))
       );
     });
@@ -234,25 +201,25 @@ function () {
     value: function () {
       var _close = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee6() {
-        return _regenerator.default.wrap(function _callee6$(_context6) {
+      _regenerator.default.mark(function _callee5() {
+        return _regenerator.default.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
                 if (!this.hasPage()) {
-                  _context6.next = 3;
+                  _context5.next = 3;
                   break;
                 }
 
-                _context6.next = 3;
+                _context5.next = 3;
                 return this.page.close();
 
               case 3:
               case "end":
-                return _context6.stop();
+                return _context5.stop();
             }
           }
-        }, _callee6, this);
+        }, _callee5, this);
       }));
 
       function close() {
@@ -262,26 +229,62 @@ function () {
       return close;
     }()
   }, {
-    key: "setNetworkConditions",
+    key: "setNetworkSpeed",
     value: function () {
-      var _setNetworkConditions = (0, _asyncToGenerator2.default)(
+      var _setNetworkSpeed = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee6() {
+        var network,
+            client,
+            _args6 = arguments;
+        return _regenerator.default.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                network = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : _constants.NETWORK.WIFI;
+                _context6.next = 3;
+                return this.createCDPSession();
+
+              case 3:
+                client = _context6.sent;
+                _context6.next = 6;
+                return client.send(_constants.NETWORK_CONDITIONS_MESSAGE, network);
+
+              case 6:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this);
+      }));
+
+      function setNetworkSpeed() {
+        return _setNetworkSpeed.apply(this, arguments);
+      }
+
+      return setNetworkSpeed;
+    }()
+  }, {
+    key: "setCpuSpeed",
+    value: function () {
+      var _setCpuSpeed = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee7() {
-        var network,
+        var cpu,
             client,
             _args7 = arguments;
         return _regenerator.default.wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
-                network = _args7.length > 0 && _args7[0] !== undefined ? _args7[0] : this.network();
+                cpu = _args7.length > 0 && _args7[0] !== undefined ? _args7[0] : _constants.CPU.DEFAULT;
                 _context7.next = 3;
                 return this.createCDPSession();
 
               case 3:
                 client = _context7.sent;
                 _context7.next = 6;
-                return client.send(_constants.NETWORK_CONDITIONS_MESSAGE, network);
+                return client.send(_constants.CPU_CONDITIONS_MESSAGE, cpu);
 
               case 6:
               case "end":
@@ -291,35 +294,40 @@ function () {
         }, _callee7, this);
       }));
 
-      function setNetworkConditions() {
-        return _setNetworkConditions.apply(this, arguments);
+      function setCpuSpeed() {
+        return _setCpuSpeed.apply(this, arguments);
       }
 
-      return setNetworkConditions;
+      return setCpuSpeed;
     }()
   }, {
-    key: "setCpuConditions",
+    key: "setSpeed",
     value: function () {
-      var _setCpuConditions = (0, _asyncToGenerator2.default)(
+      var _setSpeed = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee8() {
-        var cpu,
-            client,
+        var _ref7,
+            _ref7$cpu,
+            cpu,
+            _ref7$network,
+            network,
             _args8 = arguments;
+
         return _regenerator.default.wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
-                cpu = _args8.length > 0 && _args8[0] !== undefined ? _args8[0] : this.cpu();
-                _context8.next = 3;
-                return this.createCDPSession();
+                _ref7 = _args8.length > 0 && _args8[0] !== undefined ? _args8[0] : {}, _ref7$cpu = _ref7.cpu, cpu = _ref7$cpu === void 0 ? _constants.CPU.DEFAULT : _ref7$cpu, _ref7$network = _ref7.network, network = _ref7$network === void 0 ? _constants.NETWORK.WIFI : _ref7$network;
+                this.options.cpu = cpu;
+                this.options.network = network;
+                _context8.next = 5;
+                return this.setNetworkSpeed(network);
 
-              case 3:
-                client = _context8.sent;
-                _context8.next = 6;
-                return client.send(_constants.CPU_CONDITIONS_MESSAGE, cpu);
+              case 5:
+                _context8.next = 7;
+                return this.setCpuSpeed(cpu);
 
-              case 6:
+              case 7:
               case "end":
                 return _context8.stop();
             }
@@ -327,11 +335,11 @@ function () {
         }, _callee8, this);
       }));
 
-      function setCpuConditions() {
-        return _setCpuConditions.apply(this, arguments);
+      function setSpeed() {
+        return _setSpeed.apply(this, arguments);
       }
 
-      return setCpuConditions;
+      return setSpeed;
     }()
   }, {
     key: "hasPage",
@@ -529,7 +537,7 @@ function () {
                 return _context15.abrupt("return", new Promise(
                 /*#__PURE__*/
                 function () {
-                  var _ref9 = (0, _asyncToGenerator2.default)(
+                  var _ref8 = (0, _asyncToGenerator2.default)(
                   /*#__PURE__*/
                   _regenerator.default.mark(function _callee14(resolve, reject) {
                     var data;
@@ -571,7 +579,7 @@ function () {
                   }));
 
                   return function (_x3, _x4) {
-                    return _ref9.apply(this, arguments);
+                    return _ref8.apply(this, arguments);
                   };
                 }()));
 
@@ -607,7 +615,7 @@ function () {
                 return _context17.abrupt("return", new Promise(
                 /*#__PURE__*/
                 function () {
-                  var _ref10 = (0, _asyncToGenerator2.default)(
+                  var _ref9 = (0, _asyncToGenerator2.default)(
                   /*#__PURE__*/
                   _regenerator.default.mark(function _callee16(resolve, reject) {
                     var data;
@@ -644,7 +652,7 @@ function () {
                   }));
 
                   return function (_x6, _x7) {
-                    return _ref10.apply(this, arguments);
+                    return _ref9.apply(this, arguments);
                   };
                 }()));
 
@@ -677,7 +685,7 @@ function () {
                 return _context19.abrupt("return", new Promise(
                 /*#__PURE__*/
                 function () {
-                  var _ref11 = (0, _asyncToGenerator2.default)(
+                  var _ref10 = (0, _asyncToGenerator2.default)(
                   /*#__PURE__*/
                   _regenerator.default.mark(function _callee18(resolve, reject) {
                     var data;
@@ -714,7 +722,7 @@ function () {
                   }));
 
                   return function (_x9, _x10) {
-                    return _ref11.apply(this, arguments);
+                    return _ref10.apply(this, arguments);
                   };
                 }()));
 

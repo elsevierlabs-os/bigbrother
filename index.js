@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 const minimist = require('minimist');
+const path = require('path');
 require('colors');
-const Runner = require('./bigbrother').Runner;
+const Runner = require('./dist').Runner;
 const usageMessage = require('./usage');
 
 const argv = minimist(process.argv.slice(2));
@@ -15,15 +16,6 @@ const printUsage = () => {
     console.log(usageMessage);
 };
 
-let config = {};
-if (configPath) {
-    config = require(configPath);
-} else {
-    console.log('\n\n');
-    console.log('Loading default configuration'.yellow);
-    console.log('\n\n');
-}
-
 if (help) {
     // print usage then return
     printUsage();
@@ -34,6 +26,15 @@ if (!pattern) {
     console.log('Bigbrother requires a pattern'.red);
     printUsage();
     process.exit(1);
+}
+
+let config = {};
+if (configPath) {
+    config = require(configPath);
+} else {
+    console.log('\n\n');
+    console.log('[i] Loading default configuration'.blue);
+    console.log('\n\n');
 }
 
 const headless = process.env.HEADLESS === 'true' || config.headless || true;

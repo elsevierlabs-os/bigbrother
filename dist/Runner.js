@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -17,17 +19,13 @@ var _glob = _interopRequireDefault(require("glob"));
 
 var _fs = _interopRequireDefault(require("fs"));
 
-require("colors");
-
-var _constants = require("./constants");
-
-var _TestSuite = _interopRequireDefault(require("./tests/TestSuite"));
+var _Suite = _interopRequireDefault(require("./tests/Suite"));
 
 var _Browser = _interopRequireDefault(require("./Browser"));
 
 var _functions = require("./lib/functions");
 
-var _PerformanceAnalyzer = _interopRequireDefault(require("./PerformanceAnalyzer"));
+var _printer = require("./lib/printer");
 
 var Runner =
 /*#__PURE__*/
@@ -49,24 +47,24 @@ function () {
       _this.suites = tests.map(function (_ref) {
         var filename = _ref.filename,
             content = _ref.content;
-        return new _TestSuite.default(filename, content, _this.browser);
+        return new _Suite.default(filename, content, _this.browser);
       });
       (0, _functions.PromiseSerial)(_this.suites.map(function (s) {
         return function () {
           return s.execute();
         };
-      })).then(_this.evaluateResults).catch(console.log);
+      })).then(_this.evaluateResults).catch(_printer.printException);
     });
     (0, _defineProperty2.default)(this, "onFilesFound", function (err) {
       var files = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
       if (err) {
-        console.log(err);
+        (0, _printer.printError)(err);
         process.exit(1);
       }
 
       if (!files.length) {
-        console.log(_constants.PATTERN_DOESNT_MATCH_ERROR.red, _this.pattern);
+        (0, _printer.printFilePatternError)(_this.pattern);
         process.exit(1);
       }
 
@@ -75,10 +73,32 @@ function () {
       _this.executeTestSuites(tests);
     });
     (0, _defineProperty2.default)(this, "evaluateResults", function (suites) {
-      var message = "Done running ".concat(suites.length, " suites").green;
-      console.log(message); // console.log(performanceAnalyzer.toJSON());
+      var failed = suites.reduce(function (total, suite) {
+        return [].concat((0, _toConsumableArray2.default)(total), (0, _toConsumableArray2.default)(suite.filter(function (test) {
+          return !test.success;
+        })));
+      }, []);
+      var failedCount = failed.length;
+      var suitesCount = suites.length;
+      (0, _printer.printDelimiter)();
 
-      _this.stop();
+      if (failedCount > 0) {
+        (0, _printer.printRunnerFailure)(suitesCount, failedCount);
+
+        _this.printFailures(failed);
+      } else {
+        (0, _printer.printRunnerSuccess)(suitesCount);
+      }
+
+      _this.stop(failedCount);
+    });
+    (0, _defineProperty2.default)(this, "printFailures", function (failed) {
+      (0, _printer.printNewLines)();
+      failed.forEach(function (test) {
+        (0, _printer.printTitleTest)(test.title);
+        (0, _printer.printFailedTest)(test.reason.message);
+        (0, _printer.printNewLines)(1);
+      });
     });
     this.pattern = pattern;
     this.browser = null;
@@ -90,6 +110,7 @@ function () {
     value: function start(browserOptions) {
       var _this2 = this;
 
+      (0, _printer.printBigBrother)();
       this.browser = new _Browser.default(browserOptions);
       this.browser.launch().then(function () {
         return (0, _glob.default)(_this2.pattern, {}, _this2.onFilesFound);
@@ -97,9 +118,9 @@ function () {
     }
   }, {
     key: "stop",
-    value: function stop() {
+    value: function stop(status) {
       this.browser.close().then(function () {
-        return process.exit(0);
+        return process.exit(status);
       });
     }
   }]);

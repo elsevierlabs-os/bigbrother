@@ -118,7 +118,7 @@ function () {
                 // it should also create the test
                 // executing callback
                 executor = new Function('it', 'describe', 'beforeEach', "(".concat(this.cb.toString(), ")()"));
-                executor(this.createTest, this.createBlock(browser), this.beforeEach);
+                executor.call(null, this.createTest, this.createBlock(browser), this.beforeEach);
                 promises = this.tests.map(function (test) {
                   return (
                     /*#__PURE__*/

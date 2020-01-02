@@ -21,7 +21,7 @@ var _fs = _interopRequireDefault(require("fs"));
 
 var _Suite = _interopRequireDefault(require("./tests/Suite"));
 
-var _Browser = _interopRequireDefault(require("./Browser"));
+var _Browser = _interopRequireDefault(require("./browser/Browser"));
 
 var _functions = require("./lib/functions");
 
@@ -110,6 +110,7 @@ function () {
     value: function start(browserOptions) {
       var _this2 = this;
 
+      // config.storeConfiguration(browserOptions);
       (0, _printer.printBigBrother)();
       this.browser = new _Browser.default(browserOptions);
       this.browser.launch().then(function () {

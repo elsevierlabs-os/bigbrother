@@ -31,9 +31,10 @@ describe('sciencedirect', function() {
 
         it('should be able to set User Agent', async (page) => {
             await page.setUserAgent(USER_AGENTS.DESKTOP.WIN_10_EDGE);
-            const loadTime = await page.load('http://www.sciencedirect.com');
 
-            expect(loadTime).toBeLessThan(4000);
+            await page.load('http://www.sciencedirect.com');
+            await page.click('#volume-searchbox-input');
+            await page.click('.advanced-search-link');
         });
     })
 });

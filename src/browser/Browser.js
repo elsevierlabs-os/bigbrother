@@ -3,13 +3,11 @@ import path from 'path';
 
 class Browser {
 
-    // Browser is created by bigbrother, sending env flags
     constructor({ headless = true, cacheEnabled = false } = {}) {
         this.browser = null;
 
         this.puppeteerOptions = {
             headless
-            // executablePath: path.resolve('./node_modules/puppeteer/.local-chromium/mac-662092')
         };
 
         this.pageOptions = {

@@ -25,9 +25,9 @@ var _pathutils = require("../lib/pathutils");
 
 var _expect = _interopRequireDefault(require("../expectations/expect"));
 
-var _PageWrapper = _interopRequireDefault(require("../PageWrapper"));
+var _PageWrapper = _interopRequireDefault(require("../page/PageWrapper"));
 
-var _Spinner = _interopRequireDefault(require("../Spinner"));
+var _Spinner = _interopRequireDefault(require("../lib/Spinner"));
 
 var _functions = require("../lib/functions");
 

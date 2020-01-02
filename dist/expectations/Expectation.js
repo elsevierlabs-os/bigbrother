@@ -44,7 +44,7 @@ function () {
     }
   }, {
     key: "toMatchRecording",
-    value: function toMatchRecording() {// do stuff about recordings
+    value: function toMatchRecording(page) {// do stuff about recordings
     }
   }, {
     key: "toBeWithinRange",

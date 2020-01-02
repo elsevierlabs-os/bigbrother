@@ -12,10 +12,10 @@ import {
     NETWORK_ASSETS_MIMETYPES,
     PAGEWRAPPER_MISSING_PAGE_ERROR,
     PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR
-} from './constants';
+} from '../lib/constants';
 
-import performanceAnalyzer from './PerformanceAnalyzer';
-import {deepSet} from './lib/objectutils';
+import performanceAnalyzer from '../lib/PerformanceAnalyzer';
+import {deepSet} from '../lib/objectutils';
 import AssetsHandler from './AssetsHandler';
 
 class PageWrapper {
@@ -42,15 +42,20 @@ class PageWrapper {
         }
     }
 
-    createCDPSession = async () => await this.page.target().createCDPSession();
+    getCDPSessionClient = async () => {
+        if (!this.cdpSessionClient) {
+            this.cdpSessionClient = await this.page.target().createCDPSession();
+        }
+        return this.cdpSessionClient;
+    }
 
     async setNetworkSpeed(network = NETWORK.WIFI) {
-        const client = await this.createCDPSession();
+        const client = await this.getCDPSessionClient();
         await client.send(NETWORK_CONDITIONS_MESSAGE, network);
     }
 
     async setCpuSpeed(cpu = CPU.DEFAULT) {
-        const client = await this.createCDPSession();
+        const client = await this.getCDPSessionClient();
         await client.send(CPU_CONDITIONS_MESSAGE, cpu);
     }
 
@@ -108,12 +113,11 @@ class PageWrapper {
     async setupAssetsMetrics() {
         this.clearResponses();
         this.clearAssets();
-        const client = await this.createCDPSession();
+        const client = await this.getCDPSessionClient();
         await client.send(NETWORK_ENABLE);
 
         client.on(NETWORK_RESPONSE_RECEIVED, this.handleNetworkResponseReceived);
         client.on(NETWORK_DATA_RECEIVED, this.handleNetworkDataReceived);
-
     }
 
     async getInfo(type) {
@@ -136,6 +140,7 @@ class PageWrapper {
     _load = (url) => async () => await this.page.goto(url, PAGE_LOAD_OPTIONS);
     _click = (selector, options) => async () => await this.page.click(selector, options);
     _focus = (selector) => async () => await this.page.focus(selector);
+    _setUserAgent = (userAgent) => async () => await this.page.setUserAgent(userAgent);
 
     async load(url) {
         return new Promise(async (resolve, reject) => {
@@ -179,6 +184,15 @@ class PageWrapper {
 
     async setUserAgent(userAgent) {
         // we should have a list of available user agents stored somewhere in constatns
+        return new Promise( async (resolve, reject) => {
+            if (this.hasPage()) {
+                const data = await performanceAnalyzer.measure(this.getKey('userAgent', this._setUserAgent(userAgent)));
+                this.storeMeasurement(data);
+                resolve(data.duration);
+            } else {
+                reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
+            }
+        });
     }
 
     async type(selector, text) {}

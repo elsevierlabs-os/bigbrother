@@ -17,7 +17,7 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _objectutils = require("./lib/objectutils");
+var _objectutils = require("./objectutils");
 
 var PerformanceAnalyzer =
 /*#__PURE__*/

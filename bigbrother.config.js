@@ -3,6 +3,7 @@ const config = {
     headless: true,
     // options below are not being used
     pattern: '**/*.perf.js',
+    output: './data',
     ignore: [
         'file.perf.js',
         'somethingelse.js'

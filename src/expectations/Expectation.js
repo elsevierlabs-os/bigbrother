@@ -39,7 +39,7 @@ class Expectation {
         return this;
     }
 
-    toMatchRecording() {
+    toMatchRecording(page) {
         // do stuff about recordings
     }
 

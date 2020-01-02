@@ -22,7 +22,6 @@ var _path = _interopRequireDefault(require("path"));
 var Browser =
 /*#__PURE__*/
 function () {
-  // Browser is created by bigbrother, sending env flags
   function Browser() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         _ref$headless = _ref.headless,
@@ -33,8 +32,7 @@ function () {
     (0, _classCallCheck2.default)(this, Browser);
     this.browser = null;
     this.puppeteerOptions = {
-      headless: headless // executablePath: path.resolve('./node_modules/puppeteer/.local-chromium/mac-662092')
-
+      headless: headless
     };
     this.pageOptions = {
       cacheEnabled: cacheEnabled

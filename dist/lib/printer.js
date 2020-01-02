@@ -9,7 +9,7 @@ exports.printRunnerFailure = exports.printRunnerSuccess = exports.printFailedTes
 
 require("colors");
 
-var _constants = require("../constants");
+var _constants = require("./constants");
 
 var _package = _interopRequireDefault(require("../../package.json"));
 

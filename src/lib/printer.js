@@ -1,5 +1,5 @@
 import 'colors';
-import {PATTERN_DOESNT_MATCH_ERROR} from '../constants';
+import {PATTERN_DOESNT_MATCH_ERROR} from './constants';
 import packageJSON from '../../package.json';
 
 const NEW_LINE = '\n';

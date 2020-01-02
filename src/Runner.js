@@ -1,7 +1,7 @@
 import glob from 'glob';
 import fs from 'fs';
 import Suite from './tests/Suite';
-import Browser from './Browser';
+import Browser from './browser/Browser';
 import { PromiseSerial } from './lib/functions';
 
 import {
@@ -29,7 +29,7 @@ class Runner {
         const content = fs.readFileSync(filename, 'utf8');
 
         return { filename, content };
-    }
+    };
 
     executeTestSuites = (tests = []) => {
         this.suites = tests.map(({ filename, content}) => {
@@ -40,7 +40,7 @@ class Runner {
             .map( s => () => s.execute()))
             .then(this.evaluateResults)
             .catch(printException);
-    }
+    };
 
     onFilesFound = (err, files = []) => {
         if (err) {
@@ -56,7 +56,7 @@ class Runner {
         const tests = files.map(this.readFile);
 
         this.executeTestSuites(tests);
-    }
+    };
 
     evaluateResults = (suites) => {
         let failed = suites.reduce((total, suite) => (
@@ -87,6 +87,7 @@ class Runner {
     };
 
     start(browserOptions) {
+        // config.storeConfiguration(browserOptions);
         printBigBrother();
         this.browser = new Browser(browserOptions);
         this.browser

@@ -42,10 +42,10 @@ Object.defineProperty(exports, "USER_AGENTS", {
   }
 });
 
-var _Browser = _interopRequireDefault(require("./Browser"));
+var _Browser = _interopRequireDefault(require("./browser/Browser"));
 
-var _PageWrapper = _interopRequireDefault(require("./PageWrapper"));
+var _PageWrapper = _interopRequireDefault(require("./page/PageWrapper"));
 
 var _Runner = _interopRequireDefault(require("./Runner"));
 
-var _constants = require("./constants");
+var _constants = require("./lib/constants");

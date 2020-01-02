@@ -1,7 +1,7 @@
 import {cleanFileName} from '../lib/pathutils';
 import expect from '../expectations/expect';
-import PageWrapper from '../PageWrapper';
-import Spinner from '../Spinner';
+import PageWrapper from '../page/PageWrapper';
+import Spinner from '../lib/Spinner';
 import {PromiseSerial} from '../lib/functions';
 
 export default class Suite {

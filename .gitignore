@@ -1,4 +1,14 @@
-node_modules/
-.git/
-.recordings/
-.idea/**/*.*
+### Science Direct Technology ###
+
+## Node files ##
+node_modules
+
+## Git ##
+.git
+
+## Intellij ##
+.idea
+
+## Bigbrother ##
+.recordings
+dist

@@ -9,7 +9,6 @@ node_modules
 ## Intellij ##
 .idea
 
-## Bigbrother ##
+## BigBrother ##
 .recordings
-dist
-n
+dist/*.*

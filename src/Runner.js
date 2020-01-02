@@ -17,6 +17,8 @@ import {
     printException
 } from './lib/printer';
 
+import { exitProcess } from './lib/processutils';
+
 class Runner {
 
     constructor(pattern) {
@@ -45,12 +47,12 @@ class Runner {
     onFilesFound = (err, files = []) => {
         if (err) {
             printError(err);
-            process.exit(1);
+            exitProcess(1);
         }
 
         if (!files.length) {
             printFilePatternError(this.pattern);
-            process.exit(1);
+            exitProcess(1);
         }
 
         const tests = files.map(this.readFile);
@@ -98,7 +100,7 @@ class Runner {
     stop(status) {
         this.browser
             .close()
-            .then(() => process.exit(status));
+            .then(() => exitProcess(status));
     }
 }
 

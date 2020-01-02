@@ -1,52 +1,76 @@
 #!/usr/bin/env node
 const minimist = require('minimist');
 require('colors');
-const Runner = require('./dist').Runner;
+const {
+    Runner,
+    getEnvFlag,
+    printError,
+    exitProcess,
+    print,
+    printException,
+    printNewLines,
+    printInfo,
+    ENV_FLAGS
+} = require('./dist');
 const usageMessage = require('./usage');
-
-const argv = minimist(process.argv.slice(2));
-
-const pattern = argv._[0];
-const help = argv.help || argv.h;
-const configPath = argv.config || argv.c;
 
 const DEFAULT_CONFIGURATION = {
     headless: true,
     cacheEnabled: false
 };
 
-const printUsage = () => console.log(usageMessage);
+// printing a couple empty lines to give BigBrother some space
+printNewLines(2);
+
+const readArguments = () => {
+    const argv = minimist(process.argv.slice(2));
+
+    return {
+        pattern: argv._[0],
+        help: argv.help || argv.h,
+        configPath: argv.config || argv.c
+    };
+};
+
+const handleDefaultConfiguration = () => printInfo('Loading default configuration.');
+
+const handleUsageHelp = () => {
+    print(usageMessage);
+    exitProcess(1);
+};
+
 const handleMissingPattern = () => {
-    console.log('Bigbrother requires a pattern'.red);
-    printUsage();
-    process.exit(1);
-};
-const handleDefaultConfiguration = () => {
-    console.log('[i] Loading default configuration'.blue);
+    printError('BigBrother requires a pattern. Please check usage for more info.');
+    handleUsageHelp();
 };
 
-if (help) {
-    printUsage();
-    process.exit(1);
-}
+const loadConfigFile = (configPath) => {
+    let config = DEFAULT_CONFIGURATION;
 
-if (!pattern) {
-    handleMissingPattern();
-}
+    try {
+        if (configPath) {
+            config = require(configPath);
+        } else {
+            handleDefaultConfiguration();
+        }
+    } catch(e) {
+        printException(e);
+        handleDefaultConfiguration();
+    }
 
-let config = {};
-if (configPath) {
-    config = require(configPath);
-} else {
-    handleDefaultConfiguration();
-    config = DEFAULT_CONFIGURATION;
-}
-
-const envConfig = {
-    headless: process.env.HEADLESS,
-    cacheEnabled: process.env.CACHE_ENABLED
+    return config;
 };
 
-const runnerOptions = Object.assign(DEFAULT_CONFIGURATION, envConfig, config);
+const loadEnvConfig = () => ({
+    headless: getEnvFlag(ENV_FLAGS.HEADLESS),
+    cacheEnabled: getEnvFlag(ENV_FLAGS.CACHE_ENABLED)
+});
+
+const { pattern, help, configPath } = readArguments();
+
+if (help) handleUsageHelp();
+if (!pattern) handleMissingPattern();
+
+const runnerOptions = Object.assign(DEFAULT_CONFIGURATION, loadEnvConfig(), loadConfigFile(configPath));
 new Runner(pattern)
     .start(runnerOptions);

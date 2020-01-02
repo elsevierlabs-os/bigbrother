@@ -5,12 +5,14 @@ import packageJSON from '../../package.json';
 const NEW_LINE = '\n';
 const TAB = '\t';
 const DELIMITER = '-';
-const WARNING = '!'.yellow;
-const ERROR = '*'.red;
+const WARNING = '[!]'.yellow;
+const INFO = '[i]'.blue;
+const ERROR = '[*]'.red;
 const COLON = ':';
 const BIGBROTHER_HEADER = `BIGBROTHER v${packageJSON.version}`;
 
 const print = (message) => console.log(message);
+const printInfo = (message) => console.log(INFO, message);
 const printError = (message) => console.log(ERROR, message.red);
 const printSuccess = (message) => console.log(message.green);
 const printWarning = (message) => console.log(WARNING, message.yellow);
@@ -47,9 +49,11 @@ const printRunnerFailure = (suitesCount, failedCount) => {
 };
 
 export {
+    print,
     printBigBrother,
     printFilePatternError,
     printException,
+    printInfo,
     printError,
     printSuccess,
     printWarning,

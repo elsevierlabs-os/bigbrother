@@ -1,7 +1,7 @@
 ### Science Direct Technology ###
 
 ## Node files ##
-node_modules/**/*.*
+node_modules/
 
 ## Git ##
 .git/**/*.*

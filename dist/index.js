@@ -41,6 +41,60 @@ Object.defineProperty(exports, "USER_AGENTS", {
     return _constants.USER_AGENTS;
   }
 });
+Object.defineProperty(exports, "ENV_FLAGS", {
+  enumerable: true,
+  get: function get() {
+    return _constants.ENV_FLAGS;
+  }
+});
+Object.defineProperty(exports, "print", {
+  enumerable: true,
+  get: function get() {
+    return _printer.print;
+  }
+});
+Object.defineProperty(exports, "printException", {
+  enumerable: true,
+  get: function get() {
+    return _printer.printException;
+  }
+});
+Object.defineProperty(exports, "printInfo", {
+  enumerable: true,
+  get: function get() {
+    return _printer.printInfo;
+  }
+});
+Object.defineProperty(exports, "printError", {
+  enumerable: true,
+  get: function get() {
+    return _printer.printError;
+  }
+});
+Object.defineProperty(exports, "printWarning", {
+  enumerable: true,
+  get: function get() {
+    return _printer.printWarning;
+  }
+});
+Object.defineProperty(exports, "printNewLines", {
+  enumerable: true,
+  get: function get() {
+    return _printer.printNewLines;
+  }
+});
+Object.defineProperty(exports, "exitProcess", {
+  enumerable: true,
+  get: function get() {
+    return _processutils.exitProcess;
+  }
+});
+Object.defineProperty(exports, "getEnvFlag", {
+  enumerable: true,
+  get: function get() {
+    return _processutils.getEnvFlag;
+  }
+});
 
 var _Browser = _interopRequireDefault(require("./browser/Browser"));
 
@@ -49,3 +103,7 @@ var _PageWrapper = _interopRequireDefault(require("./page/PageWrapper"));
 var _Runner = _interopRequireDefault(require("./Runner"));
 
 var _constants = require("./lib/constants");
+
+var _printer = require("./lib/printer");
+
+var _processutils = require("./lib/processutils");

@@ -27,6 +27,8 @@ var _functions = require("./lib/functions");
 
 var _printer = require("./lib/printer");
 
+var _processutils = require("./lib/processutils");
+
 var Runner =
 /*#__PURE__*/
 function () {
@@ -60,12 +62,12 @@ function () {
 
       if (err) {
         (0, _printer.printError)(err);
-        process.exit(1);
+        (0, _processutils.exitProcess)(1);
       }
 
       if (!files.length) {
         (0, _printer.printFilePatternError)(_this.pattern);
-        process.exit(1);
+        (0, _processutils.exitProcess)(1);
       }
 
       var tests = files.map(_this.readFile);
@@ -121,7 +123,7 @@ function () {
     key: "stop",
     value: function stop(status) {
       this.browser.close().then(function () {
-        return process.exit(status);
+        return (0, _processutils.exitProcess)(status);
       });
     }
   }]);

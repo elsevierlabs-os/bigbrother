@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.printRunnerFailure = exports.printRunnerSuccess = exports.printFailedTest = exports.printTitleTest = exports.printNewLines = exports.printDelimiter = exports.printWarning = exports.printSuccess = exports.printError = exports.printException = exports.printFilePatternError = exports.printBigBrother = void 0;
+exports.printRunnerFailure = exports.printRunnerSuccess = exports.printFailedTest = exports.printTitleTest = exports.printNewLines = exports.printDelimiter = exports.printWarning = exports.printSuccess = exports.printError = exports.printInfo = exports.printException = exports.printFilePatternError = exports.printBigBrother = exports.print = void 0;
 
 require("colors");
 
@@ -16,14 +16,23 @@ var _package = _interopRequireDefault(require("../../package.json"));
 var NEW_LINE = '\n';
 var TAB = '\t';
 var DELIMITER = '-';
-var WARNING = '!'.yellow;
-var ERROR = '*'.red;
+var WARNING = '[!]'.yellow;
+var INFO = '[i]'.blue;
+var ERROR = '[*]'.red;
 var COLON = ':';
 var BIGBROTHER_HEADER = "BIGBROTHER v".concat(_package.default.version);
 
 var print = function print(message) {
   return console.log(message);
 };
+
+exports.print = print;
+
+var printInfo = function printInfo(message) {
+  return console.log(INFO, message);
+};
+
+exports.printInfo = printInfo;
 
 var printError = function printError(message) {
   return console.log(ERROR, message.red);

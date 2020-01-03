@@ -1,14 +1,14 @@
 ### Science Direct Technology ###
 
 ## Node files ##
-node_modules
+node_modules/**/*.*
 
 ## Git ##
-.git
+.git/**/*.*
 
 ## Intellij ##
-.idea
+.idea/**/*.*
 
 ## BigBrother ##
-.recordings
-dist/*.*
+.recordings/**/*.*
+dist/**/*.*

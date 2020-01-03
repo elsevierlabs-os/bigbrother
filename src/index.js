@@ -11,11 +11,13 @@ import {
     printNewLines
 } from './lib/printer';
 import { exitProcess, getEnvFlag } from './lib/processutils';
+import config from './config';
 
 export {
     Browser,
     PageWrapper,
     Runner,
+    config,
     getEnvFlag,
     exitProcess,
     print,

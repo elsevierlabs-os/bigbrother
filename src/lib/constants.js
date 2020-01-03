@@ -164,6 +164,13 @@ export const PATTERN_DOESNT_MATCH_ERROR = 'Provided pattern doesn\' match any fi
 export const PAGEWRAPPER_MISSING_PAGE_ERROR = 'PageWrapper requires a puppeteer page';
 export const PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR = 'Page has not been initialised.';
 
+export const FULL_STOP = '.';
+export const UNDERSCORE = '_';
+export const SPACE = ' ';
+export const ALL_SPACES = / /g;
+
+export const RECORDING_EXT = '.json';
+
 export const ENV_FLAGS = {
     HEADLESS: 'HEADLESS',
     CACHE_ENABLED: 'CACHE_ENABLED'

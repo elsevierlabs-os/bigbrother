@@ -1,8 +1,9 @@
-import {cleanFileName} from '../lib/pathutils';
+import { cleanFileName } from '../lib/pathutils';
 import expect from '../expectations/expect';
 import PageWrapper from '../page/PageWrapper';
 import Spinner from '../lib/Spinner';
-import {PromiseSerial} from '../lib/functions';
+import { PromiseSerial } from '../lib/functions';
+import { FULL_STOP, ALL_SPACES, UNDERSCORE } from '../lib/constants';
 
 export default class Suite {
 
@@ -12,8 +13,20 @@ export default class Suite {
         this.browser = browser;
         this.tests = [];
 
+        this.names = [];
+        this.rootname = '';
         this.root = true;
     }
+
+    formatName = (n) => n.replace(ALL_SPACES, UNDERSCORE);
+
+    getFullPageName = (name) => {
+        return this.names
+            .map(this.formatName)
+            .join(FULL_STOP)
+            .concat(FULL_STOP)
+            .concat(this.formatName(name));
+    };
 
     async createPageWrapper(name) {
         const page = await this.browser.newPage();
@@ -21,7 +34,8 @@ export default class Suite {
         return new PageWrapper(page, name);
     }
 
-    it = async (title, f)  => {
+    it = (name, f)  => {
+        const pageName = this.getFullPageName(name);
 
         const asyncTest = async () => {
             let success = true,
@@ -30,8 +44,8 @@ export default class Suite {
             if (this._beforeEach) {
                 this._beforeEach()
             }
-            const page = await this.createPageWrapper(title, this.browser);
-            const spinner = new Spinner(title);
+            const page = await this.createPageWrapper(pageName);
+            const spinner = new Spinner(name);
             try {
                 await f(page);
                 await page.close();
@@ -45,35 +59,32 @@ export default class Suite {
                 this._afterEach();
             }
 
-            return { title, success, reason };
+            return { name, success, reason };
         };
 
         this.tests.push(() => asyncTest());
-    }
+    };
 
-    describe = (title, f)  => {
-        f();
-        if (this._after && this.root) {
+    describe = (name, f)  => {
+        if (this.root) {
+            this.rootname = name;
             this.root = false;
-            this._after();
+            this.names.push(name);
+
+            if (this._before) this._before();
+            f();
+            if (this._after) this._after();
+        } else {
+            this.names.push(name);
+            f();
+            this.names.pop();
         }
     };
 
-    before = (f) => {
-        f();
-    };
-
-    after = (f) => {
-        this._after = f;
-    };
-
-    beforeEach = (f) => {
-        this._beforeEach = f;
-    };
-
-    afterEach = (f) => {
-        this._afterEach = f;
-    };
+    before = (f) => this._before = f;
+    after = (f) => this._after = f;
+    beforeEach = (f) => this._beforeEach = f;
+    afterEach = (f) => this._afterEach = f;
 
     async execute() {
         const args = {

@@ -1,4 +1,10 @@
 import assert from './assert';
+import {
+    compareWithStoredRecording,
+    getPageRecording,
+    recordingExists,
+    recordPage
+} from '../page/PageRecorder';
 
 class Expectation {
 
@@ -39,8 +45,20 @@ class Expectation {
         return this;
     }
 
-    toMatchRecording(page) {
-        // do stuff about recordings
+    toMatchRecording() {
+        /*
+        * we get the page
+        * check inside .recordings if the page exists
+        *   if the page exists, compare the json and return the diff
+        *   if the page does not exist, save the json inside the recordings folder. and return OK
+        * */
+        const page = this.value;
+
+        if (recordingExists(page)) {
+            const comparison = compareWithStoredRecording(page);
+        } else {
+            recordPage(page);
+        }
     }
 
     toBeWithinRange(min, max) {

@@ -28,9 +28,9 @@ const printException = (e) => {
 const printBigBrother = () => {
     printNewLines();
     console.log(
-        Array(5).join(DELIMITER).blue,
-        BIGBROTHER_HEADER.blue,
-        Array(5).join(DELIMITER).blue);
+        Array(5).join(DELIMITER).green,
+        BIGBROTHER_HEADER.green,
+        Array(5).join(DELIMITER).green);
     printNewLines();
 };
 

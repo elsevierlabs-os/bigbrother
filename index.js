@@ -10,14 +10,12 @@ const {
     printException,
     printNewLines,
     printInfo,
+    config,
     ENV_FLAGS
 } = require('./dist');
-const usageMessage = require('./usage');
 
-const DEFAULT_CONFIGURATION = {
-    headless: true,
-    cacheEnabled: false
-};
+const usageMessage = require('./usage');
+const { DEFAULT_CONFIGURATION } = config;
 
 // printing a couple empty lines to give BigBrother some space
 printNewLines(2);
@@ -71,6 +69,6 @@ const { pattern, help, configPath } = readArguments();
 if (help) handleUsageHelp();
 if (!pattern) handleMissingPattern();
 
-const runnerOptions = Object.assign(DEFAULT_CONFIGURATION, loadEnvConfig(), loadConfigFile(configPath));
+const runnerConfig = Object.assign(DEFAULT_CONFIGURATION, loadEnvConfig(), loadConfigFile(configPath));
 new Runner(pattern)
-    .start(runnerOptions);
+    .start(runnerConfig);

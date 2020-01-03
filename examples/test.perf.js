@@ -24,6 +24,7 @@ describe('sciencedirect', function() {
             const loadTime = await page.load('http://www.sciencedirect.com');
 
             expect(loadTime).toBeLessThan(15000);
+            expect(page).toMatchRecording();
         });
     });
 
@@ -35,6 +36,8 @@ describe('sciencedirect', function() {
             await page.load('http://www.sciencedirect.com');
             await page.click('#volume-searchbox-input');
             await page.click('.advanced-search-link');
+
+            expect(page).toMatchRecording();
         });
     })
 });

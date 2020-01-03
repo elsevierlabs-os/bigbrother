@@ -18,6 +18,7 @@ import {
 } from './lib/printer';
 
 import { exitProcess } from './lib/processutils';
+import config from './config';
 
 class Runner {
 
@@ -41,7 +42,12 @@ class Runner {
         PromiseSerial(this.suites
             .map( s => () => s.execute()))
             .then(this.evaluateResults)
-            .catch(printException);
+            .catch(this.handleException);
+    };
+
+    handleException = (e) => {
+        printException(e);
+        exitProcess(1);
     };
 
     onFilesFound = (err, files = []) => {
@@ -89,7 +95,7 @@ class Runner {
     };
 
     start(browserOptions) {
-        // config.storeConfiguration(browserOptions);
+        config.storeConfiguration(browserOptions);
         printBigBrother();
         this.browser = new Browser(browserOptions);
         this.browser

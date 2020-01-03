@@ -20,14 +20,16 @@ import AssetsHandler from './AssetsHandler';
 
 class PageWrapper {
 
-    constructor(page, testKey) {
+    constructor(page, name) {
 
         this.options = {};
 
         this.page = page;
-        this.testKey = testKey;
+        this.name = name;
 
-        this.measurements = {};
+        this.measurements = {
+            __keys: []
+        };
         this.responses = {};
         this.assetsHandler = new AssetsHandler();
 
@@ -75,12 +77,15 @@ class PageWrapper {
     }
 
     getKey(key) {
-        return `${this.testKey}.${key}`;
+        return `${this.name}.${key}`;
     }
 
     storeMeasurement = (data) => {
         deepSet(data.key, data, this.measurements);
+        this.storeMeasurementKey(data.key);
     };
+
+    storeMeasurementKey = key => this.measurements.__keys.push(key);
 
     clearAssets = () =>  this.assetsHandler.reset();
     clearResponses = () => this.responses = {};
@@ -203,8 +208,8 @@ class PageWrapper {
 
     async waitFor(selector) {}
 
-    toJSON() {
-        return JSON.stringify(this.measurements, null, 4);
+    toJSON(spacing = 4) {
+        return JSON.stringify(this.measurements, null, spacing);
     }
 }
 

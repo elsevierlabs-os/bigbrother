@@ -14,7 +14,7 @@
     "build": "npm run clean && babel src --out-dir dist",
     "clean": "rimraf -rf ./dist",
     "preversion": "npm run test",
-    "version": "npm run build && git add -Af dist",
+    "version": "npm run build && git add dist",
     "postversion": "git push --no-verify && git push --tags --no-verify",
     "start": "npm run build && ./index.js --config=./bigbrother.config.js '**/*.perf.js'",
     "start:file": "npm run build && ./index.js --config=./bigbrother.config.js",

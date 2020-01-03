@@ -31,6 +31,8 @@ var _Spinner = _interopRequireDefault(require("../lib/Spinner"));
 
 var _functions = require("../lib/functions");
 
+var _constants = require("../lib/constants");
+
 var Suite =
 /*#__PURE__*/
 function () {
@@ -38,125 +40,122 @@ function () {
     var _this = this;
 
     (0, _classCallCheck2.default)(this, Suite);
-    (0, _defineProperty2.default)(this, "it",
-    /*#__PURE__*/
-    function () {
-      var _ref = (0, _asyncToGenerator2.default)(
+    (0, _defineProperty2.default)(this, "formatName", function (n) {
+      return n.replace(_constants.ALL_SPACES, _constants.UNDERSCORE);
+    });
+    (0, _defineProperty2.default)(this, "getFullPageName", function (name) {
+      return _this.names.map(_this.formatName).join(_constants.FULL_STOP).concat(_constants.FULL_STOP).concat(_this.formatName(name));
+    });
+    (0, _defineProperty2.default)(this, "it", function (name, f) {
+      var pageName = _this.getFullPageName(name);
+
+      var asyncTest =
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(title, f) {
-        var asyncTest;
-        return _regenerator.default.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                asyncTest =
-                /*#__PURE__*/
-                function () {
-                  var _ref2 = (0, _asyncToGenerator2.default)(
-                  /*#__PURE__*/
-                  _regenerator.default.mark(function _callee() {
-                    var success, reason, page, spinner;
-                    return _regenerator.default.wrap(function _callee$(_context) {
-                      while (1) {
-                        switch (_context.prev = _context.next) {
-                          case 0:
-                            success = true, reason = '';
+      function () {
+        var _ref = (0, _asyncToGenerator2.default)(
+        /*#__PURE__*/
+        _regenerator.default.mark(function _callee() {
+          var success, reason, page, spinner;
+          return _regenerator.default.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  success = true, reason = '';
 
-                            if (_this._beforeEach) {
-                              _this._beforeEach();
-                            }
+                  if (_this._beforeEach) {
+                    _this._beforeEach();
+                  }
 
-                            _context.next = 4;
-                            return _this.createPageWrapper(title, _this.browser);
+                  _context.next = 4;
+                  return _this.createPageWrapper(pageName);
 
-                          case 4:
-                            page = _context.sent;
-                            spinner = new _Spinner.default(title);
-                            _context.prev = 6;
-                            _context.next = 9;
-                            return f(page);
+                case 4:
+                  page = _context.sent;
+                  spinner = new _Spinner.default(name);
+                  _context.prev = 6;
+                  _context.next = 9;
+                  return f(page);
 
-                          case 9:
-                            _context.next = 11;
-                            return page.close();
+                case 9:
+                  _context.next = 11;
+                  return page.close();
 
-                          case 11:
-                            spinner.complete();
-                            _context.next = 19;
-                            break;
+                case 11:
+                  spinner.complete();
+                  _context.next = 19;
+                  break;
 
-                          case 14:
-                            _context.prev = 14;
-                            _context.t0 = _context["catch"](6);
-                            success = false;
-                            reason = _context.t0;
-                            spinner.exception(_context.t0);
+                case 14:
+                  _context.prev = 14;
+                  _context.t0 = _context["catch"](6);
+                  success = false;
+                  reason = _context.t0;
+                  spinner.exception(_context.t0);
 
-                          case 19:
-                            if (_this._afterEach) {
-                              _this._afterEach();
-                            }
+                case 19:
+                  if (_this._afterEach) {
+                    _this._afterEach();
+                  }
 
-                            return _context.abrupt("return", {
-                              title: title,
-                              success: success,
-                              reason: reason
-                            });
+                  return _context.abrupt("return", {
+                    name: name,
+                    success: success,
+                    reason: reason
+                  });
 
-                          case 21:
-                          case "end":
-                            return _context.stop();
-                        }
-                      }
-                    }, _callee, null, [[6, 14]]);
-                  }));
-
-                  return function asyncTest() {
-                    return _ref2.apply(this, arguments);
-                  };
-                }();
-
-                _this.tests.push(function () {
-                  return asyncTest();
-                });
-
-              case 2:
-              case "end":
-                return _context2.stop();
+                case 21:
+                case "end":
+                  return _context.stop();
+              }
             }
-          }
-        }, _callee2);
-      }));
+          }, _callee, null, [[6, 14]]);
+        }));
 
-      return function (_x, _x2) {
-        return _ref.apply(this, arguments);
-      };
-    }());
-    (0, _defineProperty2.default)(this, "describe", function (title, f) {
-      f();
+        return function asyncTest() {
+          return _ref.apply(this, arguments);
+        };
+      }();
 
-      if (_this._after && _this.root) {
+      _this.tests.push(function () {
+        return asyncTest();
+      });
+    });
+    (0, _defineProperty2.default)(this, "describe", function (name, f) {
+      if (_this.root) {
+        _this.rootname = name;
         _this.root = false;
 
-        _this._after();
+        _this.names.push(name);
+
+        if (_this._before) _this._before();
+        f();
+        if (_this._after) _this._after();
+      } else {
+        _this.names.push(name);
+
+        f();
+
+        _this.names.pop();
       }
     });
     (0, _defineProperty2.default)(this, "before", function (f) {
-      f();
+      return _this._before = f;
     });
     (0, _defineProperty2.default)(this, "after", function (f) {
-      _this._after = f;
+      return _this._after = f;
     });
     (0, _defineProperty2.default)(this, "beforeEach", function (f) {
-      _this._beforeEach = f;
+      return _this._beforeEach = f;
     });
     (0, _defineProperty2.default)(this, "afterEach", function (f) {
-      _this._afterEach = f;
+      return _this._afterEach = f;
     });
     this.content = content;
     this.filename = (0, _pathutils.cleanFileName)(filename);
     this.browser = browser;
     this.tests = [];
+    this.names = [];
+    this.rootname = '';
     this.root = true;
   }
 
@@ -165,28 +164,28 @@ function () {
     value: function () {
       var _createPageWrapper = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(name) {
+      _regenerator.default.mark(function _callee2(name) {
         var page;
-        return _regenerator.default.wrap(function _callee3$(_context3) {
+        return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                _context3.next = 2;
+                _context2.next = 2;
                 return this.browser.newPage();
 
               case 2:
-                page = _context3.sent;
-                return _context3.abrupt("return", new _PageWrapper.default(page, name));
+                page = _context2.sent;
+                return _context2.abrupt("return", new _PageWrapper.default(page, name));
 
               case 4:
               case "end":
-                return _context3.stop();
+                return _context2.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee2, this);
       }));
 
-      function createPageWrapper(_x3) {
+      function createPageWrapper(_x) {
         return _createPageWrapper.apply(this, arguments);
       }
 
@@ -197,11 +196,11 @@ function () {
     value: function () {
       var _execute = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee4() {
+      _regenerator.default.mark(function _callee3() {
         var args, executor;
-        return _regenerator.default.wrap(function _callee4$(_context4) {
+        return _regenerator.default.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 args = {
                   'describe': this.describe,
@@ -216,18 +215,18 @@ function () {
                 };
                 executor = (0, _construct2.default)(Function, (0, _toConsumableArray2.default)(Object.keys(args)).concat([this.content]));
                 executor.call.apply(executor, [null].concat((0, _toConsumableArray2.default)(Object.values(args))));
-                _context4.next = 5;
+                _context3.next = 5;
                 return (0, _functions.PromiseSerial)(this.tests);
 
               case 5:
-                return _context4.abrupt("return", _context4.sent);
+                return _context3.abrupt("return", _context3.sent);
 
               case 6:
               case "end":
-                return _context4.stop();
+                return _context3.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee3, this);
       }));
 
       function execute() {

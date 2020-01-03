@@ -95,6 +95,12 @@ Object.defineProperty(exports, "getEnvFlag", {
     return _processutils.getEnvFlag;
   }
 });
+Object.defineProperty(exports, "config", {
+  enumerable: true,
+  get: function get() {
+    return _config.default;
+  }
+});
 
 var _Browser = _interopRequireDefault(require("./browser/Browser"));
 
@@ -107,3 +113,5 @@ var _constants = require("./lib/constants");
 var _printer = require("./lib/printer");
 
 var _processutils = require("./lib/processutils");
+
+var _config = _interopRequireDefault(require("./config"));

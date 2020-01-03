@@ -32,7 +32,7 @@ var _AssetsHandler = _interopRequireDefault(require("./AssetsHandler"));
 var PageWrapper =
 /*#__PURE__*/
 function () {
-  function PageWrapper(page, testKey) {
+  function PageWrapper(page, name) {
     var _this = this;
 
     (0, _classCallCheck2.default)(this, PageWrapper);
@@ -74,6 +74,11 @@ function () {
     });
     (0, _defineProperty2.default)(this, "storeMeasurement", function (data) {
       (0, _objectutils.deepSet)(data.key, data, _this.measurements);
+
+      _this.storeMeasurementKey(data.key);
+    });
+    (0, _defineProperty2.default)(this, "storeMeasurementKey", function (key) {
+      return _this.measurements.__keys.push(key);
     });
     (0, _defineProperty2.default)(this, "clearAssets", function () {
       return _this.assetsHandler.reset();
@@ -219,8 +224,10 @@ function () {
     });
     this.options = {};
     this.page = page;
-    this.testKey = testKey;
-    this.measurements = {};
+    this.name = name;
+    this.measurements = {
+      __keys: []
+    };
     this.responses = {};
     this.assetsHandler = new _AssetsHandler.default();
 
@@ -382,7 +389,7 @@ function () {
   }, {
     key: "getKey",
     value: function getKey(key) {
-      return "".concat(this.testKey, ".").concat(key);
+      return "".concat(this.name, ".").concat(key);
     }
   }, {
     key: "setupAssetsMetrics",
@@ -961,7 +968,8 @@ function () {
   }, {
     key: "toJSON",
     value: function toJSON() {
-      return JSON.stringify(this.measurements, null, 4);
+      var spacing = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 4;
+      return JSON.stringify(this.measurements, null, spacing);
     }
   }]);
   return PageWrapper;

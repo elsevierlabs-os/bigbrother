@@ -81,7 +81,7 @@ exports.printException = printException;
 
 var printBigBrother = function printBigBrother() {
   printNewLines();
-  console.log(Array(5).join(DELIMITER).blue, BIGBROTHER_HEADER.blue, Array(5).join(DELIMITER).blue);
+  console.log(Array(5).join(DELIMITER).green, BIGBROTHER_HEADER.green, Array(5).join(DELIMITER).green);
   printNewLines();
 };
 

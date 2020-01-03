@@ -15,6 +15,8 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _assert = _interopRequireDefault(require("./assert"));
 
+var _PageRecorder = require("../page/PageRecorder");
+
 var Expectation =
 /*#__PURE__*/
 function () {
@@ -44,7 +46,20 @@ function () {
     }
   }, {
     key: "toMatchRecording",
-    value: function toMatchRecording(page) {// do stuff about recordings
+    value: function toMatchRecording() {
+      /*
+      * we get the page
+      * check inside .recordings if the page exists
+      *   if the page exists, compare the json and return the diff
+      *   if the page does not exist, save the json inside the recordings folder. and return OK
+      * */
+      var page = this.value;
+
+      if ((0, _PageRecorder.recordingExists)(page)) {
+        var comparison = (0, _PageRecorder.compareWithStoredRecording)(page);
+      } else {
+        (0, _PageRecorder.recordPage)(page);
+      }
     }
   }, {
     key: "toBeWithinRange",

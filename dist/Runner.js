@@ -29,6 +29,8 @@ var _printer = require("./lib/printer");
 
 var _processutils = require("./lib/processutils");
 
+var _config = _interopRequireDefault(require("./config"));
+
 var Runner =
 /*#__PURE__*/
 function () {
@@ -55,7 +57,11 @@ function () {
         return function () {
           return s.execute();
         };
-      })).then(_this.evaluateResults).catch(_printer.printException);
+      })).then(_this.evaluateResults).catch(_this.handleException);
+    });
+    (0, _defineProperty2.default)(this, "handleException", function (e) {
+      (0, _printer.printException)(e);
+      (0, _processutils.exitProcess)(1);
     });
     (0, _defineProperty2.default)(this, "onFilesFound", function (err) {
       var files = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -112,7 +118,8 @@ function () {
     value: function start(browserOptions) {
       var _this2 = this;
 
-      // config.storeConfiguration(browserOptions);
+      _config.default.storeConfiguration(browserOptions);
+
       (0, _printer.printBigBrother)();
       this.browser = new _Browser.default(browserOptions);
       this.browser.launch().then(function () {

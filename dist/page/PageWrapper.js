@@ -25,7 +25,7 @@ var _constants = require("../lib/constants");
 
 var _PerformanceAnalyzer = _interopRequireDefault(require("../lib/PerformanceAnalyzer"));
 
-var _objectutils = require("../lib/objectutils");
+var _object = require("../lib/utils/object");
 
 var _AssetsHandler = _interopRequireDefault(require("./AssetsHandler"));
 
@@ -73,7 +73,7 @@ function () {
       return _this.options.network;
     });
     (0, _defineProperty2.default)(this, "storeMeasurement", function (data) {
-      (0, _objectutils.deepSet)(data.key, data, _this.measurements);
+      (0, _object.deepSet)(data.key, data, _this.measurements);
 
       _this.storeMeasurementKey(data.key);
     });
@@ -969,7 +969,10 @@ function () {
     key: "toJSON",
     value: function toJSON() {
       var spacing = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 4;
-      return JSON.stringify(this.measurements, null, spacing);
+      var json = (0, _objectSpread2.default)({}, this.measurements, {
+        assets: this.assetsHandler.toJSON()
+      });
+      return JSON.stringify(json, null, spacing);
     }
   }]);
   return PageWrapper;

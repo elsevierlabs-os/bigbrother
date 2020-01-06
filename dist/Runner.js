@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
@@ -27,9 +29,11 @@ var _functions = require("./lib/functions");
 
 var _printer = require("./lib/printer");
 
-var _processutils = require("./lib/processutils");
+var _process = require("./lib/utils/process");
 
-var _config = _interopRequireDefault(require("./config"));
+var _config = _interopRequireWildcard(require("./config"));
+
+var _module = require("./lib/utils/module");
 
 var Runner =
 /*#__PURE__*/
@@ -61,19 +65,19 @@ function () {
     });
     (0, _defineProperty2.default)(this, "handleException", function (e) {
       (0, _printer.printException)(e);
-      (0, _processutils.exitProcess)(1);
+      (0, _process.exitProcess)(1);
     });
     (0, _defineProperty2.default)(this, "onFilesFound", function (err) {
       var files = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
       if (err) {
         (0, _printer.printError)(err);
-        (0, _processutils.exitProcess)(1);
+        (0, _process.exitProcess)(1);
       }
 
       if (!files.length) {
         (0, _printer.printFilePatternError)(_this.pattern);
-        (0, _processutils.exitProcess)(1);
+        (0, _process.exitProcess)(1);
       }
 
       var tests = files.map(_this.readFile);
@@ -118,8 +122,7 @@ function () {
     value: function start(browserOptions) {
       var _this2 = this;
 
-      _config.default.storeConfiguration(browserOptions);
-
+      Runner.setup(browserOptions);
       (0, _printer.printBigBrother)();
       this.browser = new _Browser.default(browserOptions);
       this.browser.launch().then(function () {
@@ -130,8 +133,13 @@ function () {
     key: "stop",
     value: function stop(status) {
       this.browser.close().then(function () {
-        return (0, _processutils.exitProcess)(status);
+        return (0, _process.exitProcess)(status);
       });
+    }
+  }], [{
+    key: "setup",
+    value: function setup(configuration) {
+      _config.default.storeConfiguration(configuration);
     }
   }]);
   return Runner;

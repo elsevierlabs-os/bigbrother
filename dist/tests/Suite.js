@@ -21,7 +21,7 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
-var _pathutils = require("../lib/pathutils");
+var _path = require("../lib/utils/path");
 
 var _expect = _interopRequireDefault(require("../expectations/expect"));
 
@@ -32,6 +32,10 @@ var _Spinner = _interopRequireDefault(require("../lib/Spinner"));
 var _functions = require("../lib/functions");
 
 var _constants = require("../lib/constants");
+
+var _config = require("../config");
+
+var _module = require("../lib/utils/module");
 
 var Suite =
 /*#__PURE__*/
@@ -151,7 +155,7 @@ function () {
       return _this._afterEach = f;
     });
     this.content = content;
-    this.filename = (0, _pathutils.cleanFileName)(filename);
+    this.filename = (0, _path.cleanFileName)(filename);
     this.browser = browser;
     this.tests = [];
     this.names = [];
@@ -197,11 +201,14 @@ function () {
       var _execute = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee3() {
-        var args, executor;
+        var _getConfig, cwd, args, executor;
+
         return _regenerator.default.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                _getConfig = (0, _config.getConfig)(), cwd = _getConfig.cwd;
+                (0, _module.appendNodeModulesPathToModule)(module, cwd);
                 args = {
                   'describe': this.describe,
                   'it': this.it,
@@ -215,13 +222,13 @@ function () {
                 };
                 executor = (0, _construct2.default)(Function, (0, _toConsumableArray2.default)(Object.keys(args)).concat([this.content]));
                 executor.call.apply(executor, [null].concat((0, _toConsumableArray2.default)(Object.values(args))));
-                _context3.next = 5;
+                _context3.next = 7;
                 return (0, _functions.PromiseSerial)(this.tests);
 
-              case 5:
+              case 7:
                 return _context3.abrupt("return", _context3.sent);
 
-              case 6:
+              case 8:
               case "end":
                 return _context3.stop();
             }

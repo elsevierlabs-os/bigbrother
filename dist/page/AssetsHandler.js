@@ -49,6 +49,11 @@ function () {
         return _this.assets[k];
       });
     }
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      return this.assets;
+    }
   }]);
   return AssetsHandler;
 }();

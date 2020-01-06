@@ -8,6 +8,7 @@ var DEFAULT_CONFIGURATION = {
   headless: true,
   cacheEnabled: false,
   recordingsPath: './.recordings',
+  cwd: './',
   threshold: 0.5
 };
 var config = DEFAULT_CONFIGURATION;

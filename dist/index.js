@@ -86,13 +86,19 @@ Object.defineProperty(exports, "printNewLines", {
 Object.defineProperty(exports, "exitProcess", {
   enumerable: true,
   get: function get() {
-    return _processutils.exitProcess;
+    return _process.exitProcess;
   }
 });
 Object.defineProperty(exports, "getEnvFlag", {
   enumerable: true,
   get: function get() {
-    return _processutils.getEnvFlag;
+    return _process.getEnvFlag;
+  }
+});
+Object.defineProperty(exports, "getProcessCWD", {
+  enumerable: true,
+  get: function get() {
+    return _process.getProcessCWD;
   }
 });
 Object.defineProperty(exports, "config", {
@@ -112,6 +118,6 @@ var _constants = require("./lib/constants");
 
 var _printer = require("./lib/printer");
 
-var _processutils = require("./lib/processutils");
+var _process = require("./lib/utils/process");
 
 var _config = _interopRequireDefault(require("./config"));

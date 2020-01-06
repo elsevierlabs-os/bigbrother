@@ -17,7 +17,7 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _objectutils = require("./objectutils");
+var _object = require("./utils/object");
 
 var PerformanceAnalyzer =
 /*#__PURE__*/
@@ -38,13 +38,13 @@ function () {
       var inc = 1;
       var _key = key;
 
-      if (!(0, _objectutils.deepExist)(_key, this.data)) {
+      if (!(0, _object.deepExist)(_key, this.data)) {
         return _key;
       }
 
       _key = "".concat(key, "_").concat(inc);
 
-      while ((0, _objectutils.deepExist)(_key, this.data)) {
+      while ((0, _object.deepExist)(_key, this.data)) {
         inc++;
         _key = "".concat(key, "_").concat(inc);
       }
@@ -56,13 +56,13 @@ function () {
     value: function startTracking(key) {
       var timestamp = +new Date();
       var uniqueKey = this.getUniqueKey(key);
-      (0, _objectutils.deepSet)("".concat(uniqueKey, ".start"), timestamp, this.data);
+      (0, _object.deepSet)("".concat(uniqueKey, ".start"), timestamp, this.data);
       return uniqueKey;
     }
   }, {
     key: "stopTracking",
     value: function stopTracking(key) {
-      var action = (0, _objectutils.deepGet)("".concat(key), this.data);
+      var action = (0, _object.deepGet)("".concat(key), this.data);
       var end = +new Date();
       var duration = end - action.start;
       var value = (0, _objectSpread2.default)({}, action, {
@@ -70,7 +70,7 @@ function () {
         duration: duration,
         key: key
       });
-      (0, _objectutils.deepSet)("".concat(key), value, this.data);
+      (0, _object.deepSet)("".concat(key), value, this.data);
       return value;
     }
   }, {
@@ -118,7 +118,7 @@ function () {
   }, {
     key: "toJSON",
     value: function toJSON() {
-      return JSON.stringify(this.data, null, 4); // pretty print
+      return JSON.stringify(this.data, null, 4);
     }
   }]);
   return PerformanceAnalyzer;

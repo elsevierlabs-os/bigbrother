@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.exitProcess = exports.getEnvFlag = void 0;
+exports.getProcessCWD = exports.exitProcess = exports.getEnvFlag = void 0;
 
 var getEnvFlag = function getEnvFlag(flag) {
   return process && process.env && process.env[flag];
@@ -17,3 +17,9 @@ var exitProcess = function exitProcess() {
 };
 
 exports.exitProcess = exitProcess;
+
+var getProcessCWD = function getProcessCWD() {
+  return process && process.cwd && process.cwd();
+};
+
+exports.getProcessCWD = getProcessCWD;

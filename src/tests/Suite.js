@@ -1,9 +1,11 @@
-import { cleanFileName } from '../lib/pathutils';
+import { cleanFileName } from '../lib/utils/path';
 import expect from '../expectations/expect';
 import PageWrapper from '../page/PageWrapper';
 import Spinner from '../lib/Spinner';
 import { PromiseSerial } from '../lib/functions';
 import { FULL_STOP, ALL_SPACES, UNDERSCORE } from '../lib/constants';
+import { getConfig } from '../config';
+import {appendNodeModulesPathToModule} from '../lib/utils/module';
 
 export default class Suite {
 
@@ -87,6 +89,9 @@ export default class Suite {
     afterEach = (f) => this._afterEach = f;
 
     async execute() {
+        const { cwd } = getConfig();
+        appendNodeModulesPathToModule(module, cwd);
+
         const args = {
             'describe': this.describe,
             'it': this.it,

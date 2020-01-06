@@ -26,6 +26,10 @@ class AssetsHandler {
     get(key) {
         return this._filterKeys(key).map(k => this.assets[k]);
     }
+
+    toJSON() {
+        return this.assets;
+    }
 }
 
 export default AssetsHandler;

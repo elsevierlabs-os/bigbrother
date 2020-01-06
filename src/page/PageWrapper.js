@@ -15,7 +15,7 @@ import {
 } from '../lib/constants';
 
 import performanceAnalyzer from '../lib/PerformanceAnalyzer';
-import {deepSet} from '../lib/objectutils';
+import {deepSet} from '../lib/utils/object';
 import AssetsHandler from './AssetsHandler';
 
 class PageWrapper {
@@ -188,7 +188,6 @@ class PageWrapper {
     async tap(select) {}
 
     async setUserAgent(userAgent) {
-        // we should have a list of available user agents stored somewhere in constatns
         return new Promise( async (resolve, reject) => {
             if (this.hasPage()) {
                 const data = await performanceAnalyzer.measure(this.getKey('userAgent', this._setUserAgent(userAgent)));
@@ -209,7 +208,12 @@ class PageWrapper {
     async waitFor(selector) {}
 
     toJSON(spacing = 4) {
-        return JSON.stringify(this.measurements, null, spacing);
+        const json = {
+            ...this.measurements,
+            assets: this.assetsHandler.toJSON()
+        };
+
+        return JSON.stringify(json, null, spacing);
     }
 }
 

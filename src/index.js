@@ -10,7 +10,7 @@ import {
     printWarning,
     printNewLines
 } from './lib/printer';
-import { exitProcess, getEnvFlag } from './lib/processutils';
+import { exitProcess, getEnvFlag, getProcessCWD } from './lib/utils/process';
 import config from './config';
 
 export {
@@ -19,6 +19,7 @@ export {
     Runner,
     config,
     getEnvFlag,
+    getProcessCWD,
     exitProcess,
     print,
     printNewLines,

@@ -8,7 +8,7 @@
   },
   "homepage": "https://github.com/SDFE/sd-browser-perf",
   "license": "ISC",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
     "build": "npm run clean && babel src --out-dir dist",
@@ -16,10 +16,10 @@
     "preversion": "npm run test",
     "version": "npm run build && git add dist",
     "postversion": "git push --no-verify && git push --tags --no-verify",
-    "start": "npm run build && ./index.js --config=./bigbrother.config.js '**/*.perf.js'",
-    "start:file": "npm run build && ./index.js --config=./bigbrother.config.js",
+    "start": "npm run build && ./index.js --config=./dev.bigbrother.config.js '**/*.perf.js'",
+    "start:file": "npm run build && ./index.js --config=./dev.bigbrother.config.js",
     "start:noconfig": "npm run build && ./index.js '**/*.perf.js'",
-    "start:nonheadless": "npm run build && HEADLESS=false ./index.js --config=./bigbrother.config.js '**/*.perf.js'"
+    "start:nonheadless": "npm run build && HEADLESS=false ./index.js --config=./dev.bigbrother.config.js '**/*.perf.js'"
   },
   "bin": {
     "bigbrother": "index.js"

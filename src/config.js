@@ -2,6 +2,7 @@ const DEFAULT_CONFIGURATION = {
     headless: true,
     cacheEnabled: false,
     recordingsPath: './.recordings',
+    cwd: './',
     threshold: 0.5
 };
 

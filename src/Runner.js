@@ -17,8 +17,9 @@ import {
     printException
 } from './lib/printer';
 
-import { exitProcess } from './lib/processutils';
-import config from './config';
+import { exitProcess } from './lib/utils/process';
+import config, {getConfig} from './config';
+import {appendNodeModulesPathToModule, removeNodeModulesPathFromModule} from './lib/utils/module';
 
 class Runner {
 
@@ -94,9 +95,15 @@ class Runner {
         });
     };
 
+    static setup(configuration) {
+        config.storeConfiguration(configuration);
+    }
+
     start(browserOptions) {
-        config.storeConfiguration(browserOptions);
+        Runner.setup(browserOptions);
+
         printBigBrother();
+
         this.browser = new Browser(browserOptions);
         this.browser
             .launch()

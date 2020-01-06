@@ -3,23 +3,27 @@ import path from 'path';
 import { getConfig } from '../config';
 import { RECORDING_EXT } from '../lib/constants';
 import { printException } from '../lib/printer';
-import {deepGet} from '../lib/objectutils';
+import { deepGet } from '../lib/utils/object';
 import assert from '../expectations/assert';
 
 const buildFileName = (name) => name.concat(RECORDING_EXT);
+const buildRecordingsFolderPath = () => {
+    const { cwd, recordingsPath } = getConfig();
+    return path.join(cwd, recordingsPath);
+};
+
 const buildRecordingFullPath = (name) => {
-    const { recordingsPath } = getConfig();
     const filename = buildFileName(name);
-    return path.join(recordingsPath, filename);
+    return path.join(buildRecordingsFolderPath(), filename);
 };
 
 export const recordingExists = (page) => fs.existsSync(buildRecordingFullPath(page.name));
 export const checkAndCreateRecordingFolder = () => {
-    const { recordingsPath } = getConfig();
+    const recordingFolderPath = buildRecordingsFolderPath();
 
     try {
-        if (!fs.existsSync(recordingsPath)) {
-            fs.mkdirSync(recordingsPath, { recursive: true });
+        if (!fs.existsSync(recordingFolderPath)) {
+            fs.mkdirSync(recordingFolderPath, { recursive: true });
         }
         return true;
     } catch(e) {

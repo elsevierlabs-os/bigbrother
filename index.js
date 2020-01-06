@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 const minimist = require('minimist');
+const path = require('path');
 require('colors');
 const {
     Runner,
     getEnvFlag,
     printError,
     exitProcess,
+    getProcessCWD,
     print,
     printException,
     printNewLines,
@@ -42,12 +44,13 @@ const handleMissingPattern = () => {
     handleUsageHelp();
 };
 
-const loadConfigFile = (configPath) => {
+const loadConfigFile = (cwd, configPath) => {
     let config = DEFAULT_CONFIGURATION;
 
     try {
         if (configPath) {
-            config = require(configPath);
+            const requirePath = path.join(cwd, configPath);
+            config = require(requirePath);
         } else {
             handleDefaultConfiguration();
         }
@@ -64,11 +67,21 @@ const loadEnvConfig = () => ({
     cacheEnabled: getEnvFlag(ENV_FLAGS.CACHE_ENABLED)
 });
 
+const cwd = getProcessCWD();
+const getModuleConfig = () => ({
+    cwd
+});
+
 const { pattern, help, configPath } = readArguments();
 
 if (help) handleUsageHelp();
 if (!pattern) handleMissingPattern();
 
-const runnerConfig = Object.assign(DEFAULT_CONFIGURATION, loadEnvConfig(), loadConfigFile(configPath));
+const runnerConfig = Object.assign(
+    DEFAULT_CONFIGURATION,
+    getModuleConfig(),
+    loadEnvConfig(),
+    loadConfigFile(cwd, configPath));
+
 new Runner(pattern)
     .start(runnerConfig);

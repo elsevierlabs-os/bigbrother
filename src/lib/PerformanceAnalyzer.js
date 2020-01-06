@@ -1,4 +1,4 @@
-import {deepSet, deepGet, deepExist} from './objectutils';
+import {deepSet, deepGet, deepExist} from './utils/object';
 
 class PerformanceAnalyzer {
 
@@ -65,7 +65,7 @@ class PerformanceAnalyzer {
     }
 
     toJSON() {
-        return JSON.stringify(this.data, null, 4); // pretty print
+        return JSON.stringify(this.data, null, 4);
     }
 
 }

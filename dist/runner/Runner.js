@@ -1,7 +1,5 @@
 "use strict";
 
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
-
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
@@ -21,19 +19,21 @@ var _glob = _interopRequireDefault(require("glob"));
 
 var _fs = _interopRequireDefault(require("fs"));
 
-var _Suite = _interopRequireDefault(require("./tests/Suite"));
+var _Suite = _interopRequireDefault(require("../tests/Suite"));
 
-var _Browser = _interopRequireDefault(require("./browser/Browser"));
+var _Browser = _interopRequireDefault(require("../browser/Browser"));
 
-var _functions = require("./lib/functions");
+var _functions = require("../lib/functions");
 
-var _printer = require("./lib/printer");
+var _httpClient = require("../lib/httpClient");
 
-var _process = require("./lib/utils/process");
+var _printer = require("../lib/printer");
 
-var _config = _interopRequireWildcard(require("./config"));
+var _process = require("../lib/utils/process");
 
-var _module = require("./lib/utils/module");
+var _TaskRunner = _interopRequireDefault(require("./TaskRunner"));
+
+var _config = require("../config");
 
 var Runner =
 /*#__PURE__*/
@@ -80,6 +80,8 @@ function () {
         (0, _process.exitProcess)(1);
       }
 
+      var suitesLabel = files.length > 1 ? 'suites' : 'suite';
+      (0, _printer.printInfo)("Found ".concat(files.length, " ").concat(suitesLabel));
       var tests = files.map(_this.readFile);
 
       _this.executeTestSuites(tests);
@@ -112,34 +114,65 @@ function () {
         (0, _printer.printNewLines)(1);
       });
     });
+    (0, _defineProperty2.default)(this, "stop", function (status) {
+      Runner.cleanup();
+
+      if (_this.browser) {
+        _this.browser.close().then(function () {
+          return (0, _process.exitProcess)(status);
+        });
+      }
+    });
     this.pattern = pattern;
     this.browser = null;
     this.suites = [];
   }
 
   (0, _createClass2.default)(Runner, [{
-    key: "start",
-    value: function start(browserOptions) {
-      var _this2 = this;
-
-      Runner.setup(browserOptions);
-      (0, _printer.printBigBrother)();
-      this.browser = new _Browser.default(browserOptions);
-      this.browser.launch().then(function () {
-        return (0, _glob.default)(_this2.pattern, {}, _this2.onFilesFound);
-      });
-    }
-  }, {
-    key: "stop",
-    value: function stop(status) {
-      this.browser.close().then(function () {
-        return (0, _process.exitProcess)(status);
-      });
-    }
-  }], [{
     key: "setup",
     value: function setup(configuration) {
-      _config.default.storeConfiguration(configuration);
+      (0, _config.storeConfiguration)(configuration);
+      (0, _process.onUserInterrupt)(this.stop);
+
+      _TaskRunner.default.executePreCommand();
+    }
+  }, {
+    key: "start",
+    value: function start(config) {
+      var _this2 = this;
+
+      (0, _printer.printInfo)('Starting Runner.');
+      this.setup(config);
+      Runner.checkTargetApplicationIsRunning().then(function () {
+        (0, _printer.printBigBrother)();
+        (0, _printer.printInfo)('Starting Browser.');
+        _this2.browser = new _Browser.default(config);
+
+        _this2.browser.launch().then(function () {
+          return (0, _glob.default)(_this2.pattern, {}, _this2.onFilesFound);
+        });
+      }).catch(_printer.printException);
+    }
+  }], [{
+    key: "cleanup",
+    value: function cleanup() {
+      (0, _printer.printInfo)('Performing Runner cleanup.');
+
+      _TaskRunner.default.executePostCommand();
+
+      _TaskRunner.default.stopAll().then(function () {
+        return (0, _printer.printInfo)('All processes have been killed.');
+      }).catch(_printer.printException);
+    }
+  }, {
+    key: "checkTargetApplicationIsRunning",
+    value: function checkTargetApplicationIsRunning() {
+      var _getConfig = (0, _config.getConfig)(),
+          baseUrl = _getConfig.baseUrl,
+          maxRetries = _getConfig.maxRetries;
+
+      var timeout = 1500;
+      return (0, _httpClient.pingEndpoint)(baseUrl, maxRetries, timeout);
     }
   }]);
   return Runner;

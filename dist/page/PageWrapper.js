@@ -29,6 +29,8 @@ var _object = require("../lib/utils/object");
 
 var _AssetsHandler = _interopRequireDefault(require("./AssetsHandler"));
 
+var _url = require("../lib/utils/url");
+
 var PageWrapper =
 /*#__PURE__*/
 function () {
@@ -580,13 +582,13 @@ function () {
                   var _ref9 = (0, _asyncToGenerator2.default)(
                   /*#__PURE__*/
                   _regenerator.default.mark(function _callee15(resolve, reject) {
-                    var data;
+                    var fullUrl, data;
                     return _regenerator.default.wrap(function _callee15$(_context15) {
                       while (1) {
                         switch (_context15.prev = _context15.next) {
                           case 0:
                             if (!(_this2.hasPage() && url)) {
-                              _context15.next = 11;
+                              _context15.next = 12;
                               break;
                             }
 
@@ -594,23 +596,24 @@ function () {
                             return _this2.setupAssetsMetrics();
 
                           case 3:
-                            _context15.next = 5;
-                            return _PerformanceAnalyzer.default.measure(_this2.getKey('load'), _this2._load(url));
+                            fullUrl = (0, _url.buildUrl)(url);
+                            _context15.next = 6;
+                            return _PerformanceAnalyzer.default.measure(_this2.getKey('load'), _this2._load(fullUrl));
 
-                          case 5:
+                          case 6:
                             data = _context15.sent;
-                            _this2.options.url = url;
+                            _this2.options.url = fullUrl;
 
                             _this2.storeMeasurement(data);
 
                             resolve(data.duration);
-                            _context15.next = 12;
+                            _context15.next = 13;
                             break;
 
-                          case 11:
+                          case 12:
                             reject(_constants.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
 
-                          case 12:
+                          case 13:
                           case "end":
                             return _context15.stop();
                         }

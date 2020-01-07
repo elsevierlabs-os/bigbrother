@@ -7,18 +7,22 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.printRunnerFailure = exports.printRunnerSuccess = exports.printFailedTest = exports.printTitleTest = exports.printNewLines = exports.printDelimiter = exports.printWarning = exports.printSuccess = exports.printError = exports.printInfo = exports.printException = exports.printFilePatternError = exports.printBigBrother = exports.print = void 0;
 
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 require("colors");
 
 var _constants = require("./constants");
 
 var _package = _interopRequireDefault(require("../../package.json"));
 
+var _config = require("../config");
+
 var NEW_LINE = '\n';
 var TAB = '\t';
 var DELIMITER = '-';
-var WARNING = '[!]'.yellow;
-var INFO = '[i]'.blue;
-var ERROR = '[*]'.red;
+var WARNING = '[*]'.yellow;
+var INFO = '[i️]'.blue;
+var ERROR = '[!!]'.red;
 var COLON = ':';
 var BIGBROTHER_HEADER = "BIGBROTHER v".concat(_package.default.version);
 
@@ -29,7 +33,20 @@ var print = function print(message) {
 exports.print = print;
 
 var printInfo = function printInfo(message) {
-  return console.log(INFO, message);
+  var _getConfig = (0, _config.getConfig)(),
+      verbose = _getConfig.verbose;
+
+  for (var _len = arguments.length, rest = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    rest[_key - 1] = arguments[_key];
+  }
+
+  var extraMessage = rest.length ? [NEW_LINE].concat(rest, [NEW_LINE]) : [];
+
+  if (verbose) {
+    var _console;
+
+    (_console = console).log.apply(_console, [INFO, message.blue].concat((0, _toConsumableArray2.default)(extraMessage)));
+  }
 };
 
 exports.printInfo = printInfo;
@@ -54,7 +71,7 @@ exports.printWarning = printWarning;
 
 var printDelimiter = function printDelimiter() {
   var size = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 30;
-  return console.log(NEW_LINE, Array(size).join(DELIMITER), NEW_LINE);
+  return console.log(NEW_LINE, Array(size).join(DELIMITER).grey, NEW_LINE);
 };
 
 exports.printDelimiter = printDelimiter;
@@ -72,16 +89,21 @@ var printFilePatternError = function printFilePatternError(pattern) {
 
 exports.printFilePatternError = printFilePatternError;
 
-var printException = function printException(e) {
-  printError(e.message);
-  print(e.stackTrace);
+var printException = function printException(_ref) {
+  var message = _ref.message,
+      stackTrace = _ref.stackTrace;
+  printError(message);
+
+  if (stackTrace) {
+    print(stackTrace);
+  }
 };
 
 exports.printException = printException;
 
 var printBigBrother = function printBigBrother() {
   printNewLines();
-  console.log(Array(5).join(DELIMITER).green, BIGBROTHER_HEADER.green, Array(5).join(DELIMITER).green);
+  console.log(Array(5).join(DELIMITER).grey, BIGBROTHER_HEADER.grey, Array(5).join(DELIMITER).grey);
   printNewLines();
 };
 
@@ -100,16 +122,19 @@ var printFailedTest = function printFailedTest(reason) {
 exports.printFailedTest = printFailedTest;
 
 var printRunnerSuccess = function printRunnerSuccess(suitesCount) {
+  var suitesLabel = suitesCount > 1 ? 'suites' : 'suite';
   printNewLines(1);
-  printSuccess("Done running ".concat(suitesCount, " suites").green);
+  printSuccess("Done running ".concat(suitesCount, " ").concat(suitesLabel).green);
 };
 
 exports.printRunnerSuccess = printRunnerSuccess;
 
 var printRunnerFailure = function printRunnerFailure(suitesCount, failedCount) {
+  var suitesLabel = suitesCount > 1 ? 'suites' : 'suite';
+  var failuresLabel = failedCount > 1 ? 'failures' : 'failure';
   printNewLines(1);
-  printError("Done running ".concat(suitesCount, " suites").red);
-  printError("".concat(failedCount, " failures found").red);
+  printError("Done running ".concat(suitesCount, " ").concat(suitesLabel).red);
+  printError("".concat(failedCount, " ").concat(failuresLabel, " found").red);
 };
 
 exports.printRunnerFailure = printRunnerFailure;

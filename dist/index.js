@@ -101,10 +101,10 @@ Object.defineProperty(exports, "getProcessCWD", {
     return _process.getProcessCWD;
   }
 });
-Object.defineProperty(exports, "config", {
+Object.defineProperty(exports, "DEFAULT_CONFIGURATION", {
   enumerable: true,
   get: function get() {
-    return _config.default;
+    return _config.DEFAULT_CONFIGURATION;
   }
 });
 
@@ -112,7 +112,7 @@ var _Browser = _interopRequireDefault(require("./browser/Browser"));
 
 var _PageWrapper = _interopRequireDefault(require("./page/PageWrapper"));
 
-var _Runner = _interopRequireDefault(require("./Runner"));
+var _Runner = _interopRequireDefault(require("./runner/Runner"));
 
 var _constants = require("./lib/constants");
 
@@ -120,4 +120,4 @@ var _printer = require("./lib/printer");
 
 var _process = require("./lib/utils/process");
 
-var _config = _interopRequireDefault(require("./config"));
+var _config = require("./config");

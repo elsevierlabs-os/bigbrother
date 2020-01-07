@@ -1,9 +1,9 @@
 import glob from 'glob';
 import fs from 'fs';
-import Suite from './tests/Suite';
-import Browser from './browser/Browser';
-import { PromiseSerial } from './lib/functions';
-
+import Suite from '../tests/Suite';
+import Browser from '../browser/Browser';
+import { PromiseSerial } from '../lib/functions';
+import { pingEndpoint } from '../lib/httpClient';
 import {
     printDelimiter,
     printRunnerFailure,
@@ -14,12 +14,13 @@ import {
     printBigBrother,
     printFilePatternError,
     printError,
+    printInfo,
     printException
-} from './lib/printer';
+} from '../lib/printer';
 
-import { exitProcess } from './lib/utils/process';
-import config, {getConfig} from './config';
-import {appendNodeModulesPathToModule, removeNodeModulesPathFromModule} from './lib/utils/module';
+import {exitProcess, onUserInterrupt} from '../lib/utils/process';
+import TaskRunner from './TaskRunner';
+import { getConfig, storeConfiguration } from '../config';
 
 class Runner {
 
@@ -62,6 +63,9 @@ class Runner {
             exitProcess(1);
         }
 
+        const suitesLabel = files.length > 1 ? 'suites' : 'suite';
+        printInfo(`Found ${files.length} ${suitesLabel}`);
+
         const tests = files.map(this.readFile);
 
         this.executeTestSuites(tests);
@@ -95,25 +99,49 @@ class Runner {
         });
     };
 
-    static setup(configuration) {
-        config.storeConfiguration(configuration);
+    setup(configuration) {
+        storeConfiguration(configuration);
+        onUserInterrupt(this.stop);
+        TaskRunner.executePreCommand();
     }
 
-    start(browserOptions) {
-        Runner.setup(browserOptions);
-
-        printBigBrother();
-
-        this.browser = new Browser(browserOptions);
-        this.browser
-            .launch()
-            .then(() => glob(this.pattern, {}, this.onFilesFound));
+    static cleanup() {
+        printInfo('Performing Runner cleanup.');
+        TaskRunner.executePostCommand();
+        TaskRunner
+            .stopAll()
+            .then(() => printInfo('All processes have been killed.'))
+            .catch(printException);
     }
 
-    stop(status) {
-        this.browser
-            .close()
-            .then(() => exitProcess(status));
+    static checkTargetApplicationIsRunning() {
+        const { baseUrl, maxRetries } = getConfig();
+        const timeout = 1500;
+        return pingEndpoint(baseUrl, maxRetries, timeout);
+    }
+
+    start(config) {
+        printInfo('Starting Runner.');
+        this.setup(config);
+        Runner.checkTargetApplicationIsRunning()
+            .then(() => {
+                printBigBrother();
+                printInfo('Starting Browser.');
+                this.browser = new Browser(config);
+                this.browser
+                    .launch()
+                    .then(() => glob(this.pattern, {}, this.onFilesFound));
+            })
+            .catch(printException);
+    }
+
+    stop = (status) => {
+        Runner.cleanup();
+        if (this.browser) {
+            this.browser
+                .close()
+                .then(() => exitProcess(status));
+        }
     }
 }
 

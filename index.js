@@ -12,12 +12,11 @@ const {
     printException,
     printNewLines,
     printInfo,
-    config,
+    DEFAULT_CONFIGURATION,
     ENV_FLAGS
 } = require('./dist');
 
 const usageMessage = require('./usage');
-const { DEFAULT_CONFIGURATION } = config;
 
 // printing a couple empty lines to give BigBrother some space
 printNewLines(2);

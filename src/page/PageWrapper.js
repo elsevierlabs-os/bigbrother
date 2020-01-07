@@ -17,6 +17,7 @@ import {
 import performanceAnalyzer from '../lib/PerformanceAnalyzer';
 import {deepSet} from '../lib/utils/object';
 import AssetsHandler from './AssetsHandler';
+import {buildUrl} from '../lib/utils/url';
 
 class PageWrapper {
 
@@ -151,8 +152,9 @@ class PageWrapper {
         return new Promise(async (resolve, reject) => {
             if (this.hasPage() && url) {
                 await this.setupAssetsMetrics();
-                const data = await performanceAnalyzer.measure(this.getKey('load'), this._load(url));
-                this.options.url = url;
+                const fullUrl = buildUrl(url);
+                const data = await performanceAnalyzer.measure(this.getKey('load'), this._load(fullUrl));
+                this.options.url = fullUrl;
                 this.storeMeasurement(data);
                 resolve(data.duration);
             } else {

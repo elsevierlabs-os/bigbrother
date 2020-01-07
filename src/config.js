@@ -1,4 +1,8 @@
-const DEFAULT_CONFIGURATION = {
+import { printInfo } from './lib/printer';
+
+export const DEFAULT_CONFIGURATION = {
+    baseUrl: 'https://www.sciencedirect.com',
+    maxRetries: 10,
     headless: true,
     cacheEnabled: false,
     recordingsPath: './.recordings',
@@ -8,13 +12,9 @@ const DEFAULT_CONFIGURATION = {
 
 let config = DEFAULT_CONFIGURATION;
 
-const storeConfiguration = (configuration) => {
+export const storeConfiguration = (configuration) => {
     config = configuration;
+    printInfo('current configuration:', configuration);
 };
 
 export const getConfig = () => config;
-
-export default {
-    DEFAULT_CONFIGURATION,
-    storeConfiguration
-};

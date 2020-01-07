@@ -1,6 +1,6 @@
 import Browser from './browser/Browser';
 import PageWrapper from './page/PageWrapper';
-import Runner from './Runner';
+import Runner from './runner/Runner';
 import { CPU, NETWORK, USER_AGENTS, ENV_FLAGS } from './lib/constants';
 import {
     print,
@@ -11,13 +11,13 @@ import {
     printNewLines
 } from './lib/printer';
 import { exitProcess, getEnvFlag, getProcessCWD } from './lib/utils/process';
-import config from './config';
+import { DEFAULT_CONFIGURATION } from './config';
 
 export {
     Browser,
     PageWrapper,
     Runner,
-    config,
+    DEFAULT_CONFIGURATION,
     getEnvFlag,
     getProcessCWD,
     exitProcess,

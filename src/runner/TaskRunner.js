@@ -1,12 +1,11 @@
 import { getConfig } from '../config';
-import { spawn } from 'child_process';
 import { SPACE } from '../lib/constants';
-import { printInfo} from '../lib/printer';
-import { killProcess } from '../lib/utils/process';
+import {printError, printInfo} from '../lib/printer';
+import {killProcess, spawnProcess} from '../lib/utils/process';
 
 const NPM = 'npm';
-const PRECOMMAND = 'precommand';
-const POSTCOMMAND = 'postcommand';
+export const PRECOMMAND = 'precommand';
+export const POSTCOMMAND = 'postcommand';
 
 class TaskRunner {
 
@@ -50,7 +49,7 @@ class TaskRunner {
                     const { cwd } = getConfig();
                     const args = TaskRunner.getCommandArguments(command);
                     printInfo(`Executing NPM command on ${cwd}, command: ${command}`);
-                    this.tasks[name] = spawn(NPM, args, { cwd });
+                    this.tasks[name] = spawnProcess(NPM, args, { cwd });
                     resolve(name);
                 }
                 resolve();
@@ -63,11 +62,15 @@ class TaskRunner {
 
     stop(taskId) {
         return new Promise((resolve, reject) => {
-            const { pid } = this.tasks[taskId];
+            const childProcess = this.tasks[taskId];
             try {
-                printInfo(`About to terminate process ${pid}`);
-                killProcess(pid);
-                resolve();
+                if (childProcess) {
+                    killProcess(childProcess);
+                    resolve();
+                } else {
+                    printError(`The required task ${taskId} does not exist.`);
+                    reject();
+                }
             } catch(e) {
                 reject(e);
             }

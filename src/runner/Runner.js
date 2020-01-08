@@ -19,7 +19,7 @@ import {
 } from '../lib/printer';
 
 import {exitProcess, onUserInterrupt} from '../lib/utils/process';
-import TaskRunner from './TaskRunner';
+import TaskRunner, {PRECOMMAND} from './TaskRunner';
 import { getConfig, storeConfiguration } from '../config';
 
 class Runner {
@@ -109,8 +109,8 @@ class Runner {
         printInfo('Performing Runner cleanup.');
         TaskRunner.executePostCommand();
         TaskRunner
-            .stopAll()
-            .then(() => printInfo('All processes have been killed.'))
+            .stop(PRECOMMAND)
+            .then(() => printInfo(`${PRECOMMAND} command has been killed.`))
             .catch(printException);
     }
 
@@ -119,6 +119,13 @@ class Runner {
         const timeout = 1500;
         return pingEndpoint(baseUrl, maxRetries, timeout);
     }
+
+    getIgnoredFiles = () => {
+        const NODE_MODULES = 'node_modules/**/*.*';
+        const { ignore } = getConfig();
+
+        return [ NODE_MODULES, ...ignore ];
+    };
 
     start(config) {
         printInfo('Starting Runner.');
@@ -130,7 +137,7 @@ class Runner {
                 this.browser = new Browser(config);
                 this.browser
                     .launch()
-                    .then(() => glob(this.pattern, {}, this.onFilesFound));
+                    .then(() => glob(this.pattern, { ignore: this.getIgnoredFiles() }, this.onFilesFound));
             })
             .catch(printException);
     }

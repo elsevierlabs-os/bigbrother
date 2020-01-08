@@ -3,6 +3,7 @@ import { printInfo } from './lib/printer';
 export const DEFAULT_CONFIGURATION = {
     baseUrl: 'https://www.sciencedirect.com',
     maxRetries: 10,
+    retryTimeout: 1500,
     headless: true,
     cacheEnabled: false,
     recordingsPath: './.recordings',

@@ -1,5 +1,3 @@
-import glob from 'glob';
-import fs from 'fs';
 import Suite from '../tests/Suite';
 import Browser from '../browser/Browser';
 import { PromiseSerial } from '../lib/functions';
@@ -12,14 +10,13 @@ import {
     printFailedTest,
     printTitleTest,
     printBigBrother,
-    printFilePatternError,
-    printError,
     printInfo,
     printException
 } from '../lib/printer';
 
-import {exitProcess, onUserInterrupt} from '../lib/utils/process';
-import TaskRunner, {PRECOMMAND} from './TaskRunner';
+import { exitProcess, onUserInterrupt } from '../lib/utils/process';
+import TaskRunner, { PRECOMMAND } from './TaskRunner';
+import FileReader from '../lib/FileReader';
 import { getConfig, storeConfiguration } from '../config';
 
 class Runner {
@@ -30,45 +27,19 @@ class Runner {
         this.suites = [];
     }
 
-    readFile = (filename) => {
-        const content = fs.readFileSync(filename, 'utf8');
-
-        return { filename, content };
-    };
-
     executeTestSuites = (tests = []) => {
-        this.suites = tests.map(({ filename, content}) => {
+        const suites = tests.map(({ filename, content}) => {
             return new Suite(filename, content, this.browser);
         });
 
-        PromiseSerial(this.suites
+        return PromiseSerial(suites
             .map( s => () => s.execute()))
-            .then(this.evaluateResults)
-            .catch(this.handleException);
+            .then(this.evaluateResults);
     };
 
-    handleException = (e) => {
+    static handleException = (e) => {
         printException(e);
         exitProcess(1);
-    };
-
-    onFilesFound = (err, files = []) => {
-        if (err) {
-            printError(err);
-            exitProcess(1);
-        }
-
-        if (!files.length) {
-            printFilePatternError(this.pattern);
-            exitProcess(1);
-        }
-
-        const suitesLabel = files.length > 1 ? 'suites' : 'suite';
-        printInfo(`Found ${files.length} ${suitesLabel}`);
-
-        const tests = files.map(this.readFile);
-
-        this.executeTestSuites(tests);
     };
 
     evaluateResults = (suites) => {
@@ -111,21 +82,13 @@ class Runner {
         TaskRunner
             .stop(PRECOMMAND)
             .then(() => printInfo(`${PRECOMMAND} command has been killed.`))
-            .catch(printException);
+            .catch(Runner.handleException);
     }
 
     static checkTargetApplicationIsRunning() {
-        const { baseUrl, maxRetries } = getConfig();
-        const timeout = 1500;
-        return pingEndpoint(baseUrl, maxRetries, timeout);
+        const { baseUrl, maxRetries, retryTimeout } = getConfig();
+        return pingEndpoint(baseUrl, maxRetries, retryTimeout);
     }
-
-    getIgnoredFiles = () => {
-        const NODE_MODULES = 'node_modules/**/*.*';
-        const { ignore } = getConfig();
-
-        return [ NODE_MODULES, ...ignore ];
-    };
 
     start(config) {
         printInfo('Starting Runner.');
@@ -137,9 +100,11 @@ class Runner {
                 this.browser = new Browser(config);
                 this.browser
                     .launch()
-                    .then(() => glob(this.pattern, { ignore: this.getIgnoredFiles() }, this.onFilesFound));
+                    .then(() => FileReader.getFiles(this.pattern))
+                    .then((filenames) => FileReader.onFilesFound(filenames))
+                    .then(this.executeTestSuites)
             })
-            .catch(printException);
+            .catch(Runner.handleException);
     }
 
     stop = (status) => {

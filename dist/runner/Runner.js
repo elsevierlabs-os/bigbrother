@@ -17,10 +17,6 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
-var _glob = _interopRequireDefault(require("glob"));
-
-var _fs = _interopRequireDefault(require("fs"));
-
 var _Suite = _interopRequireDefault(require("../tests/Suite"));
 
 var _Browser = _interopRequireDefault(require("../browser/Browser"));
@@ -35,6 +31,8 @@ var _process = require("../lib/utils/process");
 
 var _TaskRunner = _interopRequireWildcard(require("./TaskRunner"));
 
+var _FileReader = _interopRequireDefault(require("../lib/FileReader"));
+
 var _config = require("../config");
 
 var Runner =
@@ -44,49 +42,18 @@ function () {
     var _this = this;
 
     (0, _classCallCheck2.default)(this, Runner);
-    (0, _defineProperty2.default)(this, "readFile", function (filename) {
-      var content = _fs.default.readFileSync(filename, 'utf8');
-
-      return {
-        filename: filename,
-        content: content
-      };
-    });
     (0, _defineProperty2.default)(this, "executeTestSuites", function () {
       var tests = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-      _this.suites = tests.map(function (_ref) {
+      var suites = tests.map(function (_ref) {
         var filename = _ref.filename,
             content = _ref.content;
         return new _Suite.default(filename, content, _this.browser);
       });
-      (0, _functions.PromiseSerial)(_this.suites.map(function (s) {
+      return (0, _functions.PromiseSerial)(suites.map(function (s) {
         return function () {
           return s.execute();
         };
-      })).then(_this.evaluateResults).catch(_this.handleException);
-    });
-    (0, _defineProperty2.default)(this, "handleException", function (e) {
-      (0, _printer.printException)(e);
-      (0, _process.exitProcess)(1);
-    });
-    (0, _defineProperty2.default)(this, "onFilesFound", function (err) {
-      var files = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-
-      if (err) {
-        (0, _printer.printError)(err);
-        (0, _process.exitProcess)(1);
-      }
-
-      if (!files.length) {
-        (0, _printer.printFilePatternError)(_this.pattern);
-        (0, _process.exitProcess)(1);
-      }
-
-      var suitesLabel = files.length > 1 ? 'suites' : 'suite';
-      (0, _printer.printInfo)("Found ".concat(files.length, " ").concat(suitesLabel));
-      var tests = files.map(_this.readFile);
-
-      _this.executeTestSuites(tests);
+      })).then(_this.evaluateResults);
     });
     (0, _defineProperty2.default)(this, "evaluateResults", function (suites) {
       var failed = suites.reduce(function (total, suite) {
@@ -115,14 +82,6 @@ function () {
         (0, _printer.printFailedTest)(test.reason.message);
         (0, _printer.printNewLines)(1);
       });
-    });
-    (0, _defineProperty2.default)(this, "getIgnoredFiles", function () {
-      var NODE_MODULES = 'node_modules/**/*.*';
-
-      var _getConfig = (0, _config.getConfig)(),
-          ignore = _getConfig.ignore;
-
-      return [NODE_MODULES].concat((0, _toConsumableArray2.default)(ignore));
     });
     (0, _defineProperty2.default)(this, "stop", function (status) {
       Runner.cleanup();
@@ -159,11 +118,11 @@ function () {
         _this2.browser = new _Browser.default(config);
 
         _this2.browser.launch().then(function () {
-          return (0, _glob.default)(_this2.pattern, {
-            ignore: _this2.getIgnoredFiles()
-          }, _this2.onFilesFound);
-        });
-      }).catch(_printer.printException);
+          return _FileReader.default.getFiles(_this2.pattern);
+        }).then(function (filenames) {
+          return _FileReader.default.onFilesFound(filenames);
+        }).then(_this2.executeTestSuites);
+      }).catch(Runner.handleException);
     }
   }], [{
     key: "cleanup",
@@ -174,21 +133,25 @@ function () {
 
       _TaskRunner.default.stop(_TaskRunner.PRECOMMAND).then(function () {
         return (0, _printer.printInfo)("".concat(_TaskRunner.PRECOMMAND, " command has been killed."));
-      }).catch(_printer.printException);
+      }).catch(Runner.handleException);
     }
   }, {
     key: "checkTargetApplicationIsRunning",
     value: function checkTargetApplicationIsRunning() {
-      var _getConfig2 = (0, _config.getConfig)(),
-          baseUrl = _getConfig2.baseUrl,
-          maxRetries = _getConfig2.maxRetries;
+      var _getConfig = (0, _config.getConfig)(),
+          baseUrl = _getConfig.baseUrl,
+          maxRetries = _getConfig.maxRetries,
+          retryTimeout = _getConfig.retryTimeout;
 
-      var timeout = 1500;
-      return (0, _httpClient.pingEndpoint)(baseUrl, maxRetries, timeout);
+      return (0, _httpClient.pingEndpoint)(baseUrl, maxRetries, retryTimeout);
     }
   }]);
   return Runner;
 }();
 
+(0, _defineProperty2.default)(Runner, "handleException", function (e) {
+  (0, _printer.printException)(e);
+  (0, _process.exitProcess)(1);
+});
 var _default = Runner;
 exports.default = _default;

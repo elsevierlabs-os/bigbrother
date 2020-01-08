@@ -5,14 +5,18 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.onUserInterrupt = exports.killProcess = exports.getProcessCWD = exports.exitProcess = exports.getEnvFlag = void 0;
+exports.onUserInterrupt = exports.killProcess = exports.spawnProcess = exports.logChildProcessEvents = exports.getProcessCWD = exports.exitProcess = exports.getEnvFlag = void 0;
+
+var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
 var _printer = require("../printer");
 
-var _treeKill = _interopRequireDefault(require("tree-kill"));
+var _child_process = require("child_process");
 
 var SIGTERM = 'SIGTERM';
 var SIGINT = 'SIGINT';
+var CLOSE_EVENT = 'close';
+var ERROR_EVENT = 'error';
 
 var getEnvFlag = function getEnvFlag(flag) {
   return process && process.env && process.env[flag];
@@ -33,9 +37,39 @@ var getProcessCWD = function getProcessCWD() {
 
 exports.getProcessCWD = getProcessCWD;
 
-var killProcess = function killProcess(pid) {
-  (0, _printer.printInfo)("Killing process ".concat(pid));
-  (0, _treeKill.default)(pid);
+var handleChildProcessDeath = function handleChildProcessDeath(pid) {
+  return function (code, signal) {
+    return (0, _printer.printInfo)("ChildProcess with pid: ".concat(pid, " died because of ").concat(signal, ", code: ").concat(code));
+  };
+};
+
+var handleChildProcessError = function handleChildProcessError(pid) {
+  return function (err) {
+    return (0, _printer.printInfo)("ChildProcess with pid: ".concat(pid, " received error"), err);
+  };
+};
+
+var logChildProcessEvents = function logChildProcessEvents(childProcess) {
+  childProcess.on(CLOSE_EVENT, handleChildProcessDeath(childProcess.pid));
+  childProcess.on(ERROR_EVENT, handleChildProcessError(childProcess.pid));
+};
+
+exports.logChildProcessEvents = logChildProcessEvents;
+
+var spawnProcess = function spawnProcess(cmd, args, options) {
+  var childProcess = (0, _child_process.spawn)(cmd, args, (0, _objectSpread2.default)({
+    detached: true
+  }, options));
+  logChildProcessEvents(childProcess);
+  return childProcess;
+};
+
+exports.spawnProcess = spawnProcess;
+
+var killProcess = function killProcess(childProcess) {
+  var processGroupPid = -childProcess.pid;
+  (0, _printer.printInfo)("Killing process withing group pid: ".concat(-processGroupPid));
+  process.kill(processGroupPid);
 };
 
 exports.killProcess = killProcess;

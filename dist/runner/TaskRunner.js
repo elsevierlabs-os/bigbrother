@@ -5,15 +5,13 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = exports.POSTCOMMAND = exports.PRECOMMAND = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 var _config = require("../config");
-
-var _child_process = require("child_process");
 
 var _constants = require("../lib/constants");
 
@@ -23,7 +21,9 @@ var _process = require("../lib/utils/process");
 
 var NPM = 'npm';
 var PRECOMMAND = 'precommand';
+exports.PRECOMMAND = PRECOMMAND;
 var POSTCOMMAND = 'postcommand';
+exports.POSTCOMMAND = POSTCOMMAND;
 
 var TaskRunner =
 /*#__PURE__*/
@@ -72,7 +72,7 @@ function () {
 
             var args = TaskRunner.getCommandArguments(command);
             (0, _printer.printInfo)("Executing NPM command on ".concat(cwd, ", command: ").concat(command));
-            _this.tasks[name] = (0, _child_process.spawn)(NPM, args, {
+            _this.tasks[name] = (0, _process.spawnProcess)(NPM, args, {
               cwd: cwd
             });
             resolve(name);
@@ -90,12 +90,16 @@ function () {
       var _this2 = this;
 
       return new Promise(function (resolve, reject) {
-        var pid = _this2.tasks[taskId].pid;
+        var childProcess = _this2.tasks[taskId];
 
         try {
-          (0, _printer.printInfo)("About to terminate process ".concat(pid));
-          (0, _process.killProcess)(pid);
-          resolve();
+          if (childProcess) {
+            (0, _process.killProcess)(childProcess);
+            resolve();
+          } else {
+            (0, _printer.printError)("The required task ".concat(taskId, " does not exist."));
+            reject();
+          }
         } catch (e) {
           reject(e);
         }

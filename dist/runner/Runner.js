@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
@@ -31,7 +33,7 @@ var _printer = require("../lib/printer");
 
 var _process = require("../lib/utils/process");
 
-var _TaskRunner = _interopRequireDefault(require("./TaskRunner"));
+var _TaskRunner = _interopRequireWildcard(require("./TaskRunner"));
 
 var _config = require("../config");
 
@@ -114,6 +116,14 @@ function () {
         (0, _printer.printNewLines)(1);
       });
     });
+    (0, _defineProperty2.default)(this, "getIgnoredFiles", function () {
+      var NODE_MODULES = 'node_modules/**/*.*';
+
+      var _getConfig = (0, _config.getConfig)(),
+          ignore = _getConfig.ignore;
+
+      return [NODE_MODULES].concat((0, _toConsumableArray2.default)(ignore));
+    });
     (0, _defineProperty2.default)(this, "stop", function (status) {
       Runner.cleanup();
 
@@ -149,7 +159,9 @@ function () {
         _this2.browser = new _Browser.default(config);
 
         _this2.browser.launch().then(function () {
-          return (0, _glob.default)(_this2.pattern, {}, _this2.onFilesFound);
+          return (0, _glob.default)(_this2.pattern, {
+            ignore: _this2.getIgnoredFiles()
+          }, _this2.onFilesFound);
         });
       }).catch(_printer.printException);
     }
@@ -160,16 +172,16 @@ function () {
 
       _TaskRunner.default.executePostCommand();
 
-      _TaskRunner.default.stopAll().then(function () {
-        return (0, _printer.printInfo)('All processes have been killed.');
+      _TaskRunner.default.stop(_TaskRunner.PRECOMMAND).then(function () {
+        return (0, _printer.printInfo)("".concat(_TaskRunner.PRECOMMAND, " command has been killed."));
       }).catch(_printer.printException);
     }
   }, {
     key: "checkTargetApplicationIsRunning",
     value: function checkTargetApplicationIsRunning() {
-      var _getConfig = (0, _config.getConfig)(),
-          baseUrl = _getConfig.baseUrl,
-          maxRetries = _getConfig.maxRetries;
+      var _getConfig2 = (0, _config.getConfig)(),
+          baseUrl = _getConfig2.baseUrl,
+          maxRetries = _getConfig2.maxRetries;
 
       var timeout = 1500;
       return (0, _httpClient.pingEndpoint)(baseUrl, maxRetries, timeout);

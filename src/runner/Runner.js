@@ -15,7 +15,7 @@ import {
 } from '../lib/printer';
 
 import { exitProcess, onUserInterrupt } from '../lib/utils/process';
-import TaskRunner, { PRECOMMAND } from './TaskRunner';
+import TaskRunner, { BEFORE } from './TaskRunner';
 import FileReader from '../lib/FileReader';
 import { getConfig, storeConfiguration } from '../config';
 
@@ -79,8 +79,8 @@ class Runner {
         printInfo('Performing Runner cleanup.');
         TaskRunner.executePostCommand();
         TaskRunner
-            .stop(PRECOMMAND)
-            .then(() => printInfo(`${PRECOMMAND} command has been killed.`))
+            .stop(BEFORE)
+            .then(() => printInfo(`${BEFORE} command has been killed.`))
             .catch(Runner.handleException);
     }
 

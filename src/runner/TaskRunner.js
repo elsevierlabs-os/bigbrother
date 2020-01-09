@@ -4,8 +4,8 @@ import {printError, printInfo} from '../lib/printer';
 import {killProcess, spawnProcess} from '../lib/utils/process';
 
 const NPM = 'npm';
-export const PRECOMMAND = 'precommand';
-export const POSTCOMMAND = 'postcommand';
+export const BEFORE = 'before';
+export const AFTER = 'after';
 
 class TaskRunner {
 
@@ -23,20 +23,20 @@ class TaskRunner {
     }
 
     executePreCommand() {
-        const { precommand } = getConfig();
-        if (precommand) {
-            printInfo('Executing PRECOMMAND');
-            return this.start(PRECOMMAND, precommand);
+        const { before } = getConfig();
+        if (before) {
+            printInfo('Executing BEFORE');
+            return this.start(BEFORE, before);
         }
 
         return Promise.resolve();
     }
 
     executePostCommand() {
-        const { postcommand } = getConfig();
-        if (postcommand) {
-            printInfo('Executing POSTCOMMAND');
-            return this.start(POSTCOMMAND, postcommand);
+        const { after } = getConfig();
+        if (after) {
+            printInfo('Executing AFTER');
+            return this.start(AFTER, after);
         }
 
         return Promise.resolve();

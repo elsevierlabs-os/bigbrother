@@ -20,10 +20,16 @@ class FileReader {
         return filenames.length > 0;
     }
 
-    static getFiles(pattern) {
+    static getFiles() {
         const globOptions = {
             ignore: FileReader.getIgnoredFiles()
         };
+
+        const { pattern } = getConfig();
+        if (!pattern) {
+            printFilePatternError(pattern);
+            return Promise.reject();
+        }
 
         return new Promise((resolve, reject) => {
             glob(pattern, globOptions, (err, filenames) => {

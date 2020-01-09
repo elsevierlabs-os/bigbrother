@@ -21,8 +21,7 @@ import { getConfig, storeConfiguration } from '../config';
 
 class Runner {
 
-    constructor(pattern) {
-        this.pattern = pattern;
+    constructor() {
         this.browser = null;
         this.suites = [];
     }
@@ -100,9 +99,10 @@ class Runner {
                 this.browser = new Browser(config);
                 this.browser
                     .launch()
-                    .then(() => FileReader.getFiles(this.pattern))
-                    .then((filenames) => FileReader.onFilesFound(filenames))
+                    .then(FileReader.getFiles)
+                    .then(FileReader.onFilesFound)
                     .then(this.executeTestSuites)
+                    .catch(Runner.handleException);
             })
             .catch(Runner.handleException);
     }

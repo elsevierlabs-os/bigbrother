@@ -38,11 +38,6 @@ const handleUsageHelp = () => {
     exitProcess(1);
 };
 
-const handleMissingPattern = () => {
-    printError('BigBrother requires a pattern. Please check usage for more info.');
-    handleUsageHelp();
-};
-
 const loadConfigFile = (cwd, configPath) => {
     let config = DEFAULT_CONFIGURATION;
 
@@ -71,16 +66,17 @@ const getModuleConfig = () => ({
     cwd
 });
 
-const { pattern, help, configPath } = readArguments();
+const args = readArguments();
+const { help, configPath } = args;
 
 if (help) handleUsageHelp();
-if (!pattern) handleMissingPattern();
 
 const runnerConfig = Object.assign(
     DEFAULT_CONFIGURATION,
     getModuleConfig(),
     loadEnvConfig(),
+    args,
     loadConfigFile(cwd, configPath));
 
-new Runner(pattern)
+new Runner()
     .start(runnerConfig);

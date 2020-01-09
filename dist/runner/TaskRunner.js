@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.POSTCOMMAND = exports.PRECOMMAND = void 0;
+exports.default = exports.AFTER = exports.BEFORE = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -20,10 +20,10 @@ var _printer = require("../lib/printer");
 var _process = require("../lib/utils/process");
 
 var NPM = 'npm';
-var PRECOMMAND = 'precommand';
-exports.PRECOMMAND = PRECOMMAND;
-var POSTCOMMAND = 'postcommand';
-exports.POSTCOMMAND = POSTCOMMAND;
+var BEFORE = 'before';
+exports.BEFORE = BEFORE;
+var AFTER = 'after';
+exports.AFTER = AFTER;
 
 var TaskRunner =
 /*#__PURE__*/
@@ -37,11 +37,11 @@ function () {
     key: "executePreCommand",
     value: function executePreCommand() {
       var _getConfig = (0, _config.getConfig)(),
-          precommand = _getConfig.precommand;
+          before = _getConfig.before;
 
-      if (precommand) {
-        (0, _printer.printInfo)('Executing PRECOMMAND');
-        return this.start(PRECOMMAND, precommand);
+      if (before) {
+        (0, _printer.printInfo)('Executing BEFORE');
+        return this.start(BEFORE, before);
       }
 
       return Promise.resolve();
@@ -50,11 +50,11 @@ function () {
     key: "executePostCommand",
     value: function executePostCommand() {
       var _getConfig2 = (0, _config.getConfig)(),
-          postcommand = _getConfig2.postcommand;
+          after = _getConfig2.after;
 
-      if (postcommand) {
-        (0, _printer.printInfo)('Executing POSTCOMMAND');
-        return this.start(POSTCOMMAND, postcommand);
+      if (after) {
+        (0, _printer.printInfo)('Executing AFTER');
+        return this.start(AFTER, after);
       }
 
       return Promise.resolve();

@@ -126,8 +126,8 @@ function () {
 
       _TaskRunner.default.executePostCommand();
 
-      _TaskRunner.default.stop(_TaskRunner.PRECOMMAND).then(function () {
-        return (0, _printer.printInfo)("".concat(_TaskRunner.PRECOMMAND, " command has been killed."));
+      _TaskRunner.default.stop(_TaskRunner.BEFORE).then(function () {
+        return (0, _printer.printInfo)("".concat(_TaskRunner.BEFORE, " command has been killed."));
       }).catch(Runner.handleException);
     }
   }, {

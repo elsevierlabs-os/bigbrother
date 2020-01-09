@@ -45,10 +45,19 @@ function () {
     }
   }, {
     key: "getFiles",
-    value: function getFiles(pattern) {
+    value: function getFiles() {
       var globOptions = {
         ignore: FileReader.getIgnoredFiles()
       };
+
+      var _getConfig2 = (0, _config.getConfig)(),
+          pattern = _getConfig2.pattern;
+
+      if (!pattern) {
+        (0, _printer.printFilePatternError)(pattern);
+        return Promise.reject();
+      }
+
       return new Promise(function (resolve, reject) {
         (0, _glob.default)(pattern, globOptions, function (err, filenames) {
           if (err) {

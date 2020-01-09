@@ -38,7 +38,7 @@ var _config = require("../config");
 var Runner =
 /*#__PURE__*/
 function () {
-  function Runner(pattern) {
+  function Runner() {
     var _this = this;
 
     (0, _classCallCheck2.default)(this, Runner);
@@ -92,7 +92,6 @@ function () {
         });
       }
     });
-    this.pattern = pattern;
     this.browser = null;
     this.suites = [];
   }
@@ -117,11 +116,7 @@ function () {
         (0, _printer.printInfo)('Starting Browser.');
         _this2.browser = new _Browser.default(config);
 
-        _this2.browser.launch().then(function () {
-          return _FileReader.default.getFiles(_this2.pattern);
-        }).then(function (filenames) {
-          return _FileReader.default.onFilesFound(filenames);
-        }).then(_this2.executeTestSuites);
+        _this2.browser.launch().then(_FileReader.default.getFiles).then(_FileReader.default.onFilesFound).then(_this2.executeTestSuites).catch(Runner.handleException);
       }).catch(Runner.handleException);
     }
   }], [{

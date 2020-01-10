@@ -54,7 +54,7 @@ export const NETWORK = {
         uploadThroughput: 256000
     },
     OFFLINE: {
-        offline: false,
+        offline: true,
         latency: 10000,
         downloadThroughput: 0,
         uploadThroughput: 0

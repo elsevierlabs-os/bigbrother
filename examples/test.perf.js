@@ -8,6 +8,8 @@ describe('sciencedirect', function() {
 
         const time = await page.click('input[type="text"]');
 
+        page.toJSON();
+
         expect(time).toBeLessThan(50);
     });
 

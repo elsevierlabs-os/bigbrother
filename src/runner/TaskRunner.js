@@ -14,12 +14,16 @@ class TaskRunner {
     }
 
     static isNpmCommand(command) {
-        return command.split(SPACE)[0] === NPM;
+        return command === NPM;
     }
 
-    static getCommandArguments(command) {
+    static parseCommand(command) {
         const split = command.split(SPACE);
-        return split.slice(1, split.length);
+
+        return {
+            cmd: split[0],
+            args: split.splice(1, split.length)
+        };
     }
 
     executePreCommand() {
@@ -45,14 +49,16 @@ class TaskRunner {
     start(name, command) {
         return new Promise((resolve, reject) => {
             try {
-                if (TaskRunner.isNpmCommand(command)) {
-                    const { cwd } = getConfig();
-                    const args = TaskRunner.getCommandArguments(command);
-                    printInfo(`Executing NPM command on ${cwd}, command: ${command}`);
+                const { cwd } = getConfig();
+                const { cmd, args } = TaskRunner.parseCommand(command);
+                printInfo(`Executing NPM command on ${cwd}, command: ${command}`);
+
+                if (TaskRunner.isNpmCommand(cmd)) {
                     this.tasks[name] = spawnProcess(NPM, args, { cwd });
-                    resolve(name);
+                } else {
+                    this.tasks[name] = spawnProcess(cmd, args, { cwd });
                 }
-                resolve();
+                resolve(name);
             } catch(e) {
                 reject(e);
             }
@@ -66,11 +72,10 @@ class TaskRunner {
             try {
                 if (childProcess) {
                     killProcess(childProcess);
-                    resolve();
                 } else {
-                    printError(`The required task ${taskId} does not exist.`);
-                    reject();
+                    printInfo(`The required task ${taskId} does not exist.`);
                 }
+                resolve();
             } catch(e) {
                 reject(e);
             }

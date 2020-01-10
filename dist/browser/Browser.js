@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -29,7 +29,7 @@ function () {
         _ref$cacheEnabled = _ref.cacheEnabled,
         cacheEnabled = _ref$cacheEnabled === void 0 ? false : _ref$cacheEnabled;
 
-    (0, _classCallCheck2.default)(this, Browser);
+    (0, _classCallCheck2["default"])(this, Browser);
     this.browser = null;
     this.puppeteerOptions = {
       headless: headless
@@ -40,7 +40,7 @@ function () {
     this.pages = [];
   }
 
-  (0, _createClass2.default)(Browser, [{
+  (0, _createClass2["default"])(Browser, [{
     key: "storePage",
     value: function storePage(key, page) {
       // we should use a key value map
@@ -57,11 +57,11 @@ function () {
   }, {
     key: "newPage",
     value: function () {
-      var _newPage = (0, _asyncToGenerator2.default)(
+      var _newPage = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee() {
+      _regenerator["default"].mark(function _callee() {
         var page;
-        return _regenerator.default.wrap(function _callee$(_context) {
+        return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -91,15 +91,15 @@ function () {
   }, {
     key: "launch",
     value: function () {
-      var _launch = (0, _asyncToGenerator2.default)(
+      var _launch = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee2() {
-        return _regenerator.default.wrap(function _callee2$(_context2) {
+      _regenerator["default"].mark(function _callee2() {
+        return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _puppeteer.default.launch(this.puppeteerOptions);
+                return _puppeteer["default"].launch(this.puppeteerOptions);
 
               case 2:
                 this.browser = _context2.sent;
@@ -122,10 +122,10 @@ function () {
   }, {
     key: "close",
     value: function () {
-      var _close = (0, _asyncToGenerator2.default)(
+      var _close = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee3() {
-        return _regenerator.default.wrap(function _callee3$(_context3) {
+      _regenerator["default"].mark(function _callee3() {
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
@@ -159,4 +159,4 @@ function () {
 }();
 
 var _default = Browser;
-exports.default = _default;
+exports["default"] = _default;

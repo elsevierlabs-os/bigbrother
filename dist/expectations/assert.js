@@ -5,14 +5,14 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _objectInspect = _interopRequireDefault(require("object-inspect"));
 
 var formatString = function formatString(string, args) {
   var index = 0;
   return string.replace(/%s/g, function () {
-    return (0, _objectInspect.default)(args[index++]);
+    return (0, _objectInspect["default"])(args[index++]);
   });
 };
 
@@ -28,4 +28,4 @@ var assert = function assert(condition, createMessage) {
 };
 
 var _default = assert;
-exports.default = _default;
+exports["default"] = _default;

@@ -7,7 +7,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
@@ -41,13 +41,13 @@ function () {
   function Runner() {
     var _this = this;
 
-    (0, _classCallCheck2.default)(this, Runner);
-    (0, _defineProperty2.default)(this, "executeTestSuites", function () {
+    (0, _classCallCheck2["default"])(this, Runner);
+    (0, _defineProperty2["default"])(this, "executeTestSuites", function () {
       var tests = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       var suites = tests.map(function (_ref) {
         var filename = _ref.filename,
             content = _ref.content;
-        return new _Suite.default(filename, content, _this.browser);
+        return new _Suite["default"](filename, content, _this.browser);
       });
       return (0, _functions.PromiseSerial)(suites.map(function (s) {
         return function () {
@@ -55,9 +55,9 @@ function () {
         };
       })).then(_this.evaluateResults);
     });
-    (0, _defineProperty2.default)(this, "evaluateResults", function (suites) {
+    (0, _defineProperty2["default"])(this, "evaluateResults", function (suites) {
       var failed = suites.reduce(function (total, suite) {
-        return [].concat((0, _toConsumableArray2.default)(total), (0, _toConsumableArray2.default)(suite.filter(function (test) {
+        return [].concat((0, _toConsumableArray2["default"])(total), (0, _toConsumableArray2["default"])(suite.filter(function (test) {
           return !test.success;
         })));
       }, []);
@@ -75,7 +75,7 @@ function () {
 
       _this.stop(failedCount);
     });
-    (0, _defineProperty2.default)(this, "printFailures", function (failed) {
+    (0, _defineProperty2["default"])(this, "printFailures", function (failed) {
       (0, _printer.printNewLines)();
       failed.forEach(function (test) {
         (0, _printer.printTitleTest)(test.title);
@@ -83,7 +83,7 @@ function () {
         (0, _printer.printNewLines)(1);
       });
     });
-    (0, _defineProperty2.default)(this, "stop", function (status) {
+    (0, _defineProperty2["default"])(this, "stop", function (status) {
       Runner.cleanup();
 
       if (_this.browser) {
@@ -96,13 +96,13 @@ function () {
     this.suites = [];
   }
 
-  (0, _createClass2.default)(Runner, [{
+  (0, _createClass2["default"])(Runner, [{
     key: "setup",
     value: function setup(configuration) {
       (0, _config.storeConfiguration)(configuration);
       (0, _process.onUserInterrupt)(this.stop);
 
-      _TaskRunner.default.executePreCommand();
+      _TaskRunner["default"].executePreCommand();
     }
   }, {
     key: "start",
@@ -114,21 +114,21 @@ function () {
       Runner.checkTargetApplicationIsRunning().then(function () {
         (0, _printer.printBigBrother)();
         (0, _printer.printInfo)('Starting Browser.');
-        _this2.browser = new _Browser.default(config);
+        _this2.browser = new _Browser["default"](config);
 
-        _this2.browser.launch().then(_FileReader.default.getFiles).then(_FileReader.default.onFilesFound).then(_this2.executeTestSuites).catch(Runner.handleException);
-      }).catch(Runner.handleException);
+        _this2.browser.launch().then(_FileReader["default"].getFiles).then(_FileReader["default"].onFilesFound).then(_this2.executeTestSuites)["catch"](Runner.handleException);
+      })["catch"](Runner.handleException);
     }
   }], [{
     key: "cleanup",
     value: function cleanup() {
       (0, _printer.printInfo)('Performing Runner cleanup.');
 
-      _TaskRunner.default.executePostCommand();
+      _TaskRunner["default"].executePostCommand();
 
-      _TaskRunner.default.stop(_TaskRunner.BEFORE).then(function () {
+      _TaskRunner["default"].stop(_TaskRunner.BEFORE).then(function () {
         return (0, _printer.printInfo)("".concat(_TaskRunner.BEFORE, " command has been killed."));
-      }).catch(Runner.handleException);
+      })["catch"](Runner.handleException);
     }
   }, {
     key: "checkTargetApplicationIsRunning",
@@ -144,9 +144,9 @@ function () {
   return Runner;
 }();
 
-(0, _defineProperty2.default)(Runner, "handleException", function (e) {
+(0, _defineProperty2["default"])(Runner, "handleException", function (e) {
   (0, _printer.printException)(e);
   (0, _process.exitProcess)(1);
 });
 var _default = Runner;
-exports.default = _default;
+exports["default"] = _default;

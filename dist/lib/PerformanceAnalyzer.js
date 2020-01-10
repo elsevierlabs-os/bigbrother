@@ -5,13 +5,13 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -19,16 +19,20 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _object = require("./utils/object");
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 var PerformanceAnalyzer =
 /*#__PURE__*/
 function () {
   function PerformanceAnalyzer() {
-    (0, _classCallCheck2.default)(this, PerformanceAnalyzer);
+    (0, _classCallCheck2["default"])(this, PerformanceAnalyzer);
     // somewhere here we're going to store information about all scenario
     this.data = {};
   }
 
-  (0, _createClass2.default)(PerformanceAnalyzer, [{
+  (0, _createClass2["default"])(PerformanceAnalyzer, [{
     key: "store",
     value: function store() {// we should store information about this specific run
     }
@@ -65,22 +69,24 @@ function () {
       var action = (0, _object.deepGet)("".concat(key), this.data);
       var end = +new Date();
       var duration = end - action.start;
-      var value = (0, _objectSpread2.default)({}, action, {
+
+      var value = _objectSpread({}, action, {
         end: end,
         duration: duration,
         key: key
       });
+
       (0, _object.deepSet)("".concat(key), value, this.data);
       return value;
     }
   }, {
     key: "measure",
     value: function () {
-      var _measure = (0, _asyncToGenerator2.default)(
+      var _measure = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee(key, targetFunction) {
+      _regenerator["default"].mark(function _callee(key, targetFunction) {
         var uniqueKey;
-        return _regenerator.default.wrap(function _callee$(_context) {
+        return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -126,4 +132,4 @@ function () {
 
 var _default = new PerformanceAnalyzer();
 
-exports.default = _default;
+exports["default"] = _default;

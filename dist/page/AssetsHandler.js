@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -15,11 +15,11 @@ var AssetsHandler =
 /*#__PURE__*/
 function () {
   function AssetsHandler() {
-    (0, _classCallCheck2.default)(this, AssetsHandler);
+    (0, _classCallCheck2["default"])(this, AssetsHandler);
     this.assets = {};
   }
 
-  (0, _createClass2.default)(AssetsHandler, [{
+  (0, _createClass2["default"])(AssetsHandler, [{
     key: "reset",
     value: function reset() {
       this.assets = {};
@@ -59,4 +59,4 @@ function () {
 }();
 
 var _default = AssetsHandler;
-exports.default = _default;
+exports["default"] = _default;

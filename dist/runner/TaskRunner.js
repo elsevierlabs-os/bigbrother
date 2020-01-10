@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.AFTER = exports.BEFORE = void 0;
+exports["default"] = exports.AFTER = exports.BEFORE = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -29,11 +29,11 @@ var TaskRunner =
 /*#__PURE__*/
 function () {
   function TaskRunner() {
-    (0, _classCallCheck2.default)(this, TaskRunner);
+    (0, _classCallCheck2["default"])(this, TaskRunner);
     this.tasks = {};
   }
 
-  (0, _createClass2.default)(TaskRunner, [{
+  (0, _createClass2["default"])(TaskRunner, [{
     key: "executePreCommand",
     value: function executePreCommand() {
       var _getConfig = (0, _config.getConfig)(),
@@ -66,19 +66,26 @@ function () {
 
       return new Promise(function (resolve, reject) {
         try {
-          if (TaskRunner.isNpmCommand(command)) {
-            var _getConfig3 = (0, _config.getConfig)(),
-                cwd = _getConfig3.cwd;
+          var _getConfig3 = (0, _config.getConfig)(),
+              cwd = _getConfig3.cwd;
 
-            var args = TaskRunner.getCommandArguments(command);
-            (0, _printer.printInfo)("Executing NPM command on ".concat(cwd, ", command: ").concat(command));
+          var _TaskRunner$parseComm = TaskRunner.parseCommand(command),
+              cmd = _TaskRunner$parseComm.cmd,
+              args = _TaskRunner$parseComm.args;
+
+          (0, _printer.printInfo)("Executing NPM command on ".concat(cwd, ", command: ").concat(command));
+
+          if (TaskRunner.isNpmCommand(cmd)) {
             _this.tasks[name] = (0, _process.spawnProcess)(NPM, args, {
               cwd: cwd
             });
-            resolve(name);
+          } else {
+            _this.tasks[name] = (0, _process.spawnProcess)(cmd, args, {
+              cwd: cwd
+            });
           }
 
-          resolve();
+          resolve(name);
         } catch (e) {
           reject(e);
         }
@@ -95,11 +102,11 @@ function () {
         try {
           if (childProcess) {
             (0, _process.killProcess)(childProcess);
-            resolve();
           } else {
-            (0, _printer.printError)("The required task ".concat(taskId, " does not exist."));
-            reject();
+            (0, _printer.printInfo)("The required task ".concat(taskId, " does not exist."));
           }
+
+          resolve();
         } catch (e) {
           reject(e);
         }
@@ -117,13 +124,16 @@ function () {
   }], [{
     key: "isNpmCommand",
     value: function isNpmCommand(command) {
-      return command.split(_constants.SPACE)[0] === NPM;
+      return command === NPM;
     }
   }, {
-    key: "getCommandArguments",
-    value: function getCommandArguments(command) {
+    key: "parseCommand",
+    value: function parseCommand(command) {
       var split = command.split(_constants.SPACE);
-      return split.slice(1, split.length);
+      return {
+        cmd: split[0],
+        args: split.splice(1, split.length)
+      };
     }
   }]);
   return TaskRunner;
@@ -131,4 +141,4 @@ function () {
 
 var _default = new TaskRunner();
 
-exports.default = _default;
+exports["default"] = _default;

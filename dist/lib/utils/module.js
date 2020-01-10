@@ -12,7 +12,7 @@ var _path = _interopRequireDefault(require("path"));
 var NODE_MODULES = 'node_modules';
 
 var appendNodeModulesPathToModule = function appendNodeModulesPathToModule(mod, directory) {
-  var modulesPath = _path.default.join(directory, NODE_MODULES);
+  var modulesPath = _path["default"].join(directory, NODE_MODULES);
 
   mod.paths.push(modulesPath);
 };
@@ -20,7 +20,7 @@ var appendNodeModulesPathToModule = function appendNodeModulesPathToModule(mod, 
 exports.appendNodeModulesPathToModule = appendNodeModulesPathToModule;
 
 var removeNodeModulesPathFromModule = function removeNodeModulesPathFromModule(directory) {
-  var modulesPath = _path.default.join(directory, NODE_MODULES);
+  var modulesPath = _path["default"].join(directory, NODE_MODULES);
 
   module.paths = module.paths.filter(function (p) {
     return p !== modulesPath;

@@ -30,16 +30,16 @@ var buildRecordingsFolderPath = function buildRecordingsFolderPath() {
       cwd = _getConfig.cwd,
       recordingsPath = _getConfig.recordingsPath;
 
-  return _path.default.join(cwd, recordingsPath);
+  return _path["default"].join(cwd, recordingsPath);
 };
 
 var buildRecordingFullPath = function buildRecordingFullPath(name) {
   var filename = buildFileName(name);
-  return _path.default.join(buildRecordingsFolderPath(), filename);
+  return _path["default"].join(buildRecordingsFolderPath(), filename);
 };
 
 var recordingExists = function recordingExists(page) {
-  return _fs.default.existsSync(buildRecordingFullPath(page.name));
+  return _fs["default"].existsSync(buildRecordingFullPath(page.name));
 };
 
 exports.recordingExists = recordingExists;
@@ -48,8 +48,8 @@ var checkAndCreateRecordingFolder = function checkAndCreateRecordingFolder() {
   var recordingFolderPath = buildRecordingsFolderPath();
 
   try {
-    if (!_fs.default.existsSync(recordingFolderPath)) {
-      _fs.default.mkdirSync(recordingFolderPath, {
+    if (!_fs["default"].existsSync(recordingFolderPath)) {
+      _fs["default"].mkdirSync(recordingFolderPath, {
         recursive: true
       });
     }
@@ -68,7 +68,7 @@ var recordPage = function recordPage(page) {
   var data = page.toJSON(0);
 
   if (checkAndCreateRecordingFolder()) {
-    _fs.default.writeFileSync(fullPath, data);
+    _fs["default"].writeFileSync(fullPath, data);
   }
 };
 
@@ -77,7 +77,7 @@ exports.recordPage = recordPage;
 var getPageRecording = function getPageRecording(page) {
   var fullPath = buildRecordingFullPath(page.name);
 
-  var raw = _fs.default.readFileSync(fullPath);
+  var raw = _fs["default"].readFileSync(fullPath);
 
   return JSON.parse(raw);
 };
@@ -97,7 +97,7 @@ var compareWithStoredRecording = function compareWithStoredRecording(page) {
     var baseMeasurement = (0, _object.deepGet)(k, baseRecording);
     var measurement = (0, _object.deepGet)(k, json);
     var condition = baseMeasurement.duration === 0 || measurement.duration <= baseMeasurement.duration * (1 + threshold);
-    (0, _assert.default)(condition, "Expected %s to be less than %s for ".concat(k), measurement.duration, baseMeasurement.duration);
+    (0, _assert["default"])(condition, "Expected %s to be less than %s for ".concat(k), measurement.duration, baseMeasurement.duration);
   });
 };
 

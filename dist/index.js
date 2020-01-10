@@ -8,19 +8,19 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "Browser", {
   enumerable: true,
   get: function get() {
-    return _Browser.default;
+    return _Browser["default"];
   }
 });
 Object.defineProperty(exports, "PageWrapper", {
   enumerable: true,
   get: function get() {
-    return _PageWrapper.default;
+    return _PageWrapper["default"];
   }
 });
 Object.defineProperty(exports, "Runner", {
   enumerable: true,
   get: function get() {
-    return _Runner.default;
+    return _Runner["default"];
   }
 });
 Object.defineProperty(exports, "CPU", {

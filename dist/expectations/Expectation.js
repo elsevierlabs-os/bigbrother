@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 
@@ -21,27 +21,27 @@ var Expectation =
 /*#__PURE__*/
 function () {
   function Expectation(value) {
-    (0, _classCallCheck2.default)(this, Expectation);
+    (0, _classCallCheck2["default"])(this, Expectation);
     this.value = value;
-    this.type = (0, _typeof2.default)(value);
+    this.type = (0, _typeof2["default"])(value);
   }
 
-  (0, _createClass2.default)(Expectation, [{
+  (0, _createClass2["default"])(Expectation, [{
     key: "toExist",
     value: function toExist(message) {
-      (0, _assert.default)(this.value, message || 'Expected %s to exist', this.value);
+      (0, _assert["default"])(this.value, message || 'Expected %s to exist', this.value);
       return this;
     }
   }, {
     key: "toBeLessThan",
     value: function toBeLessThan(value) {
-      (0, _assert.default)(this.value < value, 'Expected %s to be less than %s', this.value, value);
+      (0, _assert["default"])(this.value < value, 'Expected %s to be less than %s', this.value, value);
       return this;
     }
   }, {
     key: "toBeEqual",
     value: function toBeEqual(value) {
-      (0, _assert.default)(this.value === value, message || 'Expected %s to be equal to %s', this.value, value);
+      (0, _assert["default"])(this.value === value, message || 'Expected %s to be equal to %s', this.value, value);
       return this;
     }
   }, {
@@ -64,13 +64,13 @@ function () {
   }, {
     key: "toBeWithinRange",
     value: function toBeWithinRange(min, max) {
-      (0, _assert.default)(min < this.value && this.value < max, message || 'Expected %s to be between %s and %s', this.value, min, max);
+      (0, _assert["default"])(min < this.value && this.value < max, message || 'Expected %s to be between %s and %s', this.value, min, max);
       return this;
     }
   }, {
     key: "toBeMoreThan",
     value: function toBeMoreThan(value) {
-      (0, _assert.default)(this.value > value, 'Expected %s to be more than %s', this.value, value);
+      (0, _assert["default"])(this.value > value, 'Expected %s to be more than %s', this.value, value);
       return this;
     }
   }]);
@@ -78,4 +78,4 @@ function () {
 }();
 
 var _default = Expectation;
-exports.default = _default;
+exports["default"] = _default;

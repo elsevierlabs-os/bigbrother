@@ -23,17 +23,17 @@ var pingEndpoint = function pingEndpoint(endpoint) {
     return new Promise(function (resolve, reject) {
       (0, _printer.printInfo)("ping ".concat(endpoint));
       setTimeout(function () {
-        (0, _nodeFetch.default)(endpoint).then(function () {
+        (0, _nodeFetch["default"])(endpoint).then(function () {
           (0, _printer.printInfo)("".concat(endpoint, " is available"));
           resolve();
-        }).catch(reject);
+        })["catch"](reject);
       }, timeout);
     });
   };
 
   return ping().then(function () {
     return Promise.resolve();
-  }).catch(function () {
+  })["catch"](function () {
     return pingEndpoint(endpoint, maxRetries, timeout, count + 1);
   });
 };

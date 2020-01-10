@@ -15,10 +15,10 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var AsyncFunction = Object.getPrototypeOf(
 /*#__PURE__*/
-(0, _asyncToGenerator2.default)(
+(0, _asyncToGenerator2["default"])(
 /*#__PURE__*/
-_regenerator.default.mark(function _callee() {
-  return _regenerator.default.wrap(function _callee$(_context) {
+_regenerator["default"].mark(function _callee() {
+  return _regenerator["default"].wrap(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -35,7 +35,7 @@ var PromiseSerial = function PromiseSerial() {
   return promises.reduce(function (promiseChain, currentTask) {
     return promiseChain.then(function (chainResults) {
       return currentTask().then(function (currentResult) {
-        return [].concat((0, _toConsumableArray2.default)(chainResults), [currentResult]);
+        return [].concat((0, _toConsumableArray2["default"])(chainResults), [currentResult]);
       });
     });
   }, Promise.resolve([]));

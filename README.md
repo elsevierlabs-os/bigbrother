@@ -46,26 +46,29 @@ If defined by the `--config` flag, BigBrother will use a configuration file. The
 
 ```javascript
     const config = {
+        baseUrl: 'http://www.sciencedirect.com',
         cacheEnabled: false,
         headless: true,
-        // options below are not being used
-        pattern: '**/*.perf.js',
-        ignore: [
-            'file.perf.js',
-            'somethingelse.js'
-        ],
-        loader: 'we are fancy and we use babel',
-        verbose: false
+        threshold: 0.3,
+        recordingsPath: '.recordings',
+        before: 'npm run test:performance:before',
+        after: 'npm run test:performance:after',
+        ignore: [],
+        verbose: true,
+        pattern: '**/*.performance.js'
     };
     
     module.exports = config;
+
 ```
 
+- `baseUrl` _string_ [**MANDATORY**]: This is the baseURl used when loading the page.
 - `cacheEnabled` _true/false_: this will enable/disable cache for each page.
 - `headless` _true/false_: this will enable/disable headless mode for Puppeteer.
-- `pattern` _"**/*.perf.js"_ : this defines the test pattern to be used, and it has the same meaning of the fist variable of the cli tool.
+- `threshold` _float_: this represents the acceptance criteria for your tests. See 
+- `recordingsPath` _path_: this is the relative path within your project where recordings will be stored.
+- `pattern` _"**/*.performance.js"_ : this defines the test pattern to be used, and it has the same meaning of the fist variable of the cli tool.
 - `ignore` _list of files_: this defines a list of files to be ignored when running.
-- `loader` _TBD_: TBD
 - `verbose` _true/false_: this will enable/disable verbose mode. 
 
 ---

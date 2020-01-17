@@ -25,15 +25,15 @@ exports.BEFORE = BEFORE;
 var AFTER = 'after';
 exports.AFTER = AFTER;
 
-var TaskRunner =
+var ProcessRunner =
 /*#__PURE__*/
 function () {
-  function TaskRunner() {
-    (0, _classCallCheck2["default"])(this, TaskRunner);
-    this.tasks = {};
+  function ProcessRunner() {
+    (0, _classCallCheck2["default"])(this, ProcessRunner);
+    this.processes = {};
   }
 
-  (0, _createClass2["default"])(TaskRunner, [{
+  (0, _createClass2["default"])(ProcessRunner, [{
     key: "executePreCommand",
     value: function executePreCommand() {
       var _getConfig = (0, _config.getConfig)(),
@@ -69,18 +69,18 @@ function () {
           var _getConfig3 = (0, _config.getConfig)(),
               cwd = _getConfig3.cwd;
 
-          var _TaskRunner$parseComm = TaskRunner.parseCommand(command),
-              cmd = _TaskRunner$parseComm.cmd,
-              args = _TaskRunner$parseComm.args;
+          var _ProcessRunner$parseC = ProcessRunner.parseCommand(command),
+              cmd = _ProcessRunner$parseC.cmd,
+              args = _ProcessRunner$parseC.args;
 
           (0, _printer.printInfo)("Executing NPM command on ".concat(cwd, ", command: ").concat(command));
 
-          if (TaskRunner.isNpmCommand(cmd)) {
-            _this.tasks[name] = (0, _process.spawnProcess)(NPM, args, {
+          if (ProcessRunner.isNpmCommand(cmd)) {
+            _this.processes[name] = (0, _process.spawnProcess)(NPM, args, {
               cwd: cwd
             });
           } else {
-            _this.tasks[name] = (0, _process.spawnProcess)(cmd, args, {
+            _this.processes[name] = (0, _process.spawnProcess)(cmd, args, {
               cwd: cwd
             });
           }
@@ -97,13 +97,14 @@ function () {
       var _this2 = this;
 
       return new Promise(function (resolve, reject) {
-        var childProcess = _this2.tasks[taskId];
+        var childProcess = _this2.processes[taskId];
 
         try {
-          if (childProcess) {
+          if (childProcess && !childProcess.killed) {
             (0, _process.killProcess)(childProcess);
           } else {
-            (0, _printer.printInfo)("The required task ".concat(taskId, " does not exist."));
+            var message = "The required process ".concat(taskId) + (!childProcess ? ' does not exist' : ' is already dead.');
+            (0, _printer.printInfo)(message);
           }
 
           resolve();
@@ -117,7 +118,7 @@ function () {
     value: function stopAll() {
       var _this3 = this;
 
-      return Promise.all(Object.keys(this.tasks).map(function (t) {
+      return Promise.all(Object.keys(this.processes).map(function (t) {
         return _this3.stop(t);
       }));
     }
@@ -136,9 +137,9 @@ function () {
       };
     }
   }]);
-  return TaskRunner;
+  return ProcessRunner;
 }();
 
-var _default = new TaskRunner();
+var _default = new ProcessRunner();
 
 exports["default"] = _default;

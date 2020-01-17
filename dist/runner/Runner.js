@@ -29,7 +29,7 @@ var _printer = require("../lib/printer");
 
 var _process = require("../lib/utils/process");
 
-var _TaskRunner = _interopRequireWildcard(require("./TaskRunner"));
+var _ProcessRunner = _interopRequireWildcard(require("./ProcessRunner"));
 
 var _FileReader = _interopRequireDefault(require("../lib/FileReader"));
 
@@ -102,7 +102,7 @@ function () {
       (0, _config.storeConfiguration)(configuration);
       (0, _process.onUserInterrupt)(this.stop);
 
-      _TaskRunner["default"].executePreCommand();
+      _ProcessRunner["default"].executePreCommand();
     }
   }, {
     key: "start",
@@ -121,14 +121,18 @@ function () {
     }
   }], [{
     key: "cleanup",
-    value: function cleanup() {
+    value: function cleanup(onException) {
       (0, _printer.printInfo)('Performing Runner cleanup.');
 
-      _TaskRunner["default"].executePostCommand();
+      _ProcessRunner["default"].executePostCommand();
 
-      _TaskRunner["default"].stop(_TaskRunner.BEFORE).then(function () {
-        return (0, _printer.printInfo)("".concat(_TaskRunner.BEFORE, " command has been killed."));
-      })["catch"](Runner.handleException);
+      _ProcessRunner["default"].stop(_ProcessRunner.BEFORE).then(function () {
+        return (0, _printer.printInfo)("".concat(_ProcessRunner.BEFORE, " command has been killed."));
+      })["catch"](function (e) {
+        if (!onException) {
+          Runner.handleException(e);
+        }
+      });
     }
   }, {
     key: "checkTargetApplicationIsRunning",
@@ -145,6 +149,7 @@ function () {
 }();
 
 (0, _defineProperty2["default"])(Runner, "handleException", function (e) {
+  Runner.cleanup(true);
   (0, _printer.printException)(e);
   (0, _process.exitProcess)(1);
 });

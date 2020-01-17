@@ -15,9 +15,9 @@ import {
 } from '../lib/constants';
 
 import performanceAnalyzer from '../lib/PerformanceAnalyzer';
-import {deepSet} from '../lib/utils/object';
+import { deepSet } from '../lib/utils/object';
 import AssetsHandler from './AssetsHandler';
-import {buildUrl} from '../lib/utils/url';
+import { buildUrl } from '../lib/utils/url';
 
 class PageWrapper {
 

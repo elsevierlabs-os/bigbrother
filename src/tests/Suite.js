@@ -5,7 +5,7 @@ import Spinner from '../lib/Spinner';
 import { PromiseSerial } from '../lib/functions';
 import { FULL_STOP, ALL_SPACES, UNDERSCORE } from '../lib/constants';
 import { getConfig } from '../config';
-import {appendNodeModulesPathToModule} from '../lib/utils/module';
+import { appendNodeModulesPathToModule } from '../lib/utils/module';
 
 export default class Suite {
 

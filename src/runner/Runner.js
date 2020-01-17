@@ -15,7 +15,7 @@ import {
 } from '../lib/printer';
 
 import { exitProcess, onUserInterrupt } from '../lib/utils/process';
-import TaskRunner, { BEFORE } from './TaskRunner';
+import ProcessRunner, { BEFORE } from './ProcessRunner';
 import FileReader from '../lib/FileReader';
 import { getConfig, storeConfiguration } from '../config';
 
@@ -37,6 +37,7 @@ class Runner {
     };
 
     static handleException = (e) => {
+        Runner.cleanup(true);
         printException(e);
         exitProcess(1);
     };
@@ -72,16 +73,20 @@ class Runner {
     setup(configuration) {
         storeConfiguration(configuration);
         onUserInterrupt(this.stop);
-        TaskRunner.executePreCommand();
+        ProcessRunner.executePreCommand();
     }
 
-    static cleanup() {
+    static cleanup(onException) {
         printInfo('Performing Runner cleanup.');
-        TaskRunner.executePostCommand();
-        TaskRunner
+        ProcessRunner.executePostCommand();
+        ProcessRunner
             .stop(BEFORE)
             .then(() => printInfo(`${BEFORE} command has been killed.`))
-            .catch(Runner.handleException);
+            .catch((e) => {
+                if (!onException) {
+                    Runner.handleException(e);
+                }
+            });
     }
 
     static checkTargetApplicationIsRunning() {

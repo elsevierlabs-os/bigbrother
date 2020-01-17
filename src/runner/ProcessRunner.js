@@ -1,16 +1,16 @@
 import { getConfig } from '../config';
 import { SPACE } from '../lib/constants';
-import {printError, printInfo} from '../lib/printer';
-import {killProcess, spawnProcess} from '../lib/utils/process';
+import { printInfo } from '../lib/printer';
+import { killProcess, spawnProcess } from '../lib/utils/process';
 
 const NPM = 'npm';
 export const BEFORE = 'before';
 export const AFTER = 'after';
 
-class TaskRunner {
+class ProcessRunner {
 
     constructor() {
-        this.tasks = {};
+        this.processes = {};
     }
 
     static isNpmCommand(command) {
@@ -50,13 +50,13 @@ class TaskRunner {
         return new Promise((resolve, reject) => {
             try {
                 const { cwd } = getConfig();
-                const { cmd, args } = TaskRunner.parseCommand(command);
+                const { cmd, args } = ProcessRunner.parseCommand(command);
                 printInfo(`Executing NPM command on ${cwd}, command: ${command}`);
 
-                if (TaskRunner.isNpmCommand(cmd)) {
-                    this.tasks[name] = spawnProcess(NPM, args, { cwd });
+                if (ProcessRunner.isNpmCommand(cmd)) {
+                    this.processes[name] = spawnProcess(NPM, args, { cwd });
                 } else {
-                    this.tasks[name] = spawnProcess(cmd, args, { cwd });
+                    this.processes[name] = spawnProcess(cmd, args, { cwd });
                 }
                 resolve(name);
             } catch(e) {
@@ -68,12 +68,17 @@ class TaskRunner {
 
     stop(taskId) {
         return new Promise((resolve, reject) => {
-            const childProcess = this.tasks[taskId];
+            const childProcess = this.processes[taskId];
             try {
-                if (childProcess) {
+                if (childProcess && !childProcess.killed) {
                     killProcess(childProcess);
                 } else {
-                    printInfo(`The required task ${taskId} does not exist.`);
+                    const message = `The required process ${taskId}` + (
+                        !childProcess ?
+                            ' does not exist' :
+                            ' is already dead.'
+                    );
+                    printInfo(message);
                 }
                 resolve();
             } catch(e) {
@@ -84,8 +89,8 @@ class TaskRunner {
 
     stopAll() {
         return Promise
-            .all(Object.keys(this.tasks).map(t => this.stop(t)));
+            .all(Object.keys(this.processes).map(t => this.stop(t)));
     }
 }
 
-export default new TaskRunner();
+export default new ProcessRunner();

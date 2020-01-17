@@ -1,7 +1,7 @@
 import glob from 'glob';
 import fs from 'fs';
 import { getConfig } from '../config';
-import {printError, printFilePatternError, printInfo} from './printer';
+import { printError, printFilePatternError, printInfo } from './printer';
 
 const NODE_MODULES_IGNORE_PATTERN = 'node_modules/**/*.*';
 

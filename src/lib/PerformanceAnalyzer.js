@@ -1,4 +1,4 @@
-import {deepSet, deepGet, deepExist} from './utils/object';
+import { deepSet, deepGet, deepExist } from './utils/object';
 
 class PerformanceAnalyzer {
 

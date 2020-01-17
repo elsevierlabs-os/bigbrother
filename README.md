@@ -14,7 +14,7 @@ Similar to mocha, BigBrother can be easily included in your pipeline: if perform
 
 ## Installation
 
-`npm install --save-dev github:sdfe/sd-browser-perf#v0.2.0`
+`npm install --save-dev github:sdfe/sd-browser-perf#v0.3.5`
 
 ---
 
@@ -22,17 +22,17 @@ Similar to mocha, BigBrother can be easily included in your pipeline: if perform
 
 Run bigbrother like so:
 
-`bigbrother --config=./bigbrother.config.js '**/*.perf.js' `
+`bigbrother --config=./bigbrother.config.js`
 
 or inside your `package.json`:
 
 ```json
     "scripts": {
         ...
-        "test:performance": "bigbrother --config=./bigbrother.config.js '**/*.perf.js' "
+        "test:performance": "bigbrother --config=./bigbrother.config.js "
     }
 ```
-BigBrother doesn't require a specific pattern, but it's recommended to use a distinct file pattern, such as `.perf.js`;
+BigBrother doesn't require a specific pattern, but it's recommended to use a distinct file pattern, such as `.performance.js`;
 
 ### flags:
 
@@ -424,13 +424,13 @@ You can set the page's user agent by using its method `setUserAgent` like so:
 
 ---
 
-### Output
+### Report
 
-Once every scenario has been executed, the following ouTput will be provided. TBD
+Once every scenario has been executed, the following report will be provided. TBD
 
 ### Contributing
 
-??? Ask Marco <m.stagni@elsevier.com>
+Contributions are more than welcome. Fork the repository and open a PR. If you have questions ask Marco <m.stagni@elsevier.com>
 
 ### Licence
 

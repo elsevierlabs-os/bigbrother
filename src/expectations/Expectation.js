@@ -1,7 +1,6 @@
 import assert from './assert';
 import {
     compareWithStoredRecording,
-    getPageRecording,
     recordingExists,
     recordPage
 } from '../page/PageRecorder';

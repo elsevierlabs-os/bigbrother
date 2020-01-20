@@ -73,7 +73,7 @@ function () {
         (0, _printer.printRunnerSuccess)(suitesCount);
       }
 
-      _this.stop(failedCount);
+      _this.failed = failed;
     });
     (0, _defineProperty2["default"])(this, "printFailures", function (failed) {
       (0, _printer.printNewLines)();
@@ -83,17 +83,32 @@ function () {
         (0, _printer.printNewLines)(1);
       });
     });
-    (0, _defineProperty2["default"])(this, "stop", function (status) {
-      Runner.cleanup();
+    (0, _defineProperty2["default"])(this, "cleanup", function () {
+      (0, _printer.printInfo)('Performing Runner cleanup.');
 
+      _ProcessRunner["default"].executePostCommand();
+
+      _ProcessRunner["default"].stop(_ProcessRunner.BEFORE)["catch"](_printer.printException)["finally"](_this.terminate);
+    });
+    (0, _defineProperty2["default"])(this, "terminate", function () {
+      (0, _printer.printInfo)('Terminating Runner.');
+      (0, _process.exitProcess)(_this.failed.length);
+    });
+    (0, _defineProperty2["default"])(this, "startBrowser", function () {
+      (0, _printer.printInfo)('Starting Browser.');
+      _this.browser = new _Browser["default"]((0, _config.getConfig)());
+      return _this.browser.launch();
+    });
+    (0, _defineProperty2["default"])(this, "stop", function () {
       if (_this.browser) {
-        _this.browser.close().then(function () {
-          return (0, _process.exitProcess)(status);
-        });
+        return _this.browser.close();
       }
+
+      return Promise.resolve();
     });
     this.browser = null;
     this.suites = [];
+    this.failed = [];
   }
 
   (0, _createClass2["default"])(Runner, [{
@@ -107,34 +122,12 @@ function () {
   }, {
     key: "start",
     value: function start(config) {
-      var _this2 = this;
-
       (0, _printer.printInfo)('Starting Runner.');
       this.setup(config);
-      Runner.checkTargetApplicationIsRunning().then(function () {
-        (0, _printer.printBigBrother)();
-        (0, _printer.printInfo)('Starting Browser.');
-        _this2.browser = new _Browser["default"](config);
-
-        _this2.browser.launch().then(_FileReader["default"].getFiles).then(_FileReader["default"].onFilesFound).then(_this2.executeTestSuites)["catch"](Runner.handleException);
-      })["catch"](Runner.handleException);
+      (0, _printer.printBigBrother)();
+      Runner.checkTargetApplicationIsRunning().then(this.startBrowser).then(_FileReader["default"].readFiles).then(this.executeTestSuites).then(this.stop)["catch"](_printer.printException)["finally"](this.cleanup);
     }
   }], [{
-    key: "cleanup",
-    value: function cleanup(onException) {
-      (0, _printer.printInfo)('Performing Runner cleanup.');
-
-      _ProcessRunner["default"].executePostCommand();
-
-      _ProcessRunner["default"].stop(_ProcessRunner.BEFORE).then(function () {
-        return (0, _printer.printInfo)("".concat(_ProcessRunner.BEFORE, " command has been killed."));
-      })["catch"](function (e) {
-        if (!onException) {
-          Runner.handleException(e);
-        }
-      });
-    }
-  }, {
     key: "checkTargetApplicationIsRunning",
     value: function checkTargetApplicationIsRunning() {
       var _getConfig = (0, _config.getConfig)(),
@@ -148,10 +141,5 @@ function () {
   return Runner;
 }();
 
-(0, _defineProperty2["default"])(Runner, "handleException", function (e) {
-  Runner.cleanup(true);
-  (0, _printer.printException)(e);
-  (0, _process.exitProcess)(1);
-});
 var _default = Runner;
 exports["default"] = _default;

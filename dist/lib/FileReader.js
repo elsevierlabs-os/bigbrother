@@ -44,6 +44,11 @@ function () {
       return filenames.length > 0;
     }
   }, {
+    key: "readFiles",
+    value: function readFiles() {
+      return FileReader.getFiles().then(FileReader.onFilesFound);
+    }
+  }, {
     key: "getFiles",
     value: function getFiles() {
       var globOptions = {

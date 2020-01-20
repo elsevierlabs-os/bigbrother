@@ -102,6 +102,7 @@ function () {
         try {
           if (childProcess && !childProcess.killed) {
             (0, _process.killProcess)(childProcess);
+            (0, _printer.printInfo)("".concat(taskId, " process has been killed"));
           } else {
             var message = "The required process ".concat(taskId) + (!childProcess ? ' does not exist' : ' is already dead.');
             (0, _printer.printInfo)(message);

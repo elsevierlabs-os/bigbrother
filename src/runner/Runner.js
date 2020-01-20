@@ -24,6 +24,7 @@ class Runner {
     constructor() {
         this.browser = null;
         this.suites = [];
+        this.failed = [];
     }
 
     executeTestSuites = (tests = []) => {
@@ -34,12 +35,6 @@ class Runner {
         return PromiseSerial(suites
             .map( s => () => s.execute()))
             .then(this.evaluateResults);
-    };
-
-    static handleException = (e) => {
-        Runner.cleanup(true);
-        printException(e);
-        exitProcess(1);
     };
 
     evaluateResults = (suites) => {
@@ -58,7 +53,7 @@ class Runner {
             printRunnerSuccess(suitesCount);
         }
 
-        this.stop(failedCount);
+        this.failed = failed;
     };
 
     printFailures = (failed) => {
@@ -76,49 +71,51 @@ class Runner {
         ProcessRunner.executePreCommand();
     }
 
-    static cleanup(onException) {
+    cleanup = () => {
         printInfo('Performing Runner cleanup.');
         ProcessRunner.executePostCommand();
         ProcessRunner
             .stop(BEFORE)
-            .then(() => printInfo(`${BEFORE} command has been killed.`))
-            .catch((e) => {
-                if (!onException) {
-                    Runner.handleException(e);
-                }
-            });
-    }
+            .catch(printException)
+            .finally(this.terminate);
+    };
+
+    terminate = () => {
+        printInfo('Terminating Runner.');
+        exitProcess(this.failed.length);
+    };
 
     static checkTargetApplicationIsRunning() {
         const { baseUrl, maxRetries, retryTimeout } = getConfig();
         return pingEndpoint(baseUrl, maxRetries, retryTimeout);
     }
 
+    startBrowser = () => {
+        printInfo('Starting Browser.');
+        this.browser = new Browser(getConfig());
+
+        return this.browser.launch();
+    };
+
     start(config) {
         printInfo('Starting Runner.');
         this.setup(config);
+        printBigBrother();
         Runner.checkTargetApplicationIsRunning()
-            .then(() => {
-                printBigBrother();
-                printInfo('Starting Browser.');
-                this.browser = new Browser(config);
-                this.browser
-                    .launch()
-                    .then(FileReader.getFiles)
-                    .then(FileReader.onFilesFound)
-                    .then(this.executeTestSuites)
-                    .catch(Runner.handleException);
-            })
-            .catch(Runner.handleException);
+            .then(this.startBrowser)
+            .then(FileReader.readFiles)
+            .then(this.executeTestSuites)
+            .then(this.stop)
+            .catch(printException)
+            .finally(this.cleanup);
     }
 
-    stop = (status) => {
-        Runner.cleanup();
+    stop = () => {
         if (this.browser) {
-            this.browser
-                .close()
-                .then(() => exitProcess(status));
+            return this.browser.close();
         }
+
+        return Promise.resolve();
     }
 }
 

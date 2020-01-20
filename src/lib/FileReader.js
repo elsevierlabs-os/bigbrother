@@ -20,6 +20,12 @@ class FileReader {
         return filenames.length > 0;
     }
 
+    static readFiles() {
+        return FileReader
+            .getFiles()
+            .then(FileReader.onFilesFound);
+    }
+
     static getFiles() {
         const globOptions = {
             ignore: FileReader.getIgnoredFiles()

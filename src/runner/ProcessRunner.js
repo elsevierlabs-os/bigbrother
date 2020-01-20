@@ -72,6 +72,7 @@ class ProcessRunner {
             try {
                 if (childProcess && !childProcess.killed) {
                     killProcess(childProcess);
+                    printInfo(`${taskId} process has been killed`);
                 } else {
                     const message = `The required process ${taskId}` + (
                         !childProcess ?

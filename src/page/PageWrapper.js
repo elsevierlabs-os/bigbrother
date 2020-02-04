@@ -147,6 +147,7 @@ class PageWrapper {
     _click = (selector, options) => async () => await this.page.click(selector, options);
     _focus = (selector) => async () => await this.page.focus(selector);
     _setUserAgent = (userAgent) => async () => await this.page.setUserAgent(userAgent);
+    _type = (text) => async () => await this.page.keyboard.type(text);
 
     async load(url) {
         return new Promise(async (resolve, reject) => {
@@ -201,7 +202,17 @@ class PageWrapper {
         });
     }
 
-    async type(selector, text) {}
+    async type(selector, text) {
+        return new Promise(async (resolve, reject) => {
+            if (this.hasPage()) {
+                const data = await performanceAnalyzer.measure(this.getKey('type'), this._type(selector, text));
+                this.storeMeasurement(data);
+                resolve(data.duration);
+            } else {
+                reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
+            }
+        });
+    }
 
     async keyboard(event) {}
 

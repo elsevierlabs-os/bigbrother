@@ -83,9 +83,9 @@ class TestRunner {
 
     printFailures = () => {
         printNewLines();
-        this.getFailures().forEach(test => {
-            printTitleTest(test.title);
-            printFailedTest(test.reason.message);
+        this.getFailures().forEach(({ name, reason }) => {
+            printTitleTest(name);
+            printFailedTest(reason.message);
             printNewLines(1)
         });
     };

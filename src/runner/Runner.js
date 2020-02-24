@@ -1,88 +1,40 @@
-import Suite from '../tests/Suite';
-import Browser from '../browser/Browser';
-import { PromiseSerial } from '../lib/functions';
 import { pingEndpoint } from '../lib/httpClient';
 import {
-    printDelimiter,
-    printRunnerFailure,
-    printNewLines,
-    printRunnerSuccess,
-    printFailedTest,
-    printTitleTest,
     printBigBrother,
     printInfo,
     printException
 } from '../lib/printer';
-
 import { exitProcess, onUserInterrupt } from '../lib/utils/process';
 import ProcessRunner, { BEFORE } from './ProcessRunner';
+import TestRunner from './TestRunner';
 import FileReader from '../lib/FileReader';
 import { getConfig, storeConfiguration } from '../config';
+import {
+    RUNNER_CLEANUP_MESSAGE,
+    RUNNER_STARTING_MESSAGE,
+    RUNNER_TERMINATION_MESSAGE
+} from '../lib/constants';
 
 class Runner {
 
-    constructor() {
-        this.browser = null;
-        this.suites = [];
-        this.failed = [];
-    }
-
-    executeTestSuites = (tests = []) => {
-        const suites = tests.map(({ filename, content}) => {
-            return new Suite(filename, content, this.browser);
-        });
-
-        return PromiseSerial(suites
-            .map( s => () => s.execute()))
-            .then(this.evaluateResults);
-    };
-
-    evaluateResults = (suites) => {
-        let failed = suites.reduce((total, suite) => (
-            [...total, ...suite.filter(test => !test.success)]
-        ), []);
-        const failedCount = failed.length;
-        const suitesCount = suites.length;
-
-        printDelimiter();
-
-        if (failedCount > 0) {
-            printRunnerFailure(suitesCount, failedCount);
-            this.printFailures(failed);
-        } else {
-            printRunnerSuccess(suitesCount);
-        }
-
-        this.failed = failed;
-    };
-
-    printFailures = (failed) => {
-        printNewLines();
-        failed.forEach(test => {
-            printTitleTest(test.title);
-            printFailedTest(test.reason.message);
-            printNewLines(1)
-        });
-    };
-
-    setup(configuration) {
+    static setup(configuration) {
         storeConfiguration(configuration);
-        onUserInterrupt(this.stop);
+        onUserInterrupt(Runner.stop);
         ProcessRunner.executePreCommand();
     }
 
-    cleanup = () => {
-        printInfo('Performing Runner cleanup.');
+    static cleanup = () => {
+        printInfo(RUNNER_CLEANUP_MESSAGE);
         ProcessRunner.executePostCommand();
         ProcessRunner
             .stop(BEFORE)
             .catch(printException)
-            .finally(this.terminate);
+            .finally(Runner.terminate);
     };
 
-    terminate = () => {
-        printInfo('Terminating Runner.');
-        exitProcess(this.failed.length);
+    static terminate = () => {
+        printInfo(RUNNER_TERMINATION_MESSAGE);
+        exitProcess(TestRunner.getFailures().length);
     };
 
     static checkTargetApplicationIsRunning() {
@@ -90,32 +42,21 @@ class Runner {
         return pingEndpoint(baseUrl, maxRetries, retryTimeout);
     }
 
-    startBrowser = () => {
-        printInfo('Starting Browser.');
-        this.browser = new Browser(getConfig());
-
-        return this.browser.launch();
-    };
-
-    start(config) {
-        printInfo('Starting Runner.');
-        this.setup(config);
+    static start(config) {
+        printInfo(RUNNER_STARTING_MESSAGE);
+        Runner.setup(config);
         printBigBrother();
         Runner.checkTargetApplicationIsRunning()
-            .then(this.startBrowser)
+            .then(TestRunner.startBrowser)
             .then(FileReader.readFiles)
-            .then(this.executeTestSuites)
-            .then(this.stop)
+            .then(TestRunner.executeTestSuites)
+            .then(Runner.stop)
             .catch(printException)
-            .finally(this.cleanup);
+            .finally(Runner.cleanup);
     }
 
-    stop = () => {
-        if (this.browser) {
-            return this.browser.close();
-        }
-
-        return Promise.resolve();
+    static stop = () => {
+        return TestRunner.stopBrowser();
     }
 }
 

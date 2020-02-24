@@ -163,6 +163,13 @@ export const RESOURCE_INFO_TYPE = 'resource';
 export const PATTERN_DOESNT_MATCH_ERROR = 'Provided pattern doesn\' match any file.';
 export const PAGEWRAPPER_MISSING_PAGE_ERROR = 'PageWrapper requires a puppeteer page';
 export const PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR = 'Page has not been initialised.';
+export const BROWSER_NOT_INITIALISED = 'Browser has not been initialised properly.';
+
+export const RUNNER_CLEANUP_MESSAGE = 'Performing Runner cleanup.';
+export const RUNNER_TERMINATION_MESSAGE = 'Terminating Runner.';
+export const RUNNER_STARTING_MESSAGE = 'Starting Runner.';
+
+export const BROWSER_STARTING_MESSAGE = 'Starting Browser.';
 
 export const FULL_STOP = '.';
 export const UNDERSCORE = '_';

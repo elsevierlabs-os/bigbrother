@@ -5,7 +5,6 @@ require('colors');
 const {
     Runner,
     getEnvFlag,
-    printError,
     exitProcess,
     getProcessCWD,
     print,
@@ -78,5 +77,4 @@ const runnerConfig = Object.assign(
     args,
     loadConfigFile(cwd, configPath));
 
-new Runner()
-    .start(runnerConfig);
+Runner.start(runnerConfig);

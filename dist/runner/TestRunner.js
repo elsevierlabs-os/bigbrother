@@ -29,9 +29,7 @@ var _printer = require("../lib/printer");
 
 var _constants = require("../lib/constants");
 
-var TestRunner =
-/*#__PURE__*/
-function () {
+var TestRunner = /*#__PURE__*/function () {
   function TestRunner() {
     var _this = this;
 
@@ -82,9 +80,11 @@ function () {
     (0, _defineProperty2["default"])(this, "printFailures", function () {
       (0, _.printNewLines)();
 
-      _this.getFailures().forEach(function (test) {
-        (0, _printer.printTitleTest)(test.title);
-        (0, _printer.printFailedTest)(test.reason.message);
+      _this.getFailures().forEach(function (_ref2) {
+        var name = _ref2.name,
+            reason = _ref2.reason;
+        (0, _printer.printTitleTest)(name);
+        (0, _printer.printFailedTest)(reason.message);
         (0, _.printNewLines)(1);
       });
     });

@@ -11,9 +11,7 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var AssetsHandler =
-/*#__PURE__*/
-function () {
+var AssetsHandler = /*#__PURE__*/function () {
   function AssetsHandler() {
     (0, _classCallCheck2["default"])(this, AssetsHandler);
     this.assets = {};

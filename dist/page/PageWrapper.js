@@ -33,18 +33,12 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var PageWrapper =
-/*#__PURE__*/
-function () {
+var PageWrapper = /*#__PURE__*/function () {
   function PageWrapper(page, name) {
     var _this = this;
 
     (0, _classCallCheck2["default"])(this, PageWrapper);
-    (0, _defineProperty2["default"])(this, "getCDPSessionClient",
-    /*#__PURE__*/
-    (0, _asyncToGenerator2["default"])(
-    /*#__PURE__*/
-    _regenerator["default"].mark(function _callee() {
+    (0, _defineProperty2["default"])(this, "getCDPSessionClient", /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
       return _regenerator["default"].wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -127,129 +121,104 @@ function () {
       }, rest));
     });
     (0, _defineProperty2["default"])(this, "_load", function (url) {
-      return (
-        /*#__PURE__*/
-        (0, _asyncToGenerator2["default"])(
-        /*#__PURE__*/
-        _regenerator["default"].mark(function _callee2() {
-          return _regenerator["default"].wrap(function _callee2$(_context2) {
-            while (1) {
-              switch (_context2.prev = _context2.next) {
-                case 0:
-                  _context2.next = 2;
-                  return _this.page["goto"](url, _constants.PAGE_LOAD_OPTIONS);
+      return /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
+        return _regenerator["default"].wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _this.page["goto"](url, _constants.PAGE_LOAD_OPTIONS);
 
-                case 2:
-                  return _context2.abrupt("return", _context2.sent);
+              case 2:
+                return _context2.abrupt("return", _context2.sent);
 
-                case 3:
-                case "end":
-                  return _context2.stop();
-              }
+              case 3:
+              case "end":
+                return _context2.stop();
             }
-          }, _callee2);
-        }))
-      );
+          }
+        }, _callee2);
+      }));
     });
     (0, _defineProperty2["default"])(this, "_click", function (selector, options) {
-      return (
-        /*#__PURE__*/
-        (0, _asyncToGenerator2["default"])(
-        /*#__PURE__*/
-        _regenerator["default"].mark(function _callee3() {
-          return _regenerator["default"].wrap(function _callee3$(_context3) {
-            while (1) {
-              switch (_context3.prev = _context3.next) {
-                case 0:
-                  _context3.next = 2;
-                  return _this.page.click(selector, options);
+      return /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3() {
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return _this.page.click(selector, options);
 
-                case 2:
-                  return _context3.abrupt("return", _context3.sent);
+              case 2:
+                return _context3.abrupt("return", _context3.sent);
 
-                case 3:
-                case "end":
-                  return _context3.stop();
-              }
+              case 3:
+              case "end":
+                return _context3.stop();
             }
-          }, _callee3);
-        }))
-      );
+          }
+        }, _callee3);
+      }));
     });
     (0, _defineProperty2["default"])(this, "_focus", function (selector) {
-      return (
-        /*#__PURE__*/
-        (0, _asyncToGenerator2["default"])(
-        /*#__PURE__*/
-        _regenerator["default"].mark(function _callee4() {
-          return _regenerator["default"].wrap(function _callee4$(_context4) {
-            while (1) {
-              switch (_context4.prev = _context4.next) {
-                case 0:
-                  _context4.next = 2;
-                  return _this.page.focus(selector);
+      return /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4() {
+        return _regenerator["default"].wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return _this.page.focus(selector);
 
-                case 2:
-                  return _context4.abrupt("return", _context4.sent);
+              case 2:
+                return _context4.abrupt("return", _context4.sent);
 
-                case 3:
-                case "end":
-                  return _context4.stop();
-              }
+              case 3:
+              case "end":
+                return _context4.stop();
             }
-          }, _callee4);
-        }))
-      );
+          }
+        }, _callee4);
+      }));
     });
     (0, _defineProperty2["default"])(this, "_setUserAgent", function (userAgent) {
-      return (
-        /*#__PURE__*/
-        (0, _asyncToGenerator2["default"])(
-        /*#__PURE__*/
-        _regenerator["default"].mark(function _callee5() {
-          return _regenerator["default"].wrap(function _callee5$(_context5) {
-            while (1) {
-              switch (_context5.prev = _context5.next) {
-                case 0:
-                  _context5.next = 2;
-                  return _this.page.setUserAgent(userAgent);
+      return /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5() {
+        return _regenerator["default"].wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return _this.page.setUserAgent(userAgent);
 
-                case 2:
-                  return _context5.abrupt("return", _context5.sent);
+              case 2:
+                return _context5.abrupt("return", _context5.sent);
 
-                case 3:
-                case "end":
-                  return _context5.stop();
-              }
+              case 3:
+              case "end":
+                return _context5.stop();
             }
-          }, _callee5);
-        }))
-      );
+          }
+        }, _callee5);
+      }));
     });
     (0, _defineProperty2["default"])(this, "_type", function (text) {
-      return (
-        /*#__PURE__*/
-        (0, _asyncToGenerator2["default"])(
-        /*#__PURE__*/
-        _regenerator["default"].mark(function _callee6() {
-          return _regenerator["default"].wrap(function _callee6$(_context6) {
-            while (1) {
-              switch (_context6.prev = _context6.next) {
-                case 0:
-                  _context6.next = 2;
-                  return _this.page.keyboard.type(text);
+      return /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6() {
+        return _regenerator["default"].wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return _this.page.keyboard.type(text);
 
-                case 2:
-                  return _context6.abrupt("return", _context6.sent);
+              case 2:
+                return _context6.abrupt("return", _context6.sent);
 
-                case 3:
-                case "end":
-                  return _context6.stop();
-              }
+              case 3:
+              case "end":
+                return _context6.stop();
             }
-          }, _callee6);
-        }))
-      );
+          }
+        }, _callee6);
+      }));
     });
     this.options = {};
     this.page = page;
@@ -268,9 +237,7 @@ function () {
   (0, _createClass2["default"])(PageWrapper, [{
     key: "close",
     value: function () {
-      var _close = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee7() {
+      var _close = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7() {
         return _regenerator["default"].wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
@@ -300,9 +267,7 @@ function () {
   }, {
     key: "setNetworkSpeed",
     value: function () {
-      var _setNetworkSpeed = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee8() {
+      var _setNetworkSpeed = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8() {
         var network,
             client,
             _args8 = arguments;
@@ -336,9 +301,7 @@ function () {
   }, {
     key: "setCpuSpeed",
     value: function () {
-      var _setCpuSpeed = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee9() {
+      var _setCpuSpeed = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9() {
         var cpu,
             client,
             _args9 = arguments;
@@ -372,9 +335,7 @@ function () {
   }, {
     key: "setSpeed",
     value: function () {
-      var _setSpeed = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee10() {
+      var _setSpeed = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10() {
         var _ref9,
             _ref9$cpu,
             cpu,
@@ -423,9 +384,7 @@ function () {
   }, {
     key: "setupAssetsMetrics",
     value: function () {
-      var _setupAssetsMetrics = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee11() {
+      var _setupAssetsMetrics = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11() {
         var client;
         return _regenerator["default"].wrap(function _callee11$(_context11) {
           while (1) {
@@ -462,9 +421,7 @@ function () {
   }, {
     key: "getInfo",
     value: function () {
-      var _getInfo = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee12(type) {
+      var _getInfo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(type) {
         return _regenerator["default"].wrap(function _callee12$(_context12) {
           while (1) {
             switch (_context12.prev = _context12.next) {
@@ -508,9 +465,7 @@ function () {
   }, {
     key: "getPaintInfo",
     value: function () {
-      var _getPaintInfo = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee13() {
+      var _getPaintInfo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13() {
         return _regenerator["default"].wrap(function _callee13$(_context13) {
           while (1) {
             switch (_context13.prev = _context13.next) {
@@ -538,9 +493,7 @@ function () {
   }, {
     key: "getNavigationInfo",
     value: function () {
-      var _getNavigationInfo = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee14() {
+      var _getNavigationInfo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14() {
         return _regenerator["default"].wrap(function _callee14$(_context14) {
           while (1) {
             switch (_context14.prev = _context14.next) {
@@ -568,9 +521,7 @@ function () {
   }, {
     key: "getAssetsInfo",
     value: function () {
-      var _getAssetsInfo = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee15() {
+      var _getAssetsInfo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee15() {
         return _regenerator["default"].wrap(function _callee15$(_context15) {
           while (1) {
             switch (_context15.prev = _context15.next) {
@@ -594,21 +545,15 @@ function () {
   }, {
     key: "load",
     value: function () {
-      var _load = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee17(url) {
+      var _load = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee17(url) {
         var _this2 = this;
 
         return _regenerator["default"].wrap(function _callee17$(_context17) {
           while (1) {
             switch (_context17.prev = _context17.next) {
               case 0:
-                return _context17.abrupt("return", new Promise(
-                /*#__PURE__*/
-                function () {
-                  var _ref10 = (0, _asyncToGenerator2["default"])(
-                  /*#__PURE__*/
-                  _regenerator["default"].mark(function _callee16(resolve, reject) {
+                return _context17.abrupt("return", new Promise( /*#__PURE__*/function () {
+                  var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee16(resolve, reject) {
                     var fullUrl, data;
                     return _regenerator["default"].wrap(function _callee16$(_context16) {
                       while (1) {
@@ -670,9 +615,7 @@ function () {
   }, {
     key: "click",
     value: function () {
-      var _click = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee19(selector) {
+      var _click = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(selector) {
         var _this3 = this;
 
         var options,
@@ -682,12 +625,8 @@ function () {
             switch (_context19.prev = _context19.next) {
               case 0:
                 options = _args19.length > 1 && _args19[1] !== undefined ? _args19[1] : {};
-                return _context19.abrupt("return", new Promise(
-                /*#__PURE__*/
-                function () {
-                  var _ref11 = (0, _asyncToGenerator2["default"])(
-                  /*#__PURE__*/
-                  _regenerator["default"].mark(function _callee18(resolve, reject) {
+                return _context19.abrupt("return", new Promise( /*#__PURE__*/function () {
+                  var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(resolve, reject) {
                     var data;
                     return _regenerator["default"].wrap(function _callee18$(_context18) {
                       while (1) {
@@ -743,21 +682,15 @@ function () {
   }, {
     key: "focus",
     value: function () {
-      var _focus = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee21(selector) {
+      var _focus = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee21(selector) {
         var _this4 = this;
 
         return _regenerator["default"].wrap(function _callee21$(_context21) {
           while (1) {
             switch (_context21.prev = _context21.next) {
               case 0:
-                return _context21.abrupt("return", new Promise(
-                /*#__PURE__*/
-                function () {
-                  var _ref12 = (0, _asyncToGenerator2["default"])(
-                  /*#__PURE__*/
-                  _regenerator["default"].mark(function _callee20(resolve, reject) {
+                return _context21.abrupt("return", new Promise( /*#__PURE__*/function () {
+                  var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(resolve, reject) {
                     var data;
                     return _regenerator["default"].wrap(function _callee20$(_context20) {
                       while (1) {
@@ -813,9 +746,7 @@ function () {
   }, {
     key: "tap",
     value: function () {
-      var _tap = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee22(select) {
+      var _tap = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22(select) {
         return _regenerator["default"].wrap(function _callee22$(_context22) {
           while (1) {
             switch (_context22.prev = _context22.next) {
@@ -836,21 +767,15 @@ function () {
   }, {
     key: "setUserAgent",
     value: function () {
-      var _setUserAgent = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee24(userAgent) {
+      var _setUserAgent = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee24(userAgent) {
         var _this5 = this;
 
         return _regenerator["default"].wrap(function _callee24$(_context24) {
           while (1) {
             switch (_context24.prev = _context24.next) {
               case 0:
-                return _context24.abrupt("return", new Promise(
-                /*#__PURE__*/
-                function () {
-                  var _ref13 = (0, _asyncToGenerator2["default"])(
-                  /*#__PURE__*/
-                  _regenerator["default"].mark(function _callee23(resolve, reject) {
+                return _context24.abrupt("return", new Promise( /*#__PURE__*/function () {
+                  var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee23(resolve, reject) {
                     var data;
                     return _regenerator["default"].wrap(function _callee23$(_context23) {
                       while (1) {
@@ -906,21 +831,15 @@ function () {
   }, {
     key: "type",
     value: function () {
-      var _type = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee26(selector, text) {
+      var _type = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee26(selector, text) {
         var _this6 = this;
 
         return _regenerator["default"].wrap(function _callee26$(_context26) {
           while (1) {
             switch (_context26.prev = _context26.next) {
               case 0:
-                return _context26.abrupt("return", new Promise(
-                /*#__PURE__*/
-                function () {
-                  var _ref14 = (0, _asyncToGenerator2["default"])(
-                  /*#__PURE__*/
-                  _regenerator["default"].mark(function _callee25(resolve, reject) {
+                return _context26.abrupt("return", new Promise( /*#__PURE__*/function () {
+                  var _ref14 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee25(resolve, reject) {
                     var data;
                     return _regenerator["default"].wrap(function _callee25$(_context25) {
                       while (1) {
@@ -976,9 +895,7 @@ function () {
   }, {
     key: "keyboard",
     value: function () {
-      var _keyboard = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee27(event) {
+      var _keyboard = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee27(event) {
         return _regenerator["default"].wrap(function _callee27$(_context27) {
           while (1) {
             switch (_context27.prev = _context27.next) {
@@ -999,9 +916,7 @@ function () {
   }, {
     key: "screenshot",
     value: function () {
-      var _screenshot = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee28() {
+      var _screenshot = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee28() {
         return _regenerator["default"].wrap(function _callee28$(_context28) {
           while (1) {
             switch (_context28.prev = _context28.next) {
@@ -1022,9 +937,7 @@ function () {
   }, {
     key: "waitFor",
     value: function () {
-      var _waitFor = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee29(selector) {
+      var _waitFor = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee29(selector) {
         return _regenerator["default"].wrap(function _callee29$(_context29) {
           while (1) {
             switch (_context29.prev = _context29.next) {

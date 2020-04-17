@@ -23,9 +23,7 @@ var _printer = require("./printer");
 
 var NODE_MODULES_IGNORE_PATTERN = 'node_modules/**/*.*';
 
-var FileReader =
-/*#__PURE__*/
-function () {
+var FileReader = /*#__PURE__*/function () {
   function FileReader() {
     (0, _classCallCheck2["default"])(this, FileReader);
   }

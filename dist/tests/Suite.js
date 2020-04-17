@@ -37,9 +37,7 @@ var _config = require("../config");
 
 var _module = require("../lib/utils/module");
 
-var Suite =
-/*#__PURE__*/
-function () {
+var Suite = /*#__PURE__*/function () {
   function Suite(filename, content, browser) {
     var _this = this;
 
@@ -53,12 +51,8 @@ function () {
     (0, _defineProperty2["default"])(this, "it", function (name, f) {
       var pageName = _this.getFullPageName(name);
 
-      var asyncTest =
-      /*#__PURE__*/
-      function () {
-        var _ref = (0, _asyncToGenerator2["default"])(
-        /*#__PURE__*/
-        _regenerator["default"].mark(function _callee() {
+      var asyncTest = /*#__PURE__*/function () {
+        var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
           var success, reason, page, spinner;
           return _regenerator["default"].wrap(function _callee$(_context) {
             while (1) {
@@ -166,9 +160,7 @@ function () {
   (0, _createClass2["default"])(Suite, [{
     key: "createPageWrapper",
     value: function () {
-      var _createPageWrapper = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee2(name) {
+      var _createPageWrapper = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(name) {
         var page;
         return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
@@ -198,9 +190,7 @@ function () {
   }, {
     key: "execute",
     value: function () {
-      var _execute = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee3() {
+      var _execute = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3() {
         var _getConfig, cwd, args, executor;
 
         return _regenerator["default"].wrap(function _callee3$(_context3) {

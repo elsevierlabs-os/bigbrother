@@ -19,9 +19,7 @@ var _puppeteer = _interopRequireDefault(require("puppeteer"));
 
 var _path = _interopRequireDefault(require("path"));
 
-var Browser =
-/*#__PURE__*/
-function () {
+var Browser = /*#__PURE__*/function () {
   function Browser() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         _ref$headless = _ref.headless,
@@ -57,9 +55,7 @@ function () {
   }, {
     key: "newPage",
     value: function () {
-      var _newPage = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee() {
+      var _newPage = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
         var page;
         return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
@@ -91,9 +87,7 @@ function () {
   }, {
     key: "launch",
     value: function () {
-      var _launch = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee2() {
+      var _launch = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
         return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -122,9 +116,7 @@ function () {
   }, {
     key: "close",
     value: function () {
-      var _close = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee3() {
+      var _close = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3() {
         return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {

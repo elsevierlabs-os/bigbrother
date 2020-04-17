@@ -31,9 +31,7 @@ var _config = require("../config");
 
 var _constants = require("../lib/constants");
 
-var Runner =
-/*#__PURE__*/
-function () {
+var Runner = /*#__PURE__*/function () {
   function Runner() {
     (0, _classCallCheck2["default"])(this, Runner);
   }

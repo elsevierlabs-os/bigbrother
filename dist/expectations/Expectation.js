@@ -17,9 +17,7 @@ var _assert = _interopRequireDefault(require("./assert"));
 
 var _PageRecorder = require("../page/PageRecorder");
 
-var Expectation =
-/*#__PURE__*/
-function () {
+var Expectation = /*#__PURE__*/function () {
   function Expectation(value) {
     (0, _classCallCheck2["default"])(this, Expectation);
     this.value = value;

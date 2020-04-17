@@ -13,9 +13,7 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _ora = _interopRequireDefault(require("ora"));
 
-var Spinner =
-/*#__PURE__*/
-function () {
+var Spinner = /*#__PURE__*/function () {
   function Spinner(text) {
     (0, _classCallCheck2["default"])(this, Spinner);
     this.text = text;

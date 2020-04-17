@@ -25,9 +25,7 @@ exports.BEFORE = BEFORE;
 var AFTER = 'after';
 exports.AFTER = AFTER;
 
-var ProcessRunner =
-/*#__PURE__*/
-function () {
+var ProcessRunner = /*#__PURE__*/function () {
   function ProcessRunner() {
     (0, _classCallCheck2["default"])(this, ProcessRunner);
     this.processes = {};

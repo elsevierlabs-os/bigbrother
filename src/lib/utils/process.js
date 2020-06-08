@@ -5,6 +5,8 @@ import {SPACE} from '../constants';
 const SIGTERM = 'SIGTERM';
 const SIGINT = 'SIGINT';
 
+export const LOCAL_DEVELOPMENT_ENV_FLAG = 'BIGBROTHER_LOCAL';
+
 const CLOSE_EVENT = 'close';
 const ERROR_EVENT = 'error';
 

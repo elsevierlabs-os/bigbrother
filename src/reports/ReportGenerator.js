@@ -17,9 +17,18 @@ import {
     REPORT_STATIC_FILES_ALL_PATTERN,
     REPORT_TARGET_STRING,
     REPORT_INDEX_HTML,
-    REPORT_ABOUT_TO_OPEN, REPORT_CURRENT_REPORT_TARGET_STRING
+    REPORT_ABOUT_TO_OPEN,
+    REPORT_CURRENT_REPORT_TARGET_STRING,
+    REPORT_STATIC_FILES_NODE_MODULES,
+    EMPTY,
+    REPORT_OPEN_DISABLED
 } from '../lib/constants';
-import { executeTask, TASKS } from '../lib/utils/process';
+import {
+    executeTask,
+    getEnvFlag,
+    LOCAL_DEVELOPMENT_ENV_FLAG,
+    TASKS
+} from '../lib/utils/process';
 
 class ReportGenerator {
 
@@ -63,6 +72,15 @@ class ReportGenerator {
         return path.join(cwd, reportPath);
     };
 
+    getStaticFolderPath = (staticFolder) => {
+        const { cwd } = getConfig();
+        return path.join(
+            cwd,
+            getEnvFlag(LOCAL_DEVELOPMENT_ENV_FLAG) === 'true' ? EMPTY : REPORT_STATIC_FILES_NODE_MODULES,
+            staticFolder
+        );
+    };
+
     getFullReportPathFromFilename = (name) => (
         path.join(this.getReportFolderPath(), name)
     );
@@ -101,7 +119,7 @@ class ReportGenerator {
     };
 
     handleReportStaticFilesCopy = (filenames) => {
-        const source = REPORT_STATIC_FILES_FOLDER;
+        const source = this.getStaticFolderPath(REPORT_STATIC_FILES_FOLDER);
         const target = this.getReportFolderPath();
 
         return FileWriter.copyFiles(filenames, source, target);
@@ -110,8 +128,9 @@ class ReportGenerator {
     copyReportIndexHtmlToDestination() {
         if (FileWriter.checkAndCreateFolder(this.getReportFolderPath())) {
             printInfo(REPORT_FOLDER_CREATED);
+            const staticFilesFolder = this.getStaticFolderPath(REPORT_STATIC_FILES_FOLDER);
             return FileReader
-                .readFolderContent(REPORT_STATIC_FILES_FOLDER, REPORT_STATIC_FILES_ALL_PATTERN)
+                .readFolderContent(staticFilesFolder, REPORT_STATIC_FILES_ALL_PATTERN)
                 .then(this.handleReportStaticFilesCopy);
         }
 
@@ -163,8 +182,14 @@ class ReportGenerator {
     };
 
     openReport = () => {
-        printInfo(REPORT_ABOUT_TO_OPEN);
-        executeTask(TASKS.open, this.getFullReportPathFromFilename(REPORT_INDEX_HTML));
+        const { openReport } = getConfig();
+
+        if (openReport) {
+            printInfo(REPORT_ABOUT_TO_OPEN);
+            executeTask(TASKS.open, this.getFullReportPathFromFilename(REPORT_INDEX_HTML));
+        } else {
+            printInfo(REPORT_OPEN_DISABLED);
+        }
     }
 
 }

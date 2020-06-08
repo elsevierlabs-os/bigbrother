@@ -6,8 +6,9 @@ export const DEFAULT_CONFIGURATION = {
     retryTimeout: 1500,
     headless: true,
     cacheEnabled: false,
-    recordingsPath: './.recordings',
-    reportPath: './.report',
+    recordingsPath: '.recordings',
+    reportPath: '.report',
+    openReport: false,
     cwd: './',
     threshold: 0.5
 };

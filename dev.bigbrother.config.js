@@ -4,6 +4,7 @@ const config = {
     headless: true,
     threshold: 0.3,
     recordingsPath: '.recordings',
+    openReport: false,
     ignore: [],
     verbose: true,
     pattern: '**/*.perf.js'

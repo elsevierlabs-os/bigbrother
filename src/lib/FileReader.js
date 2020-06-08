@@ -27,6 +27,7 @@ class FileReader {
         };
 
         if (!pattern) {
+            printInfo(folderPath, pattern, options);
             printFilePatternError(pattern);
             return Promise.reject();
         }
@@ -62,7 +63,7 @@ class FileReader {
                         resolve(filenames);
                     } else {
                         printFilePatternError(pattern);
-                        reject();
+                        resolve([]);
                     }
                 }
             });
@@ -82,7 +83,6 @@ class FileReader {
     }
 
     static readFilesList(filenames) {
-        printInfo('filenames', filenames);
         return Promise.all(filenames.map(FileReader.readSingleFile));
     }
 

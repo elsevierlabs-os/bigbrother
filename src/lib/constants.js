@@ -1,3 +1,5 @@
+import packageJSON from '../../package';
+
 export const NETWORK = {
     WIFI: {
         offline: false,
@@ -175,21 +177,25 @@ export const REPORT_FILENAME_ROOT = 'report_bigbrother_';
 export const REPORT_FILENAME_EXTENSION = '.json';
 export const REPORT_FILE_PATTERN = `${REPORT_FILENAME_ROOT}*.json`;
 
+export const REPORT_STATIC_FILES_NODE_MODULES = `node_modules/${packageJSON.name}`;
 export const REPORT_FOLDER_CREATED = 'Report folder has been created.';
 export const REPORT_FOLDER_ALREADY_EXISTS = 'Report folder already exists, proceeding.';
 export const REPORT_ABOUT_TO_GENERATE = 'About to generate full report.';
 export const REPORT_GENERATION_STARTED = 'About to generate report.';
 export const REPORT_ABOUT_TO_OPEN = 'About to open report.';
+export const REPORT_OPEN_DISABLED = 'Automatic report opening has been disabled. Set config.openReport to true';
 
 export const FULL_REPORT_MID = 'full';
 export const FULL_REPORT_FILENAME = `${FULL_REPORT_MID}${REPORT_FILENAME_EXTENSION}`;
 
-export const REPORT_STATIC_FILES_FOLDER = './report_static_files';
+export const REPORT_STATIC_FILES_FOLDER = 'report_static_files';
 export const REPORT_STATIC_FILES_ALL_PATTERN = '*';
 
 export const REPORT_TARGET_STRING = '<REPLACE_ME>';
 export const REPORT_CURRENT_REPORT_TARGET_STRING = '<REPLACE_ME_CURRENT>';
 export const REPORT_INDEX_HTML = 'index.html';
+
+export const EMPTY = '';
 
 export const FULL_STOP = '.';
 export const UNDERSCORE = '_';

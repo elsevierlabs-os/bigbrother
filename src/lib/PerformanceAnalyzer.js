@@ -7,10 +7,6 @@ class PerformanceAnalyzer {
         this.data = {};
     }
 
-    store() {
-        // we should store information about this specific run
-    }
-
     getUniqueKey(key) {
         let inc = 1;
         let _key = key;

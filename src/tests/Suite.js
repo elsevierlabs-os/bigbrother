@@ -1,4 +1,3 @@
-import { cleanFileName } from '../lib/utils/path';
 import expect from '../expectations/expect';
 import PageWrapper from '../page/PageWrapper';
 import Spinner from '../lib/Spinner';
@@ -6,12 +5,13 @@ import { PromiseSerial } from '../lib/functions';
 import { FULL_STOP, ALL_SPACES, UNDERSCORE } from '../lib/constants';
 import { getConfig } from '../config';
 import { appendNodeModulesPathToModule } from '../lib/utils/module';
+import ReportGenerator from '../reports/ReportGenerator';
+import {printInfo} from '..';
 
 export default class Suite {
 
-    constructor(filename, content, browser) {
+    constructor(content, browser) {
         this.content = content;
-        this.filename = cleanFileName(filename);
         this.browser = browser;
         this.tests = [];
 
@@ -37,31 +37,32 @@ export default class Suite {
     }
 
     it = (name, f)  => {
-        const pageName = this.getFullPageName(name);
+        const fullName = this.getFullPageName(name);
 
         const asyncTest = async () => {
             let success = true,
-                reason = '';
+                reason = {};
 
             if (this._beforeEach) {
                 this._beforeEach()
             }
-            const page = await this.createPageWrapper(pageName);
+            const page = await this.createPageWrapper(fullName);
             const spinner = new Spinner(name);
             try {
                 await f(page);
                 await page.close();
                 spinner.complete();
-            } catch(e) {
+            } catch({ message, expected, received }) {
                 success = false;
-                reason = e;
-                spinner.exception(e);
+                reason = { message, expected, received };
+                spinner.exception(reason);
             }
             if (this._afterEach) {
                 this._afterEach();
             }
+            ReportGenerator.storePage(page);
 
-            return { name, success, reason };
+            return { name, success, reason, fullName };
         };
 
         this.tests.push(() => asyncTest());

@@ -18,6 +18,7 @@ import performanceAnalyzer from '../lib/PerformanceAnalyzer';
 import { deepSet } from '../lib/utils/object';
 import AssetsHandler from './AssetsHandler';
 import { buildUrl } from '../lib/utils/url';
+import { printException } from '../lib/printer';
 
 class PageWrapper {
 
@@ -31,8 +32,14 @@ class PageWrapper {
         this.measurements = {
             __keys: []
         };
+        this.timings = {};
         this.responses = {};
         this.assetsHandler = new AssetsHandler();
+        this.pageSettings = {
+            userAgent: '',
+            cpu: CPU.DEFAULT,
+            network: NETWORK.WIFI
+        };
 
         if (!this.page) {
             throw new Error(PAGEWRAPPER_MISSING_PAGE_ERROR);
@@ -40,8 +47,17 @@ class PageWrapper {
     }
 
     async close() {
-        if (this.hasPage()) {
-            await this.page.close();
+        try {
+            if (this.hasPage()) {
+                // collecting paint and navigation info
+                const paint = await this.getPaintInfo();
+                const navigation = await this.getNavigationInfo();
+                this.storeTimings(paint, navigation);
+
+                await this.page.close();
+            }
+        } catch(e) {
+            printException(e);
         }
     }
 
@@ -53,21 +69,41 @@ class PageWrapper {
     }
 
     async setNetworkSpeed(network = NETWORK.WIFI) {
-        const client = await this.getCDPSessionClient();
-        await client.send(NETWORK_CONDITIONS_MESSAGE, network);
+        try {
+            const client = await this.getCDPSessionClient();
+            await client.send(NETWORK_CONDITIONS_MESSAGE, network);
+            this.storePageSetting({ network });
+        } catch (e) {
+            printException(e);
+        }
     }
 
     async setCpuSpeed(cpu = CPU.DEFAULT) {
-        const client = await this.getCDPSessionClient();
-        await client.send(CPU_CONDITIONS_MESSAGE, cpu);
+        try {
+            const client = await this.getCDPSessionClient();
+            await client.send(CPU_CONDITIONS_MESSAGE, cpu);
+            this.storePageSetting({ cpu });
+        } catch (e) {
+            printException(e);
+        }
     }
 
-    async setSpeed({ cpu = CPU.DEFAULT, network = NETWORK.WIFI } = {}) {
-        this.options.cpu = cpu;
-        this.options.network = network;
+    storePageSetting(setting) {
+        this.pageSettings = {
+            ...this.pageSettings,
+            ...setting
+        };
+    }
 
-        await this.setNetworkSpeed(network);
-        await this.setCpuSpeed(cpu);
+    storeTimings(paint, navigation) {
+        this.timings = {
+            paint,
+            navigation
+        };
+    }
+
+    getTimings() {
+        return this.timings;
     }
 
     cpu = () => this.options.cpu;
@@ -195,6 +231,7 @@ class PageWrapper {
             if (this.hasPage()) {
                 const data = await performanceAnalyzer.measure(this.getKey('userAgent', this._setUserAgent(userAgent)));
                 this.storeMeasurement(data);
+                this.storePageSetting({ userAgent });
                 resolve(data.duration);
             } else {
                 reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
@@ -220,13 +257,17 @@ class PageWrapper {
 
     async waitFor(selector) {}
 
-    toJSON(spacing = 4) {
+    toJSON(spacing = 4, stringify = true) {
         const json = {
             ...this.measurements,
-            assets: this.assetsHandler.toJSON()
+            assets: this.assetsHandler.toJSON(),
+            timings: this.getTimings(),
+            pageSettings: this.pageSettings
         };
 
-        return JSON.stringify(json, null, spacing);
+        return stringify ?
+            JSON.stringify(json, null, spacing) :
+            json;
     }
 }
 

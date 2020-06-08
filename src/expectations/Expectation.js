@@ -54,7 +54,7 @@ class Expectation {
         const page = this.value;
 
         if (recordingExists(page)) {
-            const comparison = compareWithStoredRecording(page);
+            compareWithStoredRecording(page);
         } else {
             recordPage(page);
         }

@@ -20,13 +20,22 @@ class FileReader {
         return filenames.length > 0;
     }
 
-    static readFiles() {
+    static readFolderContent(folderPath, pattern, options = {}) {
+        const globOptions = {
+            cwd: folderPath,
+            ...options
+        };
+
+        if (!pattern) {
+            printFilePatternError(pattern);
+            return Promise.reject();
+        }
+
         return FileReader
-            .getFiles()
-            .then(FileReader.onFilesFound);
+            .getFiles(pattern, globOptions);
     }
 
-    static getFiles() {
+    static readTestFiles() {
         const globOptions = {
             ignore: FileReader.getIgnoredFiles()
         };
@@ -37,6 +46,12 @@ class FileReader {
             return Promise.reject();
         }
 
+        return FileReader
+            .getFiles(pattern, globOptions)
+            .then(FileReader.onFilesFound);
+    }
+
+    static getFiles(pattern, globOptions) {
         return new Promise((resolve, reject) => {
             glob(pattern, globOptions, (err, filenames) => {
                 if (err) {
@@ -66,11 +81,16 @@ class FileReader {
         });
     }
 
+    static readFilesList(filenames) {
+        printInfo('filenames', filenames);
+        return Promise.all(filenames.map(FileReader.readSingleFile));
+    }
+
     static onFilesFound(filenames) {
         const suitesLabel = filenames.length > 1 ? 'suites' : 'suite';
         printInfo(`Found ${filenames.length} ${suitesLabel}`);
 
-        return Promise.all(filenames.map(FileReader.readSingleFile));
+        return FileReader.readFilesList(filenames);
     }
 }
 

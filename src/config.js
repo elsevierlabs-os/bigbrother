@@ -7,6 +7,7 @@ export const DEFAULT_CONFIGURATION = {
     headless: true,
     cacheEnabled: false,
     recordingsPath: './.recordings',
+    reportPath: './.report',
     cwd: './',
     threshold: 0.5
 };

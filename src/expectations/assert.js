@@ -5,6 +5,16 @@ const formatString = (string, args) => {
     return string.replace(/%s/g, () => inspect(args[index++]))
 };
 
+class AssertionError extends Error {
+
+    constructor(message, received, expected) {
+        super(message);
+
+        this.expected = expected;
+        this.received = received;
+    }
+}
+
 const assert = (condition, createMessage, ...extraArgs) => {
     if (condition)
         return;
@@ -13,7 +23,7 @@ const assert = (condition, createMessage, ...extraArgs) => {
         ? formatString(createMessage, extraArgs)
         : createMessage(extraArgs);
 
-    throw new Error(message);
+    throw new AssertionError(message, ...extraArgs);
 };
 
 export default assert;

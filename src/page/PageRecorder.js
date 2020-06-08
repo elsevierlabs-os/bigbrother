@@ -2,9 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import { getConfig } from '../config';
 import { RECORDING_EXT } from '../lib/constants';
-import { printException } from '../lib/printer';
 import { deepGet } from '../lib/utils/object';
 import assert from '../expectations/assert';
+import FileWriter from '../lib/FileWriter';
 
 const buildFileName = (name) => name.concat(RECORDING_EXT);
 const buildRecordingsFolderPath = () => {
@@ -18,26 +18,14 @@ const buildRecordingFullPath = (name) => {
 };
 
 export const recordingExists = (page) => fs.existsSync(buildRecordingFullPath(page.name));
-export const checkAndCreateRecordingFolder = () => {
-    const recordingFolderPath = buildRecordingsFolderPath();
-
-    try {
-        if (!fs.existsSync(recordingFolderPath)) {
-            fs.mkdirSync(recordingFolderPath, { recursive: true });
-        }
-        return true;
-    } catch(e) {
-        printException(e);
-        return false;
-    }
-};
 
 export const recordPage = (page) => {
     const fullPath = buildRecordingFullPath(page.name);
     const data = page.toJSON(0);
+    const recordingFolderPath = buildRecordingsFolderPath();
 
-    if (checkAndCreateRecordingFolder()) {
-        fs.writeFileSync(fullPath, data);
+    if (FileWriter.checkAndCreateFolder(recordingFolderPath)) {
+        FileWriter.writeJSONToFile(data, fullPath);
     }
 };
 

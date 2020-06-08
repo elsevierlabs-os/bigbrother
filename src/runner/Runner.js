@@ -8,6 +8,7 @@ import { exitProcess, onUserInterrupt } from '../lib/utils/process';
 import ProcessRunner, { BEFORE } from './ProcessRunner';
 import TestRunner from './TestRunner';
 import FileReader from '../lib/FileReader';
+import ReportGenerator from '../reports/ReportGenerator';
 import { getConfig, storeConfiguration } from '../config';
 import {
     RUNNER_CLEANUP_MESSAGE,
@@ -34,6 +35,7 @@ class Runner {
 
     static terminate = () => {
         printInfo(RUNNER_TERMINATION_MESSAGE);
+        ReportGenerator.openReport();
         exitProcess(TestRunner.getFailures().length);
     };
 
@@ -48,9 +50,10 @@ class Runner {
         printBigBrother();
         Runner.checkTargetApplicationIsRunning()
             .then(TestRunner.startBrowser)
-            .then(FileReader.readFiles)
+            .then(FileReader.readTestFiles)
             .then(TestRunner.executeTestSuites)
             .then(Runner.stop)
+            .then(ReportGenerator.generateReport)
             .catch(printException)
             .finally(Runner.cleanup);
     }

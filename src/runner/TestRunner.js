@@ -42,7 +42,7 @@ class TestRunner {
         return !!this.browser;
     }
 
-    mapTestToNewSuite = ({ filename, content }) => new Suite(filename, content, this.browser);
+    mapTestToNewSuite = ({ filename, content }) => new Suite(content, this.browser);
     mapSuitesToExecution = suite => () => suite.execute();
     mapTestsToPromises = (tests) => (
         tests
@@ -55,15 +55,18 @@ class TestRunner {
             .then(this.evaluateResults)
     );
 
-    static extractFailure(suites = []) {
-        return suites.reduce((total, suite) => ([
-            ...total,
-            ...suite.filter(test => !test.success)
-        ]), []);
-    }
+    isFailedTest = ({ success }) => !success;
 
-    evaluateResults = (suites) => {
-        this.failures = TestRunner.extractFailure(suites);
+    extractFailuresFromSuites = () => (
+        this.suites.reduce((total, suite) => ([
+            ...total,
+            ...suite.filter(this.isFailedTest)
+        ]), [])
+    );
+
+    evaluateResults = (suites = []) => {
+        this.suites = suites;
+        this.failures = this.extractFailuresFromSuites();
         const failuresCount = this.failures.length;
         const suitesCount = suites.length;
 
@@ -89,6 +92,13 @@ class TestRunner {
             printNewLines(1)
         });
     };
+
+    toJSON() {
+        return {
+            suites: this.suites,
+            failures: this.failures
+        }
+    }
 }
 
 export default new TestRunner();

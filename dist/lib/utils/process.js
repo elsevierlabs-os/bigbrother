@@ -5,13 +5,15 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.onUserInterrupt = exports.killProcess = exports.spawnProcess = exports.logChildProcessEvents = exports.getProcessCWD = exports.exitProcess = exports.getEnvFlag = void 0;
+exports.executeTask = exports.onUserInterrupt = exports.killProcess = exports.spawnProcess = exports.logChildProcessEvents = exports.getProcessCWD = exports.exitProcess = exports.getEnvFlag = exports.TASKS = void 0;
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
 var _printer = require("../printer");
 
 var _child_process = require("child_process");
+
+var _constants = require("../constants");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -21,6 +23,10 @@ var SIGTERM = 'SIGTERM';
 var SIGINT = 'SIGINT';
 var CLOSE_EVENT = 'close';
 var ERROR_EVENT = 'error';
+var TASKS = {
+  open: 'open'
+};
+exports.TASKS = TASKS;
 
 var getEnvFlag = function getEnvFlag(flag) {
   return process && process.env && process.env[flag];
@@ -91,3 +97,25 @@ var onUserInterrupt = function onUserInterrupt(action) {
 };
 
 exports.onUserInterrupt = onUserInterrupt;
+
+var executeTask = function executeTask(task) {
+  if (task in TASKS) {
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var command = "".concat(task, " ").concat(args.join(_constants.SPACE));
+    (0, _child_process.exec)(command, function (error, stdout) {
+      if (error) {
+        (0, _printer.printError)("Error while executing task \"".concat(command, "\": ").concat(error));
+        return;
+      }
+
+      (0, _printer.printInfo)("Received from task \"".concat(command, "\": ").concat(stdout));
+    });
+  } else {
+    (0, _printer.printError)("The following task \"".concat(task, "\" is not available."));
+  }
+};
+
+exports.executeTask = executeTask;

@@ -49,7 +49,7 @@ var TestRunner = /*#__PURE__*/function () {
     (0, _defineProperty2["default"])(this, "mapTestToNewSuite", function (_ref) {
       var filename = _ref.filename,
           content = _ref.content;
-      return new _Suite["default"](filename, content, _this.browser);
+      return new _Suite["default"](content, _this.browser);
     });
     (0, _defineProperty2["default"])(this, "mapSuitesToExecution", function (suite) {
       return function () {
@@ -63,8 +63,19 @@ var TestRunner = /*#__PURE__*/function () {
       var tests = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       return (0, _functions.PromiseSerial)(_this.mapTestsToPromises(tests)).then(_this.evaluateResults);
     });
-    (0, _defineProperty2["default"])(this, "evaluateResults", function (suites) {
-      _this.failures = TestRunner.extractFailure(suites);
+    (0, _defineProperty2["default"])(this, "isFailedTest", function (_ref2) {
+      var success = _ref2.success;
+      return !success;
+    });
+    (0, _defineProperty2["default"])(this, "extractFailuresFromSuites", function () {
+      return _this.suites.reduce(function (total, suite) {
+        return [].concat((0, _toConsumableArray2["default"])(total), (0, _toConsumableArray2["default"])(suite.filter(_this.isFailedTest)));
+      }, []);
+    });
+    (0, _defineProperty2["default"])(this, "evaluateResults", function () {
+      var suites = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      _this.suites = suites;
+      _this.failures = _this.extractFailuresFromSuites();
       var failuresCount = _this.failures.length;
       var suitesCount = suites.length;
       (0, _printer.printDelimiter)();
@@ -80,9 +91,9 @@ var TestRunner = /*#__PURE__*/function () {
     (0, _defineProperty2["default"])(this, "printFailures", function () {
       (0, _.printNewLines)();
 
-      _this.getFailures().forEach(function (_ref2) {
-        var name = _ref2.name,
-            reason = _ref2.reason;
+      _this.getFailures().forEach(function (_ref3) {
+        var name = _ref3.name,
+            reason = _ref3.reason;
         (0, _printer.printTitleTest)(name);
         (0, _printer.printFailedTest)(reason.message);
         (0, _.printNewLines)(1);
@@ -103,15 +114,13 @@ var TestRunner = /*#__PURE__*/function () {
     value: function getFailures() {
       return this.failures;
     }
-  }], [{
-    key: "extractFailure",
-    value: function extractFailure() {
-      var suites = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-      return suites.reduce(function (total, suite) {
-        return [].concat((0, _toConsumableArray2["default"])(total), (0, _toConsumableArray2["default"])(suite.filter(function (test) {
-          return !test.success;
-        })));
-      }, []);
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      return {
+        suites: this.suites,
+        failures: this.failures
+      };
     }
   }]);
   return TestRunner;

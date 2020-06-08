@@ -54,7 +54,7 @@ var Expectation = /*#__PURE__*/function () {
       var page = this.value;
 
       if ((0, _PageRecorder.recordingExists)(page)) {
-        var comparison = (0, _PageRecorder.compareWithStoredRecording)(page);
+        (0, _PageRecorder.compareWithStoredRecording)(page);
       } else {
         (0, _PageRecorder.recordPage)(page);
       }

@@ -31,10 +31,6 @@ var PerformanceAnalyzer = /*#__PURE__*/function () {
   }
 
   (0, _createClass2["default"])(PerformanceAnalyzer, [{
-    key: "store",
-    value: function store() {// we should store information about this specific run
-    }
-  }, {
     key: "getUniqueKey",
     value: function getUniqueKey(key) {
       var inc = 1;

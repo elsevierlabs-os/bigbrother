@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -20,6 +22,10 @@ var _fs = _interopRequireDefault(require("fs"));
 var _config = require("../config");
 
 var _printer = require("./printer");
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var NODE_MODULES_IGNORE_PATTERN = 'node_modules/**/*.*';
 
@@ -42,13 +48,24 @@ var FileReader = /*#__PURE__*/function () {
       return filenames.length > 0;
     }
   }, {
-    key: "readFiles",
-    value: function readFiles() {
-      return FileReader.getFiles().then(FileReader.onFilesFound);
+    key: "readFolderContent",
+    value: function readFolderContent(folderPath, pattern) {
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      var globOptions = _objectSpread({
+        cwd: folderPath
+      }, options);
+
+      if (!pattern) {
+        (0, _printer.printFilePatternError)(pattern);
+        return Promise.reject();
+      }
+
+      return FileReader.getFiles(pattern, globOptions);
     }
   }, {
-    key: "getFiles",
-    value: function getFiles() {
+    key: "readTestFiles",
+    value: function readTestFiles() {
       var globOptions = {
         ignore: FileReader.getIgnoredFiles()
       };
@@ -61,6 +78,11 @@ var FileReader = /*#__PURE__*/function () {
         return Promise.reject();
       }
 
+      return FileReader.getFiles(pattern, globOptions).then(FileReader.onFilesFound);
+    }
+  }, {
+    key: "getFiles",
+    value: function getFiles(pattern, globOptions) {
       return new Promise(function (resolve, reject) {
         (0, _glob["default"])(pattern, globOptions, function (err, filenames) {
           if (err) {
@@ -94,11 +116,17 @@ var FileReader = /*#__PURE__*/function () {
       });
     }
   }, {
+    key: "readFilesList",
+    value: function readFilesList(filenames) {
+      (0, _printer.printInfo)('filenames', filenames);
+      return Promise.all(filenames.map(FileReader.readSingleFile));
+    }
+  }, {
     key: "onFilesFound",
     value: function onFilesFound(filenames) {
       var suitesLabel = filenames.length > 1 ? 'suites' : 'suite';
       (0, _printer.printInfo)("Found ".concat(filenames.length, " ").concat(suitesLabel));
-      return Promise.all(filenames.map(FileReader.readSingleFile));
+      return FileReader.readFilesList(filenames);
     }
   }]);
   return FileReader;

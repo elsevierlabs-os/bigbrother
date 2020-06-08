@@ -27,6 +27,8 @@ var _TestRunner = _interopRequireDefault(require("./TestRunner"));
 
 var _FileReader = _interopRequireDefault(require("../lib/FileReader"));
 
+var _ReportGenerator = _interopRequireDefault(require("../reports/ReportGenerator"));
+
 var _config = require("../config");
 
 var _constants = require("../lib/constants");
@@ -60,7 +62,7 @@ var Runner = /*#__PURE__*/function () {
       (0, _printer.printInfo)(_constants.RUNNER_STARTING_MESSAGE);
       Runner.setup(config);
       (0, _printer.printBigBrother)();
-      Runner.checkTargetApplicationIsRunning().then(_TestRunner["default"].startBrowser).then(_FileReader["default"].readFiles).then(_TestRunner["default"].executeTestSuites).then(Runner.stop)["catch"](_printer.printException)["finally"](Runner.cleanup);
+      Runner.checkTargetApplicationIsRunning().then(_TestRunner["default"].startBrowser).then(_FileReader["default"].readTestFiles).then(_TestRunner["default"].executeTestSuites).then(Runner.stop).then(_ReportGenerator["default"].generateReport)["catch"](_printer.printException)["finally"](Runner.cleanup);
     }
   }]);
   return Runner;
@@ -75,6 +77,9 @@ var Runner = /*#__PURE__*/function () {
 });
 (0, _defineProperty2["default"])(Runner, "terminate", function () {
   (0, _printer.printInfo)(_constants.RUNNER_TERMINATION_MESSAGE);
+
+  _ReportGenerator["default"].openReport();
+
   (0, _process.exitProcess)(_TestRunner["default"].getFailures().length);
 });
 (0, _defineProperty2["default"])(Runner, "stop", function () {

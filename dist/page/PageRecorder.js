@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.compareWithStoredRecording = exports.getPageRecording = exports.recordPage = exports.checkAndCreateRecordingFolder = exports.recordingExists = void 0;
+exports.compareWithStoredRecording = exports.getPageRecording = exports.recordPage = exports.recordingExists = void 0;
 
 var _fs = _interopRequireDefault(require("fs"));
 
@@ -15,11 +15,11 @@ var _config = require("../config");
 
 var _constants = require("../lib/constants");
 
-var _printer = require("../lib/printer");
-
 var _object = require("../lib/utils/object");
 
 var _assert = _interopRequireDefault(require("../expectations/assert"));
+
+var _FileWriter = _interopRequireDefault(require("../lib/FileWriter"));
 
 var buildFileName = function buildFileName(name) {
   return name.concat(_constants.RECORDING_EXT);
@@ -44,31 +44,13 @@ var recordingExists = function recordingExists(page) {
 
 exports.recordingExists = recordingExists;
 
-var checkAndCreateRecordingFolder = function checkAndCreateRecordingFolder() {
-  var recordingFolderPath = buildRecordingsFolderPath();
-
-  try {
-    if (!_fs["default"].existsSync(recordingFolderPath)) {
-      _fs["default"].mkdirSync(recordingFolderPath, {
-        recursive: true
-      });
-    }
-
-    return true;
-  } catch (e) {
-    (0, _printer.printException)(e);
-    return false;
-  }
-};
-
-exports.checkAndCreateRecordingFolder = checkAndCreateRecordingFolder;
-
 var recordPage = function recordPage(page) {
   var fullPath = buildRecordingFullPath(page.name);
   var data = page.toJSON(0);
+  var recordingFolderPath = buildRecordingsFolderPath();
 
-  if (checkAndCreateRecordingFolder()) {
-    _fs["default"].writeFileSync(fullPath, data);
+  if (_FileWriter["default"].checkAndCreateFolder(recordingFolderPath)) {
+    _FileWriter["default"].writeJSONToFile(data, fullPath);
   }
 };
 

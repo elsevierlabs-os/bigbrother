@@ -31,7 +31,7 @@ var Spinner = /*#__PURE__*/function () {
   }, {
     key: "exception",
     value: function exception(e) {
-      var exception = ' ' + e.toString().red;
+      var exception = ' ' + e.message.red;
       var message = this.text.concat(exception);
       this.instance.fail(message);
     }

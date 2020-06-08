@@ -21,8 +21,6 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
-var _path = require("../lib/utils/path");
-
 var _expect = _interopRequireDefault(require("../expectations/expect"));
 
 var _PageWrapper = _interopRequireDefault(require("../page/PageWrapper"));
@@ -37,8 +35,12 @@ var _config = require("../config");
 
 var _module = require("../lib/utils/module");
 
+var _ReportGenerator = _interopRequireDefault(require("../reports/ReportGenerator"));
+
+var _ = require("..");
+
 var Suite = /*#__PURE__*/function () {
-  function Suite(filename, content, browser) {
+  function Suite(content, browser) {
     var _this = this;
 
     (0, _classCallCheck2["default"])(this, Suite);
@@ -49,23 +51,23 @@ var Suite = /*#__PURE__*/function () {
       return _this.names.map(_this.formatName).join(_constants.FULL_STOP).concat(_constants.FULL_STOP).concat(_this.formatName(name));
     });
     (0, _defineProperty2["default"])(this, "it", function (name, f) {
-      var pageName = _this.getFullPageName(name);
+      var fullName = _this.getFullPageName(name);
 
       var asyncTest = /*#__PURE__*/function () {
         var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-          var success, reason, page, spinner;
+          var success, reason, page, spinner, message, expected, received;
           return _regenerator["default"].wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  success = true, reason = '';
+                  success = true, reason = {};
 
                   if (_this._beforeEach) {
                     _this._beforeEach();
                   }
 
                   _context.next = 4;
-                  return _this.createPageWrapper(pageName);
+                  return _this.createPageWrapper(fullName);
 
                 case 4:
                   page = _context.sent;
@@ -80,28 +82,38 @@ var Suite = /*#__PURE__*/function () {
 
                 case 11:
                   spinner.complete();
-                  _context.next = 19;
+                  _context.next = 22;
                   break;
 
                 case 14:
                   _context.prev = 14;
                   _context.t0 = _context["catch"](6);
+                  message = _context.t0.message;
+                  expected = _context.t0.expected;
+                  received = _context.t0.received;
                   success = false;
-                  reason = _context.t0;
-                  spinner.exception(_context.t0);
+                  reason = {
+                    message: message,
+                    expected: expected,
+                    received: received
+                  };
+                  spinner.exception(reason);
 
-                case 19:
+                case 22:
                   if (_this._afterEach) {
                     _this._afterEach();
                   }
 
+                  _ReportGenerator["default"].storePage(page);
+
                   return _context.abrupt("return", {
                     name: name,
                     success: success,
-                    reason: reason
+                    reason: reason,
+                    fullName: fullName
                   });
 
-                case 21:
+                case 25:
                 case "end":
                   return _context.stop();
               }
@@ -149,7 +161,6 @@ var Suite = /*#__PURE__*/function () {
       return _this._afterEach = f;
     });
     this.content = content;
-    this.filename = (0, _path.cleanFileName)(filename);
     this.browser = browser;
     this.tests = [];
     this.names = [];

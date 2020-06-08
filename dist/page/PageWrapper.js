@@ -392,7 +392,7 @@ var PageWrapper = /*#__PURE__*/function () {
   }, {
     key: "storePageSetting",
     value: function storePageSetting(setting) {
-      this.pageSettings = _objectSpread({}, this.pageSettings, {}, setting);
+      this.pageSettings = _objectSpread(_objectSpread({}, this.pageSettings), setting);
     }
   }, {
     key: "storeTimings",
@@ -1001,7 +1001,7 @@ var PageWrapper = /*#__PURE__*/function () {
       var spacing = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 4;
       var stringify = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
-      var json = _objectSpread({}, this.measurements, {
+      var json = _objectSpread(_objectSpread({}, this.measurements), {}, {
         assets: this.assetsHandler.toJSON(),
         timings: this.getTimings(),
         pageSettings: this.pageSettings

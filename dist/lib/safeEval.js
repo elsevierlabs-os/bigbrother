@@ -18,7 +18,7 @@ var vm = require('vm');
 var safeEval = function safeEval(code, context) {
   var script = new vm.Script(code);
 
-  var fullContext = _objectSpread({}, context, {
+  var fullContext = _objectSpread(_objectSpread({}, context), {}, {
     require: require
   });
 

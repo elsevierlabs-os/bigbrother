@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.executeTask = exports.onUserInterrupt = exports.killProcess = exports.spawnProcess = exports.logChildProcessEvents = exports.getProcessCWD = exports.exitProcess = exports.getEnvFlag = exports.TASKS = void 0;
+exports.executeTask = exports.onUserInterrupt = exports.killProcess = exports.spawnProcess = exports.logChildProcessEvents = exports.getProcessCWD = exports.exitProcess = exports.getEnvFlag = exports.TASKS = exports.LOCAL_DEVELOPMENT_ENV_FLAG = void 0;
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
@@ -21,6 +21,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 var SIGTERM = 'SIGTERM';
 var SIGINT = 'SIGINT';
+var LOCAL_DEVELOPMENT_ENV_FLAG = 'BIGBROTHER_LOCAL';
+exports.LOCAL_DEVELOPMENT_ENV_FLAG = LOCAL_DEVELOPMENT_ENV_FLAG;
 var CLOSE_EVENT = 'close';
 var ERROR_EVENT = 'error';
 var TASKS = {

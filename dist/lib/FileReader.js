@@ -57,6 +57,7 @@ var FileReader = /*#__PURE__*/function () {
       }, options);
 
       if (!pattern) {
+        (0, _printer.printInfo)(folderPath, pattern, options);
         (0, _printer.printFilePatternError)(pattern);
         return Promise.reject();
       }
@@ -93,7 +94,7 @@ var FileReader = /*#__PURE__*/function () {
               resolve(filenames);
             } else {
               (0, _printer.printFilePatternError)(pattern);
-              reject();
+              resolve([]);
             }
           }
         });
@@ -118,7 +119,6 @@ var FileReader = /*#__PURE__*/function () {
   }, {
     key: "readFilesList",
     value: function readFilesList(filenames) {
-      (0, _printer.printInfo)('filenames', filenames);
       return Promise.all(filenames.map(FileReader.readSingleFile));
     }
   }, {

@@ -64,7 +64,7 @@ var PerformanceAnalyzer = /*#__PURE__*/function () {
       var end = +new Date();
       var duration = end - action.start;
 
-      var value = _objectSpread({}, action, {
+      var value = _objectSpread(_objectSpread({}, action), {}, {
         end: end,
         duration: duration,
         key: key

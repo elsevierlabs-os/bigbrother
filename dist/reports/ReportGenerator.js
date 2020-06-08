@@ -45,6 +45,12 @@ var ReportGenerator = /*#__PURE__*/function () {
 
       return _path["default"].join(cwd, reportPath);
     });
+    (0, _defineProperty2["default"])(this, "getStaticFolderPath", function (staticFolder) {
+      var _getConfig2 = (0, _config.getConfig)(),
+          cwd = _getConfig2.cwd;
+
+      return _path["default"].join(cwd, (0, _process.getEnvFlag)(_process.LOCAL_DEVELOPMENT_ENV_FLAG) === 'true' ? _constants.EMPTY : _constants.REPORT_STATIC_FILES_NODE_MODULES, staticFolder);
+    });
     (0, _defineProperty2["default"])(this, "getFullReportPathFromFilename", function (name) {
       return _path["default"].join(_this.getReportFolderPath(), name);
     });
@@ -83,7 +89,7 @@ var ReportGenerator = /*#__PURE__*/function () {
       });
     });
     (0, _defineProperty2["default"])(this, "handleReportStaticFilesCopy", function (filenames) {
-      var source = _constants.REPORT_STATIC_FILES_FOLDER;
+      var source = _this.getStaticFolderPath(_constants.REPORT_STATIC_FILES_FOLDER);
 
       var target = _this.getReportFolderPath();
 
@@ -120,8 +126,15 @@ var ReportGenerator = /*#__PURE__*/function () {
       return _this.copyReportIndexHtmlToDestination().then(_this.generateCurrentReport).then(_this.getAllReports).then(_this.generateFullReport).then(_this.replaceReportInIndexHtml).then(_this.replaceCurrentReportInIndexHtml);
     });
     (0, _defineProperty2["default"])(this, "openReport", function () {
-      (0, _printer.printInfo)(_constants.REPORT_ABOUT_TO_OPEN);
-      (0, _process.executeTask)(_process.TASKS.open, _this.getFullReportPathFromFilename(_constants.REPORT_INDEX_HTML));
+      var _getConfig3 = (0, _config.getConfig)(),
+          openReport = _getConfig3.openReport;
+
+      if (openReport) {
+        (0, _printer.printInfo)(_constants.REPORT_ABOUT_TO_OPEN);
+        (0, _process.executeTask)(_process.TASKS.open, _this.getFullReportPathFromFilename(_constants.REPORT_INDEX_HTML));
+      } else {
+        (0, _printer.printInfo)(_constants.REPORT_OPEN_DISABLED);
+      }
     });
     this.pages = [];
     this.currentReport = {};
@@ -150,7 +163,8 @@ var ReportGenerator = /*#__PURE__*/function () {
     value: function copyReportIndexHtmlToDestination() {
       if (_FileWriter["default"].checkAndCreateFolder(this.getReportFolderPath())) {
         (0, _printer.printInfo)(_constants.REPORT_FOLDER_CREATED);
-        return _FileReader["default"].readFolderContent(_constants.REPORT_STATIC_FILES_FOLDER, _constants.REPORT_STATIC_FILES_ALL_PATTERN).then(this.handleReportStaticFilesCopy);
+        var staticFilesFolder = this.getStaticFolderPath(_constants.REPORT_STATIC_FILES_FOLDER);
+        return _FileReader["default"].readFolderContent(staticFilesFolder, _constants.REPORT_STATIC_FILES_ALL_PATTERN).then(this.handleReportStaticFilesCopy);
       }
 
       (0, _printer.printInfo)(_constants.REPORT_FOLDER_ALREADY_EXISTS);

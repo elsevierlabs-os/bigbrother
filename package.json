@@ -1,6 +1,6 @@
 {
   "name": "bigbrother",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": "Marco Stagni <m.stagni@elsevier.com>",
   "description": "Performance Testing tool",
   "bugs": {

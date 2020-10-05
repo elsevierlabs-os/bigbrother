@@ -4,6 +4,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
 const TerserPlugin = require('terser-webpack-plugin');
+const babelConfig = require('./babel.config');
 
 module.exports = {
     mode: 'production',
@@ -20,7 +21,8 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                exclude: [/node_modules/, /static/]
+                exclude: [/node_modules/, /static/],
+                options: babelConfig
             },
             {
                 test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
@@ -53,7 +55,7 @@ module.exports = {
                         }
                     }
                 ],
-                include: [__dirname + '/src/reports/ui']
+                include: path.resolve('./src/reports/ui')
             }
         ]
     },
@@ -65,7 +67,7 @@ module.exports = {
         ]
     },
     output:  {
-        path: path.resolve(__dirname, 'report_static_files'),
+        path: path.resolve('../report_static_files'),
         filename: 'app.js',
         publicPath: 'report_static_files'
     },

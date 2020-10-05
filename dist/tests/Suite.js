@@ -37,8 +37,6 @@ var _module = require("../lib/utils/module");
 
 var _ReportGenerator = _interopRequireDefault(require("../reports/ReportGenerator"));
 
-var _ = require("..");
-
 var Suite = /*#__PURE__*/function () {
   function Suite(content, browser) {
     var _this = this;
@@ -211,15 +209,15 @@ var Suite = /*#__PURE__*/function () {
                 _getConfig = (0, _config.getConfig)(), cwd = _getConfig.cwd;
                 (0, _module.appendNodeModulesPathToModule)(module, cwd);
                 args = {
-                  'describe': this.describe,
-                  'it': this.it,
-                  'before': this.before,
-                  'beforeEach': this.beforeEach,
-                  'after': this.after,
-                  'afterEach': this.afterEach,
-                  'expect': _expect["default"],
-                  'require': require,
-                  'module': module
+                  describe: this.describe,
+                  it: this.it,
+                  before: this.before,
+                  beforeEach: this.beforeEach,
+                  after: this.after,
+                  afterEach: this.afterEach,
+                  expect: _expect["default"],
+                  require: require,
+                  module: module
                 };
                 executor = (0, _construct2["default"])(Function, (0, _toConsumableArray2["default"])(Object.keys(args)).concat([this.content]));
                 executor.call.apply(executor, [null].concat((0, _toConsumableArray2["default"])(Object.values(args))));

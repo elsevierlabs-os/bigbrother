@@ -1,5 +1,1 @@
-export const cleanFileName = filename => (
-    filename
-        .replace(/\//g, '-')
-        .replace(/\./g, '_')
-);
+export const cleanFileName = filename => filename.replace(/\//g, '-').replace(/\./g, '_');

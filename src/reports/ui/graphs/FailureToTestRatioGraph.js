@@ -2,9 +2,9 @@ import React from 'react';
 import flattendeep from 'lodash.flattendeep';
 
 import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
-import {HEIGHT, WIDTH} from '../constants';
+import { HEIGHT, WIDTH } from '../constants';
 
-const parseData = (data) => (
+const parseData = data =>
     data.reduce((acc, { testRunner }, i) => {
         const { suites = [] } = testRunner;
         const flat = flattendeep(suites);
@@ -18,11 +18,9 @@ const parseData = (data) => (
         acc.push(item);
 
         return acc;
-    }, [])
-);
+    }, []);
 
 const FailureToTestRationGraph = ({ data }) => {
-
     const chartData = parseData(data);
 
     console.log(chartData);
@@ -34,7 +32,8 @@ const FailureToTestRationGraph = ({ data }) => {
                 width={WIDTH}
                 height={HEIGHT}
                 data={chartData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="number" />
                 <YAxis />
@@ -44,8 +43,7 @@ const FailureToTestRationGraph = ({ data }) => {
                 <Bar dataKey="success" stackId="a" fill="#27ae60" />
             </BarChart>
         </div>
-
-    )
+    );
 };
 
 export default FailureToTestRationGraph;

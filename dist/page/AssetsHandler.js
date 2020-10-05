@@ -30,7 +30,7 @@ var AssetsHandler = /*#__PURE__*/function () {
   }, {
     key: "has",
     value: function has(key) {
-      return !!this._filterKeys(key).length;
+      return Boolean(this._filterKeys(key).length);
     }
   }, {
     key: "_filterKeys",

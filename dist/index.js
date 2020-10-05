@@ -107,6 +107,12 @@ Object.defineProperty(exports, "DEFAULT_CONFIGURATION", {
     return _config.DEFAULT_CONFIGURATION;
   }
 });
+Object.defineProperty(exports, "usageMessage", {
+  enumerable: true,
+  get: function get() {
+    return _usage["default"];
+  }
+});
 
 var _Browser = _interopRequireDefault(require("./browser/Browser"));
 
@@ -121,3 +127,5 @@ var _printer = require("./lib/printer");
 var _process = require("./lib/utils/process");
 
 var _config = require("./config");
+
+var _usage = _interopRequireDefault(require("./cli/usage"));

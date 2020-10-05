@@ -10,7 +10,7 @@ var deepGet = function deepGet(key, obj) {
     throw new TypeError('Object must be specified');
   }
 
-  var splitKey = typeof key == "string" && key !== '' ? key.split('.') : [];
+  var splitKey = typeof key === 'string' && key !== '' ? key.split('.') : [];
 
   if (splitKey.length === 1) {
     return obj[splitKey[0]];
@@ -30,7 +30,7 @@ var deepSet = function deepSet(key) {
     throw new TypeError('Key must be specified');
   }
 
-  var splitKey = typeof key == "string" && key !== '' ? key.split('.') : [];
+  var splitKey = typeof key === 'string' && key !== '' ? key.split('.') : [];
 
   if (splitKey.length === 1) {
     obj[splitKey[0]] = value;
@@ -46,7 +46,7 @@ var deepSet = function deepSet(key) {
 exports.deepSet = deepSet;
 
 var deepExist = function deepExist(key, obj) {
-  return !!deepGet(key, obj);
+  return Boolean(deepGet(key, obj));
 };
 
 exports.deepExist = deepExist;

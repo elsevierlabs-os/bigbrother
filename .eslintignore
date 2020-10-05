@@ -1,0 +1,9 @@
+## Ignore output ##
+.recordings/
+.report/
+.dist/
+node_modules/
+examples/
+report_static_files/
+config/
+

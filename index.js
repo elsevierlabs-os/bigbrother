@@ -3,6 +3,7 @@ const minimist = require('minimist');
 const path = require('path');
 require('colors');
 const {
+    usageMessage,
     Runner,
     getEnvFlag,
     exitProcess,
@@ -14,8 +15,6 @@ const {
     DEFAULT_CONFIGURATION,
     ENV_FLAGS
 } = require('./dist');
-
-const usageMessage = require('./usage');
 
 // printing a couple empty lines to give BigBrother some space
 printNewLines(2);

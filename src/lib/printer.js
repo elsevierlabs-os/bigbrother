@@ -12,21 +12,21 @@ const ERROR = '[!!]'.red;
 const COLON = ':';
 const BIGBROTHER_HEADER = `BIGBROTHER v${packageJSON.version}`;
 
-const print = (message) => console.log(message);
+const print = message => console.log(message);
 const printInfo = (message, ...rest) => {
     const { verbose } = getConfig();
-    const extraMessage = rest.length ? [ NEW_LINE, ...rest, NEW_LINE ] : [];
+    const extraMessage = rest.length ? [NEW_LINE, ...rest, NEW_LINE] : [];
     if (verbose) {
         console.log(INFO, message.blue, ...extraMessage);
     }
 };
-const printError = (message) => console.log(ERROR, message.red);
-const printSuccess = (message) => console.log(message.green);
-const printWarning = (message) => console.log(WARNING, message.yellow);
+const printError = message => console.log(ERROR, message.red);
+const printSuccess = message => console.log(message.green);
+const printWarning = message => console.log(WARNING, message.yellow);
 const printDelimiter = (size = 30) => console.log(NEW_LINE, Array(size).join(DELIMITER).grey, NEW_LINE);
 const printNewLines = (size = 2) => console.log(Array(size).join(NEW_LINE));
 
-const printFilePatternError = (pattern) => console.log(ERROR, PATTERN_DOESNT_MATCH_ERROR.red, pattern);
+const printFilePatternError = pattern => console.log(ERROR, PATTERN_DOESNT_MATCH_ERROR.red, pattern);
 const printException = ({ message, stackTrace }) => {
     printError(message);
     if (stackTrace) {
@@ -36,17 +36,14 @@ const printException = ({ message, stackTrace }) => {
 
 const printBigBrother = () => {
     printNewLines();
-    console.log(
-        Array(5).join(DELIMITER).grey,
-        BIGBROTHER_HEADER.grey,
-        Array(5).join(DELIMITER).grey);
+    console.log(Array(5).join(DELIMITER).grey, BIGBROTHER_HEADER.grey, Array(5).join(DELIMITER).grey);
     printNewLines();
 };
 
-const printTitleTest = (title) => console.log(DELIMITER, title, COLON);
-const printFailedTest = (reason) => console.log(TAB, ERROR, reason.red);
+const printTitleTest = title => console.log(DELIMITER, title, COLON);
+const printFailedTest = reason => console.log(TAB, ERROR, reason.red);
 
-const printRunnerSuccess = (suitesCount) => {
+const printRunnerSuccess = suitesCount => {
     const suitesLabel = suitesCount > 1 ? 'suites' : 'suite';
 
     printNewLines(1);

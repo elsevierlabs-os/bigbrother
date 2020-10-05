@@ -10,11 +10,7 @@ const mapConfig = (key, value) => (
 const Config = ({ config }) => (
     <div className="bottom-border">
         <h2 className="title">Current configuration:</h2>
-        <ul className="config-container">
-            { Object
-                .keys(config)
-                .map(k => mapConfig(k, config[k])) }
-        </ul>
+        <ul className="config-container">{Object.keys(config).map(k => mapConfig(k, config[k]))}</ul>
     </div>
 );
 

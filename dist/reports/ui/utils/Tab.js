@@ -37,7 +37,7 @@ var Tab = function Tab(_ref2) {
   return /*#__PURE__*/_react["default"].createElement("div", {
     className: 'tab-container'
   }, /*#__PURE__*/_react["default"].createElement("ul", {
-    className: "tab-titles"
+    className: 'tab-titles'
   }, renderTitles(tabs, tab, setTab)), /*#__PURE__*/_react["default"].createElement("div", {
     className: 'tab-content'
   }, tabs[tab].component));

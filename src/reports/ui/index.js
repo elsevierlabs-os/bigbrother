@@ -11,13 +11,7 @@ const createDashboard = () => {
 
     const container = document.getElementById('container');
 
-    ReactDOM.render(
-        <App
-            current={currentReport.testRunner}
-            data={data}
-            config={config}
-        />,
-        container);
+    ReactDOM.render(<App current={currentReport.testRunner} data={data} config={config} />, container);
 };
 
 window.addEventListener('load', createDashboard);

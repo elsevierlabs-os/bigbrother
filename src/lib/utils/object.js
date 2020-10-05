@@ -3,7 +3,7 @@ export const deepGet = (key, obj) => {
         throw new TypeError('Object must be specified');
     }
 
-    const splitKey = (typeof key == "string" && key !== '') ? key.split('.') : [];
+    const splitKey = typeof key === 'string' && key !== '' ? key.split('.') : [];
 
     if (splitKey.length === 1) {
         return obj[splitKey[0]];
@@ -19,7 +19,7 @@ export const deepSet = (key, value = {}, obj = {}) => {
         throw new TypeError('Key must be specified');
     }
 
-    const splitKey = (typeof key == "string" && key !== '') ? key.split('.') : [];
+    const splitKey = typeof key === 'string' && key !== '' ? key.split('.') : [];
 
     if (splitKey.length === 1) {
         obj[splitKey[0]] = value;
@@ -35,4 +35,4 @@ export const deepSet = (key, value = {}, obj = {}) => {
     return obj;
 };
 
-export const deepExist = (key, obj) => !!deepGet(key, obj);
+export const deepExist = (key, obj) => Boolean(deepGet(key, obj));

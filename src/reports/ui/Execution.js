@@ -3,27 +3,27 @@ import React from 'react';
 const FailureReason = ({ message, received, expected = 'to exist' }) => {
     return (
         <ul>
-            <li className={"reason-detail"}>
+            <li className={'reason-detail'}>
                 <label>Message:</label>
-                { message }
+                {message}
             </li>
-            <li className={"reason-detail"}>
+            <li className={'reason-detail'}>
                 <label>received:</label>
-                { received }
+                {received}
             </li>
-            <li className={"reason-detail"}>
+            <li className={'reason-detail'}>
                 <label>expected:</label>
-                { expected }
+                {expected}
             </li>
         </ul>
-    )
+    );
 };
 
 const Failure = ({ name, reason }) => (
-    <li className='execution failed'>
+    <li className="execution failed">
         <span className={'test-title'}>{name}</span>
         <span className={'test-reason'}>
-            <FailureReason {...reason}/>
+            <FailureReason {...reason} />
         </span>
     </li>
 );
@@ -45,12 +45,12 @@ const renderFailures = (failures = []) => {
         <div>
             <h3>Failures</h3>
             <ul className={'execution-block failures'}>
-                { failures.map(failure => (
-                    <Failure {...failure}/>
+                {failures.map(failure => (
+                    <Failure {...failure} />
                 ))}
             </ul>
         </div>
-    )
+    );
 };
 
 const extractTitle = ({ fullName }) => fullName.split('.')[0];
@@ -64,23 +64,18 @@ const renderSingleSuite = (tests = []) => {
         <div>
             <h3>{title}</h3>
             <ul className={'execution-block suites'}>
-                { tests.map(test => (
-                    <Test {...test}/>
+                {tests.map(test => (
+                    <Test {...test} />
                 ))}
             </ul>
         </div>
-
-    )
+    );
 };
 
 const renderSuitesBlocks = (suites = []) => {
     if (!suites.length) return null;
 
-    return (
-        <div>
-            { suites.map(renderSingleSuite) }
-        </div>
-    )
+    return <div>{suites.map(renderSingleSuite)}</div>;
 };
 
 const Execution = ({ failures, suites }) => {
@@ -88,8 +83,8 @@ const Execution = ({ failures, suites }) => {
 
     return (
         <div>
-            { renderFailures(failures) }
-            { renderSuitesBlocks(suites) }
+            {renderFailures(failures)}
+            {renderSuitesBlocks(suites)}
         </div>
     );
 };

@@ -6,14 +6,10 @@ import { printError, printFilePatternError, printInfo } from './printer';
 const NODE_MODULES_IGNORE_PATTERN = 'node_modules/**/*.*';
 
 class FileReader {
-
     static getIgnoredFiles() {
         const { ignore } = getConfig();
 
-        return [
-            NODE_MODULES_IGNORE_PATTERN,
-            ...ignore
-        ];
+        return [NODE_MODULES_IGNORE_PATTERN, ...ignore];
     }
 
     static validateFileNames(filenames) {
@@ -32,8 +28,7 @@ class FileReader {
             return Promise.reject();
         }
 
-        return FileReader
-            .getFiles(pattern, globOptions);
+        return FileReader.getFiles(pattern, globOptions);
     }
 
     static readTestFiles() {
@@ -47,9 +42,7 @@ class FileReader {
             return Promise.reject();
         }
 
-        return FileReader
-            .getFiles(pattern, globOptions)
-            .then(FileReader.onFilesFound);
+        return FileReader.getFiles(pattern, globOptions).then(FileReader.onFilesFound);
     }
 
     static getFiles(pattern, globOptions) {
@@ -78,7 +71,7 @@ class FileReader {
                 } else {
                     resolve({ filename, content });
                 }
-            })
+            });
         });
     }
 

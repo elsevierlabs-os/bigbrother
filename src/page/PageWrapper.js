@@ -23,7 +23,6 @@ import { printException } from '../lib/printer';
 class PageWrapper {
 
     constructor(page, name) {
-
         this.options = {};
 
         this.page = page;
@@ -46,6 +45,14 @@ class PageWrapper {
         }
     }
 
+    getPageName() {
+        return this.name;
+    }
+
+    getPageSettings() {
+        return this.pageSettings;
+    }
+
     async close() {
         try {
             if (this.hasPage()) {
@@ -56,7 +63,7 @@ class PageWrapper {
 
                 await this.page.close();
             }
-        } catch(e) {
+        } catch (e) {
             printException(e);
         }
     }
@@ -66,7 +73,7 @@ class PageWrapper {
             this.cdpSessionClient = await this.page.target().createCDPSession();
         }
         return this.cdpSessionClient;
-    }
+    };
 
     async setNetworkSpeed(network = NETWORK.WIFI) {
         try {
@@ -90,7 +97,7 @@ class PageWrapper {
 
     storePageSetting(setting) {
         this.pageSettings = {
-            ...this.pageSettings,
+            ...this.getPageSettings(),
             ...setting
         };
     }
@@ -105,38 +112,36 @@ class PageWrapper {
     getTimings() {
         return this.timings;
     }
-
-    cpu = () => this.options.cpu;
-    network = () => this.options.network;
+    //
+    // cpu = () => this.options.cpu;
+    // network = () => this.options.network;
 
     hasPage() {
         return Boolean(this.page);
     }
 
     getKey(key) {
-        return `${this.name}.${key}`;
+        return `${this.getPageName()}.${key}`;
     }
 
-    storeMeasurement = (data) => {
+    storeMeasurement = data => {
         deepSet(data.key, data, this.measurements);
         this.storeMeasurementKey(data.key);
     };
 
     storeMeasurementKey = key => this.measurements.__keys.push(key);
 
-    clearAssets = () =>  this.assetsHandler.reset();
-    clearResponses = () => this.responses = {};
+    clearAssets = () => this.assetsHandler.reset();
+    clearResponses = () => (this.responses = {});
 
     storeAsset = (url, asset) => this.assetsHandler.store(url, asset);
-    storeResponse = (id, response) => this.responses[id] = response;
+    storeResponse = (id, response) => (this.responses[id] = response);
 
-    handleNetworkResponseReceived = ({ response, requestId}) => this.storeResponse(requestId, response);
+    handleNetworkResponseReceived = ({ response, requestId }) => this.storeResponse(requestId, response);
 
     handleNetworkDataReceived = ({ requestId, encodedDataLength, dataLength, ...rest }) => {
         const { url, mimeType } = this.responses[requestId];
-        const isAssetData = NETWORK_ASSETS_MIMETYPES
-            .map(type => new RegExp(type).test(mimeType))
-            .some(Boolean);
+        const isAssetData = NETWORK_ASSETS_MIMETYPES.map(type => new RegExp(type).test(mimeType)).some(Boolean);
 
         if (!url || url.startsWith('data:') || !isAssetData) {
             return;
@@ -144,10 +149,10 @@ class PageWrapper {
 
         const asset = this.assetsHandler.get(url)[0];
 
-        this.storeAsset(url,{
+        this.storeAsset(url, {
             mimeType,
-            encodedLength: (asset && asset.encodedLength || 0) + (encodedDataLength / 1024),
-            length:  (asset && asset.length || 0) + (dataLength / 1024),
+            encodedLength: ((asset && asset.encodedLength) || 0) + encodedDataLength / 1024,
+            length: ((asset && asset.length) || 0) + dataLength / 1024,
             ...rest
         });
     };
@@ -175,15 +180,21 @@ class PageWrapper {
         }
     }
 
-    async getPaintInfo() { return await this.getInfo(PAINT_INFO_TYPE); }
-    async getNavigationInfo() { return await this.getInfo(NAVIGATION_INFO_TYPE); }
-    async getAssetsInfo() { return this.assetsHandler; }
+    async getPaintInfo() {
+        return await this.getInfo(PAINT_INFO_TYPE);
+    }
+    async getNavigationInfo() {
+        return await this.getInfo(NAVIGATION_INFO_TYPE);
+    }
+    async getAssetsInfo() {
+        return this.assetsHandler;
+    }
 
-    _load = (url) => async () => await this.page.goto(url, PAGE_LOAD_OPTIONS);
+    _load = url => async () => await this.page.goto(url, PAGE_LOAD_OPTIONS);
     _click = (selector, options) => async () => await this.page.click(selector, options);
-    _focus = (selector) => async () => await this.page.focus(selector);
-    _setUserAgent = (userAgent) => async () => await this.page.setUserAgent(userAgent);
-    _type = (text) => async () => await this.page.keyboard.type(text);
+    _focus = selector => async () => await this.page.focus(selector);
+    _setUserAgent = userAgent => async () => await this.page.setUserAgent(userAgent);
+    _type = text => async () => await this.page.keyboard.type(text);
 
     async load(url) {
         return new Promise(async (resolve, reject) => {
@@ -227,7 +238,7 @@ class PageWrapper {
     async tap(select) {}
 
     async setUserAgent(userAgent) {
-        return new Promise( async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             if (this.hasPage()) {
                 const data = await performanceAnalyzer.measure(this.getKey('userAgent', this._setUserAgent(userAgent)));
                 this.storeMeasurement(data);
@@ -262,12 +273,10 @@ class PageWrapper {
             ...this.measurements,
             assets: this.assetsHandler.toJSON(),
             timings: this.getTimings(),
-            pageSettings: this.pageSettings
+            pageSettings: this.getPageSettings()
         };
 
-        return stringify ?
-            JSON.stringify(json, null, spacing) :
-            json;
+        return stringify ? JSON.stringify(json, null, spacing) : json;
     }
 }
 

@@ -27,30 +27,27 @@ var Expectation = /*#__PURE__*/function () {
   (0, _createClass2["default"])(Expectation, [{
     key: "toExist",
     value: function toExist(message) {
-      (0, _assert["default"])(this.value, message || 'Expected %s to exist', this.value);
-      return this;
+      return (0, _assert["default"])(this.value, message || 'Expected %s to exist', this.value);
     }
   }, {
     key: "toBeLessThan",
     value: function toBeLessThan(value) {
-      (0, _assert["default"])(this.value < value, 'Expected %s to be less than %s', this.value, value);
-      return this;
+      return (0, _assert["default"])(this.value < value, 'Expected %s to be less than %s', this.value, value);
     }
   }, {
     key: "toBeEqual",
-    value: function toBeEqual(value) {
-      (0, _assert["default"])(this.value === value, message || 'Expected %s to be equal to %s', this.value, value);
-      return this;
+    value: function toBeEqual(value, message) {
+      return (0, _assert["default"])(this.value === value, message || 'Expected %s to be equal to %s', this.value, value);
     }
   }, {
     key: "toMatchRecording",
     value: function toMatchRecording() {
       /*
-      * we get the page
-      * check inside .recordings if the page exists
-      *   if the page exists, compare the json and return the diff
-      *   if the page does not exist, save the json inside the recordings folder. and return OK
-      * */
+       * we get the page
+       * check inside .recordings if the page exists
+       *   if the page exists, compare the json and return the diff
+       *   if the page does not exist, save the json inside the recordings folder. and return OK
+       * */
       var page = this.value;
 
       if ((0, _PageRecorder.recordingExists)(page)) {
@@ -61,15 +58,13 @@ var Expectation = /*#__PURE__*/function () {
     }
   }, {
     key: "toBeWithinRange",
-    value: function toBeWithinRange(min, max) {
-      (0, _assert["default"])(min < this.value && this.value < max, message || 'Expected %s to be between %s and %s', this.value, min, max);
-      return this;
+    value: function toBeWithinRange(min, max, message) {
+      return (0, _assert["default"])(min < this.value && this.value < max, message || 'Expected %s to be between %s and %s', this.value, min, max);
     }
   }, {
     key: "toBeMoreThan",
     value: function toBeMoreThan(value) {
-      (0, _assert["default"])(this.value > value, 'Expected %s to be more than %s', this.value, value);
-      return this;
+      return (0, _assert["default"])(this.value > value, 'Expected %s to be more than %s', this.value, value);
     }
   }]);
   return Expectation;

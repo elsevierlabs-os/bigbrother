@@ -1,7 +1,6 @@
 import ora from 'ora';
 
 class Spinner {
-
     constructor(text) {
         this.text = text;
         this.instance = ora({

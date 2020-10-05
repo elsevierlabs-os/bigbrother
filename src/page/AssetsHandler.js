@@ -1,5 +1,4 @@
 class AssetsHandler {
-
     constructor() {
         this.assets = {};
     }
@@ -13,14 +12,13 @@ class AssetsHandler {
     }
 
     has(key) {
-        return !!this._filterKeys(key).length;
+        return Boolean(this._filterKeys(key).length);
     }
 
     _filterKeys(key) {
         const regex = new RegExp(key);
 
-        return Object.keys(this.assets)
-            .filter(regex.test.bind(regex));
+        return Object.keys(this.assets).filter(regex.test.bind(regex));
     }
 
     get(key) {

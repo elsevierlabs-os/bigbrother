@@ -4,7 +4,6 @@ import path from 'path';
 import replace from 'replace-in-file';
 
 class FileWriter {
-
     static writeJSONToFile(json, destinationPath, shouldStringify = false) {
         let payload = json;
         if (shouldStringify) {
@@ -45,7 +44,7 @@ class FileWriter {
                 fs.mkdirSync(folderPath, { recursive: true });
             }
             return true;
-        } catch(e) {
+        } catch (e) {
             printException(e);
             return false;
         }
@@ -55,7 +54,7 @@ class FileWriter {
         const options = {
             files: file,
             from: sourceString,
-            to: replacement,
+            to: replacement
         };
 
         return replace(options);

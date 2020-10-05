@@ -1,7 +1,6 @@
 import { deepSet, deepGet, deepExist } from './utils/object';
 
 class PerformanceAnalyzer {
-
     constructor() {
         // somewhere here we're going to store information about all scenario
         this.data = {};
@@ -54,7 +53,7 @@ class PerformanceAnalyzer {
         const uniqueKey = this.startTracking(key);
         try {
             await targetFunction();
-        } catch(e) {
+        } catch (e) {
             this.stopTracking(key);
         }
         return this.stopTracking(uniqueKey);
@@ -63,7 +62,6 @@ class PerformanceAnalyzer {
     toJSON() {
         return JSON.stringify(this.data, null, 4);
     }
-
 }
 
 export default new PerformanceAnalyzer();

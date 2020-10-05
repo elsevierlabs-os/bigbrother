@@ -17,7 +17,9 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _puppeteer = _interopRequireDefault(require("puppeteer"));
 
-var _path = _interopRequireDefault(require("path"));
+var _printer = require("../lib/printer");
+
+var _constants = require("../lib/constants");
 
 var Browser = /*#__PURE__*/function () {
   function Browser() {
@@ -35,24 +37,11 @@ var Browser = /*#__PURE__*/function () {
     this.pageOptions = {
       cacheEnabled: cacheEnabled
     };
+    this.hasLaunched = false;
     this.pages = [];
   }
 
   (0, _createClass2["default"])(Browser, [{
-    key: "storePage",
-    value: function storePage(key, page) {
-      // we should use a key value map
-      // to store pages.
-      // key should be the name of the single scenario.
-      this.pages.push(page);
-    }
-  }, {
-    key: "closePage",
-    value: function closePage(key) {// we get the page using the key
-      // we remove the page from the list
-      // after closing it.
-    }
-  }, {
     key: "newPage",
     value: function () {
       var _newPage = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
@@ -61,16 +50,23 @@ var Browser = /*#__PURE__*/function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                if (!this.hasLaunched) {
+                  _context.next = 8;
+                  break;
+                }
+
+                _context.next = 3;
                 return this.browser.newPage();
 
-              case 2:
+              case 3:
                 page = _context.sent;
                 page.setCacheEnabled(this.pageOptions.cacheEnabled);
-                this.storePage('', page);
                 return _context.abrupt("return", page);
 
-              case 6:
+              case 8:
+                (0, _printer.printWarning)(_constants.BROWSER_CANT_OPEN_PAGE_MESSAGE);
+
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -97,9 +93,10 @@ var Browser = /*#__PURE__*/function () {
 
               case 2:
                 this.browser = _context2.sent;
+                this.hasLaunched = true;
                 return _context2.abrupt("return", this.browser);
 
-              case 4:
+              case 5:
               case "end":
                 return _context2.stop();
             }
@@ -121,8 +118,8 @@ var Browser = /*#__PURE__*/function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                if (!this.browser) {
-                  _context3.next = 4;
+                if (!this.hasLaunched) {
+                  _context3.next = 6;
                   break;
                 }
 
@@ -131,8 +128,13 @@ var Browser = /*#__PURE__*/function () {
 
               case 3:
                 this.browser = null;
+                _context3.next = 7;
+                break;
 
-              case 4:
+              case 6:
+                (0, _printer.printWarning)(_constants.BROWSER_CANT_CLOSE_MESSAGE);
+
+              case 7:
               case "end":
                 return _context3.stop();
             }

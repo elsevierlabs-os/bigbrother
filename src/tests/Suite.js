@@ -6,10 +6,8 @@ import { FULL_STOP, ALL_SPACES, UNDERSCORE } from '../lib/constants';
 import { getConfig } from '../config';
 import { appendNodeModulesPathToModule } from '../lib/utils/module';
 import ReportGenerator from '../reports/ReportGenerator';
-import {printInfo} from '..';
 
 export default class Suite {
-
     constructor(content, browser) {
         this.content = content;
         this.browser = browser;
@@ -20,14 +18,10 @@ export default class Suite {
         this.root = true;
     }
 
-    formatName = (n) => n.replace(ALL_SPACES, UNDERSCORE);
+    formatName = n => n.replace(ALL_SPACES, UNDERSCORE);
 
-    getFullPageName = (name) => {
-        return this.names
-            .map(this.formatName)
-            .join(FULL_STOP)
-            .concat(FULL_STOP)
-            .concat(this.formatName(name));
+    getFullPageName = name => {
+        return this.names.map(this.formatName).join(FULL_STOP).concat(FULL_STOP).concat(this.formatName(name));
     };
 
     async createPageWrapper(name) {
@@ -36,7 +30,7 @@ export default class Suite {
         return new PageWrapper(page, name);
     }
 
-    it = (name, f)  => {
+    it = (name, f) => {
         const fullName = this.getFullPageName(name);
 
         const asyncTest = async () => {
@@ -44,7 +38,7 @@ export default class Suite {
                 reason = {};
 
             if (this._beforeEach) {
-                this._beforeEach()
+                this._beforeEach();
             }
             const page = await this.createPageWrapper(fullName);
             const spinner = new Spinner(name);
@@ -52,7 +46,7 @@ export default class Suite {
                 await f(page);
                 await page.close();
                 spinner.complete();
-            } catch({ message, expected, received }) {
+            } catch ({ message, expected, received }) {
                 success = false;
                 reason = { message, expected, received };
                 spinner.exception(reason);
@@ -68,7 +62,7 @@ export default class Suite {
         this.tests.push(() => asyncTest());
     };
 
-    describe = (name, f)  => {
+    describe = (name, f) => {
         if (this.root) {
             this.rootname = name;
             this.root = false;
@@ -84,25 +78,25 @@ export default class Suite {
         }
     };
 
-    before = (f) => this._before = f;
-    after = (f) => this._after = f;
-    beforeEach = (f) => this._beforeEach = f;
-    afterEach = (f) => this._afterEach = f;
+    before = f => (this._before = f);
+    after = f => (this._after = f);
+    beforeEach = f => (this._beforeEach = f);
+    afterEach = f => (this._afterEach = f);
 
     async execute() {
         const { cwd } = getConfig();
         appendNodeModulesPathToModule(module, cwd);
 
         const args = {
-            'describe': this.describe,
-            'it': this.it,
-            'before': this.before,
-            'beforeEach': this.beforeEach,
-            'after': this.after,
-            'afterEach': this.afterEach,
-            'expect': expect,
-            'require': require,
-            'module': module
+            describe: this.describe,
+            it: this.it,
+            before: this.before,
+            beforeEach: this.beforeEach,
+            after: this.after,
+            afterEach: this.afterEach,
+            expect: expect,
+            require: require,
+            module: module
         };
 
         const executor = new Function(...Object.keys(args), this.content);

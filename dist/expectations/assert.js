@@ -51,7 +51,7 @@ var AssertionError = /*#__PURE__*/function (_Error) {
 }( /*#__PURE__*/(0, _wrapNativeSuper2["default"])(Error));
 
 var assert = function assert(condition, createMessage) {
-  if (condition) return;
+  if (condition) return true;
 
   for (var _len = arguments.length, extraArgs = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
     extraArgs[_key - 2] = arguments[_key];

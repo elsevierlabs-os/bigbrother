@@ -1,8 +1,8 @@
 import puppeteer from 'puppeteer';
-import path from 'path';
+import { printWarning } from '../lib/printer';
+import { BROWSER_CANT_CLOSE_MESSAGE, BROWSER_CANT_OPEN_PAGE_MESSAGE } from '../lib/constants';
 
 class Browser {
-
     constructor({ headless = true, cacheEnabled = false } = {}) {
         this.browser = null;
 
@@ -14,41 +14,33 @@ class Browser {
             cacheEnabled
         };
 
+        this.hasLaunched = false;
         this.pages = [];
     }
 
-    storePage(key, page) {
-        // we should use a key value map
-        // to store pages.
-        // key should be the name of the single scenario.
-        this.pages.push(page);
-    }
-
-    closePage(key) {
-        // we get the page using the key
-        // we remove the page from the list
-        // after closing it.
-    }
-
     async newPage() {
-        const page = await this.browser.newPage();
-        page.setCacheEnabled(this.pageOptions.cacheEnabled);
+        if (this.hasLaunched) {
+            const page = await this.browser.newPage();
+            page.setCacheEnabled(this.pageOptions.cacheEnabled);
 
-        this.storePage('', page);
-
-        return page;
+            return page;
+        } else {
+            printWarning(BROWSER_CANT_OPEN_PAGE_MESSAGE);
+        }
     }
+
     async launch() {
         this.browser = await puppeteer.launch(this.puppeteerOptions);
-        // this.browser.on(this.TARGET_CHANGED_EVENT, this.onTargetChanged);
-
+        this.hasLaunched = true;
         return this.browser;
     }
 
     async close() {
-        if (this.browser) {
+        if (this.hasLaunched) {
             await this.browser.close();
             this.browser = null;
+        } else {
+            printWarning(BROWSER_CANT_CLOSE_MESSAGE);
         }
     }
 }

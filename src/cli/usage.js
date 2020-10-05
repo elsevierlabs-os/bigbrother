@@ -1,22 +1,21 @@
-const getUsage = require('command-line-usage');
-const packageJson = require('./package');
+import 'colors';
+import getUsage from 'command-line-usage';
+import packageJson from '../../package';
 
 const usage = getUsage([
     {
         header: 'BigBrother'.bold.green,
-        content: 'BigBrother is a test runner built on top of Puppeteer, that allows you to ' +
+        content:
+            'BigBrother is a test runner built on top of Puppeteer, that allows you to ' +
             'evaluate and measure the performance of your application, under specific CPU and Network configurations.' +
             '\n' +
             '\n' +
             'BigBrother provides also a small assertion library, and the chance to record/evaluate snapshots of' +
-            'the page you\'re evaluating.'
+            "the page you're evaluating."
     },
     {
         header: 'Synopsis'.yellow,
-        content: [
-            '$ bigbrother {bold --config}={underline configfile} \'**/*.perf.js\'',
-            '$ bigbrother {bold --help}'
-        ]
+        content: ["$ bigbrother {bold --config}={underline configfile} '**/*.perf.js'", '$ bigbrother {bold --help}']
     },
     {
         header: 'Options'.yellow,
@@ -30,7 +29,8 @@ const usage = getUsage([
             {
                 name: 'config',
                 alias: 'c',
-                description: 'The configuration file that will be used by bigbrother. Please note that the path has to be relative (e.g. "--config=./bigbrother.config.js".'.bold.grey,
+                description: 'The configuration file that will be used by bigbrother. Please note that the path has to be relative (e.g. "--config=./bigbrother.config.js".'
+                    .bold.grey,
                 type: String,
                 typeLabel: '{underline file}'
             },
@@ -38,7 +38,7 @@ const usage = getUsage([
                 name: 'verbose',
                 description: 'Run bigbrother in verbose mode.'.bold.grey,
                 alias: 'v',
-                type: Boolean,
+                type: Boolean
             }
         ]
     },
@@ -54,4 +54,4 @@ const usage = getUsage([
     }
 ]);
 
-module.exports = usage;
+export default usage;

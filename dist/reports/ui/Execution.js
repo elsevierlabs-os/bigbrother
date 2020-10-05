@@ -15,11 +15,11 @@ var FailureReason = function FailureReason(_ref) {
       _ref$expected = _ref.expected,
       expected = _ref$expected === void 0 ? 'to exist' : _ref$expected;
   return /*#__PURE__*/_react["default"].createElement("ul", null, /*#__PURE__*/_react["default"].createElement("li", {
-    className: "reason-detail"
+    className: 'reason-detail'
   }, /*#__PURE__*/_react["default"].createElement("label", null, "Message:"), message), /*#__PURE__*/_react["default"].createElement("li", {
-    className: "reason-detail"
+    className: 'reason-detail'
   }, /*#__PURE__*/_react["default"].createElement("label", null, "received:"), received), /*#__PURE__*/_react["default"].createElement("li", {
-    className: "reason-detail"
+    className: 'reason-detail'
   }, /*#__PURE__*/_react["default"].createElement("label", null, "expected:"), expected));
 };
 

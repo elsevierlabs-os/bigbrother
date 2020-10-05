@@ -104,7 +104,7 @@ var PayloadInspectGraph = function PayloadInspectGraph(_ref4) {
   };
 
   return /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("h3", {
-    className: "graph-title"
+    className: 'graph-title'
   }, "Payload composition"), /*#__PURE__*/_react["default"].createElement("div", {
     className: "graph-actions"
   }, /*#__PURE__*/_react["default"].createElement("label", null, "Stacked"), /*#__PURE__*/_react["default"].createElement("input", {

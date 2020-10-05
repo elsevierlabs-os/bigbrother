@@ -4,7 +4,7 @@ import PayloadInspectGraph from './graphs/PayloadInspectGraph';
 
 const AllRun = ({ data, current }) => (
     <div className="bottom-border">
-        <FailureToTestRationGraph data={data}/>
+        <FailureToTestRationGraph data={data} />
         <PayloadInspectGraph data={data} />
     </div>
 );

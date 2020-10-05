@@ -23,15 +23,9 @@ import {
     EMPTY,
     REPORT_OPEN_DISABLED
 } from '../lib/constants';
-import {
-    executeTask,
-    getEnvFlag,
-    LOCAL_DEVELOPMENT_ENV_FLAG,
-    TASKS
-} from '../lib/utils/process';
+import { executeTask, getEnvFlag, LOCAL_DEVELOPMENT_ENV_FLAG, TASKS } from '../lib/utils/process';
 
 class ReportGenerator {
-
     constructor() {
         this.pages = [];
         this.currentReport = {};
@@ -62,9 +56,7 @@ class ReportGenerator {
     getReportFileName = () => {
         const timestamp = ReportGenerator.buildTimeStamp();
 
-        return REPORT_FILENAME_ROOT
-            .concat(timestamp)
-            .concat(REPORT_FILENAME_EXTENSION);
+        return REPORT_FILENAME_ROOT.concat(timestamp).concat(REPORT_FILENAME_EXTENSION);
     };
 
     getReportFolderPath = () => {
@@ -72,7 +64,7 @@ class ReportGenerator {
         return path.join(cwd, reportPath);
     };
 
-    getStaticFolderPath = (staticFolder) => {
+    getStaticFolderPath = staticFolder => {
         const { cwd } = getConfig();
         return path.join(
             cwd,
@@ -81,19 +73,14 @@ class ReportGenerator {
         );
     };
 
-    getFullReportPathFromFilename = (name) => (
-        path.join(this.getReportFolderPath(), name)
-    );
+    getFullReportPathFromFilename = name => path.join(this.getReportFolderPath(), name);
 
-    addFolderPathToReportFilenames = (files) => (
-        Promise.resolve(files.map(this.getFullReportPathFromFilename))
-    );
+    addFolderPathToReportFilenames = files => Promise.resolve(files.map(this.getFullReportPathFromFilename));
 
     getAllReports = () => {
         const reportPath = this.getReportFolderPath();
-        const options = { ignore: [ FULL_REPORT_FILENAME ] };
-        return FileReader
-            .readFolderContent(reportPath, REPORT_FILE_PATTERN, options)
+        const options = { ignore: [FULL_REPORT_FILENAME] };
+        return FileReader.readFolderContent(reportPath, REPORT_FILE_PATTERN, options)
             .then(this.addFolderPathToReportFilenames)
             .then(FileReader.readFilesList);
     };
@@ -112,13 +99,13 @@ class ReportGenerator {
 
                 FileWriter.writeJSONToFile(payload, fullPath, true);
                 resolve();
-            } catch(e) {
+            } catch (e) {
                 reject(e);
             }
         });
     };
 
-    handleReportStaticFilesCopy = (filenames) => {
+    handleReportStaticFilesCopy = filenames => {
         const source = this.getStaticFolderPath(REPORT_STATIC_FILES_FOLDER);
         const target = this.getReportFolderPath();
 
@@ -129,43 +116,40 @@ class ReportGenerator {
         if (FileWriter.checkAndCreateFolder(this.getReportFolderPath())) {
             printInfo(REPORT_FOLDER_CREATED);
             const staticFilesFolder = this.getStaticFolderPath(REPORT_STATIC_FILES_FOLDER);
-            return FileReader
-                .readFolderContent(staticFilesFolder, REPORT_STATIC_FILES_ALL_PATTERN)
-                .then(this.handleReportStaticFilesCopy);
+            return FileReader.readFolderContent(staticFilesFolder, REPORT_STATIC_FILES_ALL_PATTERN).then(
+                this.handleReportStaticFilesCopy
+            );
         }
 
         printInfo(REPORT_FOLDER_ALREADY_EXISTS);
         return Promise.resolve();
     }
 
-    replaceReportInIndexHtml = json => (
+    replaceReportInIndexHtml = json =>
         FileWriter.replaceStringInFile(
             this.getFullReportPathFromFilename(REPORT_INDEX_HTML),
             REPORT_TARGET_STRING,
-            JSON.stringify(json))
-    );
+            JSON.stringify(json)
+        );
 
-    replaceCurrentReportInIndexHtml = () => (
+    replaceCurrentReportInIndexHtml = () =>
         FileWriter.replaceStringInFile(
             this.getFullReportPathFromFilename(REPORT_INDEX_HTML),
             REPORT_CURRENT_REPORT_TARGET_STRING,
-            JSON.stringify(this.getCurrentReport()))
-    );
+            JSON.stringify(this.getCurrentReport())
+        );
 
     mapReportToJson = ({ content }) => JSON.parse(content);
 
-    generateFullReport = (reports) => {
+    generateFullReport = reports => {
         return new Promise((resolve, reject) => {
             try {
                 const json = { data: reports.map(this.mapReportToJson) };
 
                 printInfo(REPORT_ABOUT_TO_GENERATE);
-                FileWriter.writeJSONToFile(
-                    json,
-                    this.getFullReportPathFromFilename(FULL_REPORT_FILENAME),
-                    true);
+                FileWriter.writeJSONToFile(json, this.getFullReportPathFromFilename(FULL_REPORT_FILENAME), true);
                 resolve(json);
-            } catch(e) {
+            } catch (e) {
                 reject(e);
             }
         });
@@ -178,7 +162,7 @@ class ReportGenerator {
             .then(this.getAllReports)
             .then(this.generateFullReport)
             .then(this.replaceReportInIndexHtml)
-            .then(this.replaceCurrentReportInIndexHtml)
+            .then(this.replaceCurrentReportInIndexHtml);
     };
 
     openReport = () => {
@@ -190,8 +174,7 @@ class ReportGenerator {
         } else {
             printInfo(REPORT_OPEN_DISABLED);
         }
-    }
-
+    };
 }
 
 export default new ReportGenerator();

@@ -1,23 +1,14 @@
 import { pingEndpoint } from '../lib/httpClient';
-import {
-    printBigBrother,
-    printInfo,
-    printException
-} from '../lib/printer';
+import { printBigBrother, printInfo, printException } from '../lib/printer';
 import { exitProcess, onUserInterrupt } from '../lib/utils/process';
 import ProcessRunner, { BEFORE } from './ProcessRunner';
 import TestRunner from './TestRunner';
 import FileReader from '../lib/FileReader';
 import ReportGenerator from '../reports/ReportGenerator';
 import { getConfig, storeConfiguration } from '../config';
-import {
-    RUNNER_CLEANUP_MESSAGE,
-    RUNNER_STARTING_MESSAGE,
-    RUNNER_TERMINATION_MESSAGE
-} from '../lib/constants';
+import { RUNNER_CLEANUP_MESSAGE, RUNNER_STARTING_MESSAGE, RUNNER_TERMINATION_MESSAGE } from '../lib/constants';
 
 class Runner {
-
     static setup(configuration) {
         storeConfiguration(configuration);
         onUserInterrupt(Runner.stop);
@@ -27,10 +18,7 @@ class Runner {
     static cleanup = () => {
         printInfo(RUNNER_CLEANUP_MESSAGE);
         ProcessRunner.executePostCommand();
-        ProcessRunner
-            .stop(BEFORE)
-            .catch(printException)
-            .finally(Runner.terminate);
+        ProcessRunner.stop(BEFORE).catch(printException).finally(Runner.terminate);
     };
 
     static terminate = () => {
@@ -60,7 +48,7 @@ class Runner {
 
     static stop = () => {
         return TestRunner.stopBrowser();
-    }
+    };
 }
 
 export default Runner;

@@ -15,7 +15,7 @@ export const DEFAULT_CONFIGURATION = {
 
 let config = DEFAULT_CONFIGURATION;
 
-export const storeConfiguration = (configuration) => {
+export const storeConfiguration = configuration => {
     config = configuration;
     printInfo('current configuration:', configuration);
 };

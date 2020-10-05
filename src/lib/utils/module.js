@@ -8,7 +8,7 @@ export const appendNodeModulesPathToModule = (mod, directory) => {
     mod.paths.push(modulesPath);
 };
 
-export const removeNodeModulesPathFromModule = (directory) => {
+export const removeNodeModulesPathFromModule = directory => {
     const modulesPath = path.join(directory, NODE_MODULES);
 
     module.paths = module.paths.filter(p => p !== modulesPath);

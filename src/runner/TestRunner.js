@@ -10,13 +10,9 @@ import {
     printRunnerSuccess,
     printTitleTest
 } from '../lib/printer';
-import {
-    BROWSER_NOT_INITIALISED,
-    BROWSER_STARTING_MESSAGE
-} from '../lib/constants';
+import { BROWSER_NOT_INITIALISED, BROWSER_STARTING_MESSAGE } from '../lib/constants';
 
 class TestRunner {
-
     constructor() {
         this.failures = [];
         this.suites = [];
@@ -28,7 +24,7 @@ class TestRunner {
         this.browser = new Browser(getConfig());
 
         return this.browser.launch();
-    }
+    };
 
     stopBrowser = () => {
         if (this.hasBrowser()) {
@@ -44,25 +40,14 @@ class TestRunner {
 
     mapTestToNewSuite = ({ filename, content }) => new Suite(content, this.browser);
     mapSuitesToExecution = suite => () => suite.execute();
-    mapTestsToPromises = (tests) => (
-        tests
-            .map(this.mapTestToNewSuite)
-            .map(this.mapSuitesToExecution)
-    );
+    mapTestsToPromises = tests => tests.map(this.mapTestToNewSuite).map(this.mapSuitesToExecution);
 
-    executeTestSuites = (tests = []) => (
-        PromiseSerial(this.mapTestsToPromises(tests))
-            .then(this.evaluateResults)
-    );
+    executeTestSuites = (tests = []) => PromiseSerial(this.mapTestsToPromises(tests)).then(this.evaluateResults);
 
     isFailedTest = ({ success }) => !success;
 
-    extractFailuresFromSuites = () => (
-        this.suites.reduce((total, suite) => ([
-            ...total,
-            ...suite.filter(this.isFailedTest)
-        ]), [])
-    );
+    extractFailuresFromSuites = () =>
+        this.suites.reduce((total, suite) => [...total, ...suite.filter(this.isFailedTest)], []);
 
     evaluateResults = (suites = []) => {
         this.suites = suites;
@@ -89,7 +74,7 @@ class TestRunner {
         this.getFailures().forEach(({ name, reason }) => {
             printTitleTest(name);
             printFailedTest(reason.message);
-            printNewLines(1)
+            printNewLines(1);
         });
     };
 
@@ -97,7 +82,7 @@ class TestRunner {
         return {
             suites: this.suites,
             failures: this.failures
-        }
+        };
     }
 }
 

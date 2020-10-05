@@ -8,7 +8,6 @@ export const BEFORE = 'before';
 export const AFTER = 'after';
 
 class ProcessRunner {
-
     constructor() {
         this.processes = {};
     }
@@ -59,11 +58,10 @@ class ProcessRunner {
                     this.processes[name] = spawnProcess(cmd, args, { cwd });
                 }
                 resolve(name);
-            } catch(e) {
+            } catch (e) {
                 reject(e);
             }
         });
-
     }
 
     stop(taskId) {
@@ -74,23 +72,19 @@ class ProcessRunner {
                     killProcess(childProcess);
                     printInfo(`${taskId} process has been killed`);
                 } else {
-                    const message = `The required process ${taskId}` + (
-                        !childProcess ?
-                            ' does not exist' :
-                            ' is already dead.'
-                    );
+                    const message =
+                        `The required process ${taskId}` + (!childProcess ? ' does not exist' : ' is already dead.');
                     printInfo(message);
                 }
                 resolve();
-            } catch(e) {
+            } catch (e) {
                 reject(e);
             }
         });
     }
 
     stopAll() {
-        return Promise
-            .all(Object.keys(this.processes).map(t => this.stop(t)));
+        return Promise.all(Object.keys(this.processes).map(t => this.stop(t)));
     }
 }
 

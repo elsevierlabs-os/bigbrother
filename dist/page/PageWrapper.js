@@ -66,12 +66,6 @@ var PageWrapper = /*#__PURE__*/function () {
         }
       }, _callee);
     })));
-    (0, _defineProperty2["default"])(this, "cpu", function () {
-      return _this.options.cpu;
-    });
-    (0, _defineProperty2["default"])(this, "network", function () {
-      return _this.options.network;
-    });
     (0, _defineProperty2["default"])(this, "storeMeasurement", function (data) {
       (0, _object.deepSet)(data.key, data, _this.measurements);
 
@@ -243,6 +237,16 @@ var PageWrapper = /*#__PURE__*/function () {
   }
 
   (0, _createClass2["default"])(PageWrapper, [{
+    key: "getPageName",
+    value: function getPageName() {
+      return this.name;
+    }
+  }, {
+    key: "getPageSettings",
+    value: function getPageSettings() {
+      return this.pageSettings;
+    }
+  }, {
     key: "close",
     value: function () {
       var _close = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7() {
@@ -392,7 +396,7 @@ var PageWrapper = /*#__PURE__*/function () {
   }, {
     key: "storePageSetting",
     value: function storePageSetting(setting) {
-      this.pageSettings = _objectSpread(_objectSpread({}, this.pageSettings), setting);
+      this.pageSettings = _objectSpread(_objectSpread({}, this.getPageSettings()), setting);
     }
   }, {
     key: "storeTimings",
@@ -406,7 +410,10 @@ var PageWrapper = /*#__PURE__*/function () {
     key: "getTimings",
     value: function getTimings() {
       return this.timings;
-    }
+    } //
+    // cpu = () => this.options.cpu;
+    // network = () => this.options.network;
+
   }, {
     key: "hasPage",
     value: function hasPage() {
@@ -415,7 +422,7 @@ var PageWrapper = /*#__PURE__*/function () {
   }, {
     key: "getKey",
     value: function getKey(key) {
-      return "".concat(this.name, ".").concat(key);
+      return "".concat(this.getPageName(), ".").concat(key);
     }
   }, {
     key: "setupAssetsMetrics",
@@ -1004,7 +1011,7 @@ var PageWrapper = /*#__PURE__*/function () {
       var json = _objectSpread(_objectSpread({}, this.measurements), {}, {
         assets: this.assetsHandler.toJSON(),
         timings: this.getTimings(),
-        pageSettings: this.pageSettings
+        pageSettings: this.getPageSettings()
       });
 
       return stringify ? JSON.stringify(json, null, spacing) : json;

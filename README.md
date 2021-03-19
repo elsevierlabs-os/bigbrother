@@ -1,6 +1,5 @@
 # BIGBROTHER
 
-![](https://i1.wp.com/bdtechtalks.com/wp-content/uploads/2017/12/1984-bolshoy-brat-big-brother.jpg)
 
 BigBrother is a simple tool that aims to provide insights of how our pages are performing. Similar to mocha, it will allow you to define testing scenarios and execute them with different Network/CPU throttling options.
 

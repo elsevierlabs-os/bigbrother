@@ -588,65 +588,40 @@ var PageWrapper = /*#__PURE__*/function () {
   }, {
     key: "load",
     value: function () {
-      var _load = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee16(url) {
-        var _this2 = this;
-
-        return _regenerator["default"].wrap(function _callee16$(_context16) {
+      var _load = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee15(url) {
+        var fullUrl, data;
+        return _regenerator["default"].wrap(function _callee15$(_context15) {
           while (1) {
-            switch (_context16.prev = _context16.next) {
+            switch (_context15.prev = _context15.next) {
               case 0:
-                return _context16.abrupt("return", new Promise( /*#__PURE__*/function () {
-                  var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee15(resolve, reject) {
-                    var fullUrl, data;
-                    return _regenerator["default"].wrap(function _callee15$(_context15) {
-                      while (1) {
-                        switch (_context15.prev = _context15.next) {
-                          case 0:
-                            if (!(_this2.hasPage() && url)) {
-                              _context15.next = 12;
-                              break;
-                            }
+                if (!(this.hasPage() && url)) {
+                  _context15.next = 12;
+                  break;
+                }
 
-                            _context15.next = 3;
-                            return _this2.setupAssetsMetrics();
+                _context15.next = 3;
+                return this.setupAssetsMetrics();
 
-                          case 3:
-                            fullUrl = (0, _url.buildUrl)(url);
-                            _context15.next = 6;
-                            return _PerformanceAnalyzer["default"].measure(_this2.getKey('load'), _this2._load(fullUrl));
+              case 3:
+                fullUrl = (0, _url.buildUrl)(url);
+                _context15.next = 6;
+                return _PerformanceAnalyzer["default"].measure(this.getKey('load'), this._load(fullUrl));
 
-                          case 6:
-                            data = _context15.sent;
-                            _this2.options.url = fullUrl;
+              case 6:
+                data = _context15.sent;
+                this.options.url = fullUrl;
+                this.storeMeasurement(data);
+                return _context15.abrupt("return", Promise.resolve(data.duration));
 
-                            _this2.storeMeasurement(data);
+              case 12:
+                return _context15.abrupt("return", Promise.reject(_constants.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR));
 
-                            resolve(data.duration);
-                            _context15.next = 13;
-                            break;
-
-                          case 12:
-                            reject(_constants.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
-
-                          case 13:
-                          case "end":
-                            return _context15.stop();
-                        }
-                      }
-                    }, _callee15);
-                  }));
-
-                  return function (_x3, _x4) {
-                    return _ref9.apply(this, arguments);
-                  };
-                }()));
-
-              case 1:
+              case 13:
               case "end":
-                return _context16.stop();
+                return _context15.stop();
             }
           }
-        }, _callee16);
+        }, _callee15, this);
       }));
 
       function load(_x2) {
@@ -658,65 +633,41 @@ var PageWrapper = /*#__PURE__*/function () {
   }, {
     key: "click",
     value: function () {
-      var _click = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(selector) {
-        var _this3 = this;
-
+      var _click = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee16(selector) {
         var options,
-            _args18 = arguments;
-        return _regenerator["default"].wrap(function _callee18$(_context18) {
+            data,
+            _args16 = arguments;
+        return _regenerator["default"].wrap(function _callee16$(_context16) {
           while (1) {
-            switch (_context18.prev = _context18.next) {
+            switch (_context16.prev = _context16.next) {
               case 0:
-                options = _args18.length > 1 && _args18[1] !== undefined ? _args18[1] : {};
-                return _context18.abrupt("return", new Promise( /*#__PURE__*/function () {
-                  var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee17(resolve, reject) {
-                    var data;
-                    return _regenerator["default"].wrap(function _callee17$(_context17) {
-                      while (1) {
-                        switch (_context17.prev = _context17.next) {
-                          case 0:
-                            if (!_this3.hasPage()) {
-                              _context17.next = 8;
-                              break;
-                            }
+                options = _args16.length > 1 && _args16[1] !== undefined ? _args16[1] : {};
 
-                            _context17.next = 3;
-                            return _PerformanceAnalyzer["default"].measure(_this3.getKey('click'), _this3._click(selector, options));
+                if (!this.hasPage()) {
+                  _context16.next = 9;
+                  break;
+                }
 
-                          case 3:
-                            data = _context17.sent;
+                _context16.next = 4;
+                return _PerformanceAnalyzer["default"].measure(this.getKey('click'), this._click(selector, options));
 
-                            _this3.storeMeasurement(data);
+              case 4:
+                data = _context16.sent;
+                this.storeMeasurement(data);
+                return _context16.abrupt("return", Promise.resolve(data.duration));
 
-                            resolve(data.duration);
-                            _context17.next = 9;
-                            break;
+              case 9:
+                return _context16.abrupt("return", Promise.reject(_constants.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR));
 
-                          case 8:
-                            reject(_constants.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
-
-                          case 9:
-                          case "end":
-                            return _context17.stop();
-                        }
-                      }
-                    }, _callee17);
-                  }));
-
-                  return function (_x6, _x7) {
-                    return _ref10.apply(this, arguments);
-                  };
-                }()));
-
-              case 2:
+              case 10:
               case "end":
-                return _context18.stop();
+                return _context16.stop();
             }
           }
-        }, _callee18);
+        }, _callee16, this);
       }));
 
-      function click(_x5) {
+      function click(_x3) {
         return _click.apply(this, arguments);
       }
 
@@ -725,62 +676,37 @@ var PageWrapper = /*#__PURE__*/function () {
   }, {
     key: "focus",
     value: function () {
-      var _focus = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(selector) {
-        var _this4 = this;
-
-        return _regenerator["default"].wrap(function _callee20$(_context20) {
+      var _focus = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee17(selector) {
+        var data;
+        return _regenerator["default"].wrap(function _callee17$(_context17) {
           while (1) {
-            switch (_context20.prev = _context20.next) {
+            switch (_context17.prev = _context17.next) {
               case 0:
-                return _context20.abrupt("return", new Promise( /*#__PURE__*/function () {
-                  var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(resolve, reject) {
-                    var data;
-                    return _regenerator["default"].wrap(function _callee19$(_context19) {
-                      while (1) {
-                        switch (_context19.prev = _context19.next) {
-                          case 0:
-                            if (!_this4.hasPage()) {
-                              _context19.next = 8;
-                              break;
-                            }
+                if (!this.hasPage()) {
+                  _context17.next = 8;
+                  break;
+                }
 
-                            _context19.next = 3;
-                            return _PerformanceAnalyzer["default"].measure(_this4.getKey('focus'), _this4._focus(selector));
+                _context17.next = 3;
+                return _PerformanceAnalyzer["default"].measure(this.getKey('focus'), this._focus(selector));
 
-                          case 3:
-                            data = _context19.sent;
+              case 3:
+                data = _context17.sent;
+                this.storeMeasurement(data);
+                return _context17.abrupt("return", Promise.resolve(data.duration));
 
-                            _this4.storeMeasurement(data);
+              case 8:
+                return _context17.abrupt("return", Promise.reject(_constants.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR));
 
-                            resolve(data.duration);
-                            _context19.next = 9;
-                            break;
-
-                          case 8:
-                            reject(_constants.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
-
-                          case 9:
-                          case "end":
-                            return _context19.stop();
-                        }
-                      }
-                    }, _callee19);
-                  }));
-
-                  return function (_x9, _x10) {
-                    return _ref11.apply(this, arguments);
-                  };
-                }()));
-
-              case 1:
+              case 9:
               case "end":
-                return _context20.stop();
+                return _context17.stop();
             }
           }
-        }, _callee20);
+        }, _callee17, this);
       }));
 
-      function focus(_x8) {
+      function focus(_x4) {
         return _focus.apply(this, arguments);
       }
 
@@ -789,7 +715,109 @@ var PageWrapper = /*#__PURE__*/function () {
   }, {
     key: "tap",
     value: function () {
-      var _tap = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee21(select) {
+      var _tap = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18() {
+        return _regenerator["default"].wrap(function _callee18$(_context18) {
+          while (1) {
+            switch (_context18.prev = _context18.next) {
+              case 0:
+              case "end":
+                return _context18.stop();
+            }
+          }
+        }, _callee18);
+      }));
+
+      function tap() {
+        return _tap.apply(this, arguments);
+      }
+
+      return tap;
+    }()
+  }, {
+    key: "setUserAgent",
+    value: function () {
+      var _setUserAgent = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(userAgent) {
+        var data;
+        return _regenerator["default"].wrap(function _callee19$(_context19) {
+          while (1) {
+            switch (_context19.prev = _context19.next) {
+              case 0:
+                if (!this.hasPage()) {
+                  _context19.next = 9;
+                  break;
+                }
+
+                _context19.next = 3;
+                return _PerformanceAnalyzer["default"].measure(this.getKey('userAgent', this._setUserAgent(userAgent)));
+
+              case 3:
+                data = _context19.sent;
+                this.storeMeasurement(data);
+                this.storePageSetting({
+                  userAgent: userAgent
+                });
+                return _context19.abrupt("return", Promise.resolve(data.duration));
+
+              case 9:
+                return _context19.abrupt("return", Promise.reject(_constants.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR));
+
+              case 10:
+              case "end":
+                return _context19.stop();
+            }
+          }
+        }, _callee19, this);
+      }));
+
+      function setUserAgent(_x5) {
+        return _setUserAgent.apply(this, arguments);
+      }
+
+      return setUserAgent;
+    }()
+  }, {
+    key: "type",
+    value: function () {
+      var _type = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(selector, text) {
+        var data;
+        return _regenerator["default"].wrap(function _callee20$(_context20) {
+          while (1) {
+            switch (_context20.prev = _context20.next) {
+              case 0:
+                if (!this.hasPage()) {
+                  _context20.next = 8;
+                  break;
+                }
+
+                _context20.next = 3;
+                return _PerformanceAnalyzer["default"].measure(this.getKey('type'), this._type(selector, text));
+
+              case 3:
+                data = _context20.sent;
+                this.storeMeasurement(data);
+                return _context20.abrupt("return", Promise.resolve(data.duration));
+
+              case 8:
+                return _context20.abrupt("return", Promise.reject(_constants.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR));
+
+              case 9:
+              case "end":
+                return _context20.stop();
+            }
+          }
+        }, _callee20, this);
+      }));
+
+      function type(_x6, _x7) {
+        return _type.apply(this, arguments);
+      }
+
+      return type;
+    }()
+  }, {
+    key: "keyboard",
+    value: function () {
+      var _keyboard = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee21() {
         return _regenerator["default"].wrap(function _callee21$(_context21) {
           while (1) {
             switch (_context21.prev = _context21.next) {
@@ -801,160 +829,7 @@ var PageWrapper = /*#__PURE__*/function () {
         }, _callee21);
       }));
 
-      function tap(_x11) {
-        return _tap.apply(this, arguments);
-      }
-
-      return tap;
-    }()
-  }, {
-    key: "setUserAgent",
-    value: function () {
-      var _setUserAgent = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee23(userAgent) {
-        var _this5 = this;
-
-        return _regenerator["default"].wrap(function _callee23$(_context23) {
-          while (1) {
-            switch (_context23.prev = _context23.next) {
-              case 0:
-                return _context23.abrupt("return", new Promise( /*#__PURE__*/function () {
-                  var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22(resolve, reject) {
-                    var data;
-                    return _regenerator["default"].wrap(function _callee22$(_context22) {
-                      while (1) {
-                        switch (_context22.prev = _context22.next) {
-                          case 0:
-                            if (!_this5.hasPage()) {
-                              _context22.next = 9;
-                              break;
-                            }
-
-                            _context22.next = 3;
-                            return _PerformanceAnalyzer["default"].measure(_this5.getKey('userAgent', _this5._setUserAgent(userAgent)));
-
-                          case 3:
-                            data = _context22.sent;
-
-                            _this5.storeMeasurement(data);
-
-                            _this5.storePageSetting({
-                              userAgent: userAgent
-                            });
-
-                            resolve(data.duration);
-                            _context22.next = 10;
-                            break;
-
-                          case 9:
-                            reject(_constants.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
-
-                          case 10:
-                          case "end":
-                            return _context22.stop();
-                        }
-                      }
-                    }, _callee22);
-                  }));
-
-                  return function (_x13, _x14) {
-                    return _ref12.apply(this, arguments);
-                  };
-                }()));
-
-              case 1:
-              case "end":
-                return _context23.stop();
-            }
-          }
-        }, _callee23);
-      }));
-
-      function setUserAgent(_x12) {
-        return _setUserAgent.apply(this, arguments);
-      }
-
-      return setUserAgent;
-    }()
-  }, {
-    key: "type",
-    value: function () {
-      var _type = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee25(selector, text) {
-        var _this6 = this;
-
-        return _regenerator["default"].wrap(function _callee25$(_context25) {
-          while (1) {
-            switch (_context25.prev = _context25.next) {
-              case 0:
-                return _context25.abrupt("return", new Promise( /*#__PURE__*/function () {
-                  var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee24(resolve, reject) {
-                    var data;
-                    return _regenerator["default"].wrap(function _callee24$(_context24) {
-                      while (1) {
-                        switch (_context24.prev = _context24.next) {
-                          case 0:
-                            if (!_this6.hasPage()) {
-                              _context24.next = 8;
-                              break;
-                            }
-
-                            _context24.next = 3;
-                            return _PerformanceAnalyzer["default"].measure(_this6.getKey('type'), _this6._type(selector, text));
-
-                          case 3:
-                            data = _context24.sent;
-
-                            _this6.storeMeasurement(data);
-
-                            resolve(data.duration);
-                            _context24.next = 9;
-                            break;
-
-                          case 8:
-                            reject(_constants.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
-
-                          case 9:
-                          case "end":
-                            return _context24.stop();
-                        }
-                      }
-                    }, _callee24);
-                  }));
-
-                  return function (_x17, _x18) {
-                    return _ref13.apply(this, arguments);
-                  };
-                }()));
-
-              case 1:
-              case "end":
-                return _context25.stop();
-            }
-          }
-        }, _callee25);
-      }));
-
-      function type(_x15, _x16) {
-        return _type.apply(this, arguments);
-      }
-
-      return type;
-    }()
-  }, {
-    key: "keyboard",
-    value: function () {
-      var _keyboard = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee26(event) {
-        return _regenerator["default"].wrap(function _callee26$(_context26) {
-          while (1) {
-            switch (_context26.prev = _context26.next) {
-              case 0:
-              case "end":
-                return _context26.stop();
-            }
-          }
-        }, _callee26);
-      }));
-
-      function keyboard(_x19) {
+      function keyboard() {
         return _keyboard.apply(this, arguments);
       }
 
@@ -963,16 +838,16 @@ var PageWrapper = /*#__PURE__*/function () {
   }, {
     key: "screenshot",
     value: function () {
-      var _screenshot = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee27() {
-        return _regenerator["default"].wrap(function _callee27$(_context27) {
+      var _screenshot = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22() {
+        return _regenerator["default"].wrap(function _callee22$(_context22) {
           while (1) {
-            switch (_context27.prev = _context27.next) {
+            switch (_context22.prev = _context22.next) {
               case 0:
               case "end":
-                return _context27.stop();
+                return _context22.stop();
             }
           }
-        }, _callee27);
+        }, _callee22);
       }));
 
       function screenshot() {
@@ -984,19 +859,19 @@ var PageWrapper = /*#__PURE__*/function () {
   }, {
     key: "waitFor",
     value: function () {
-      var _waitFor = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee28(selector) {
-        return _regenerator["default"].wrap(function _callee28$(_context28) {
+      var _waitFor = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee23() {
+        return _regenerator["default"].wrap(function _callee23$(_context23) {
           while (1) {
-            switch (_context28.prev = _context28.next) {
+            switch (_context23.prev = _context23.next) {
               case 0:
               case "end":
-                return _context28.stop();
+                return _context23.stop();
             }
           }
-        }, _callee28);
+        }, _callee23);
       }));
 
-      function waitFor(_x20) {
+      function waitFor() {
         return _waitFor.apply(this, arguments);
       }
 

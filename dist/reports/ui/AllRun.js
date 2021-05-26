@@ -14,8 +14,7 @@ var _FailureToTestRatioGraph = _interopRequireDefault(require("./graphs/FailureT
 var _PayloadInspectGraph = _interopRequireDefault(require("./graphs/PayloadInspectGraph"));
 
 var AllRun = function AllRun(_ref) {
-  var data = _ref.data,
-      current = _ref.current;
+  var data = _ref.data;
   return /*#__PURE__*/_react["default"].createElement("div", {
     className: "bottom-border"
   }, /*#__PURE__*/_react["default"].createElement(_FailureToTestRatioGraph["default"], {

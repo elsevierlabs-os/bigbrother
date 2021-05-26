@@ -44,7 +44,9 @@ var Test = function Test(_ref3) {
     className: className
   }, /*#__PURE__*/_react["default"].createElement("span", {
     className: 'test-title'
-  }, name));
+  }, name), /*#__PURE__*/_react["default"].createElement("span", {
+    className: 'test-reason'
+  }, reason));
 };
 
 var renderFailures = function renderFailures() {

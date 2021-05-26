@@ -47,8 +47,7 @@ var TestRunner = /*#__PURE__*/function () {
       return Promise.reject(_constants.BROWSER_NOT_INITIALISED);
     });
     (0, _defineProperty2["default"])(this, "mapTestToNewSuite", function (_ref) {
-      var filename = _ref.filename,
-          content = _ref.content;
+      var content = _ref.content;
       return new _Suite["default"](content, _this.browser);
     });
     (0, _defineProperty2["default"])(this, "mapSuitesToExecution", function (suite) {

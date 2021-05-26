@@ -30,7 +30,7 @@ const getPuppeteerMock = () => {
             PuppeteerBrowserMock.reset();
             this.launch.reset();
         }
-    }
+    };
 };
 
 export default getPuppeteerMock;

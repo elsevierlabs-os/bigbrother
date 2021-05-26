@@ -41,10 +41,15 @@ module.exports = {
                     {
                         loader: 'postcss-loader',
                         options: {
-                            sourceMap: 'inline',
-                            plugins: () => [
-                                autoprefixer({ browsers: ['last 3 versions'] }),
-                            ]
+                            sourceMap: true,
+                            postcssOptions: {
+                                plugins: [
+                                    [
+                                        'autoprefixer',
+                                        { browsers: ['last 3 versions'] }
+                                    ],
+                                ],
+                            }
                         }
                     },
                     {
@@ -71,10 +76,6 @@ module.exports = {
         filename: 'app.js',
         publicPath: 'report_static_files'
     },
-    externals: {
-        // react: 'React',
-        // 'react-dom': 'ReactDOM'
-    },
     optimization: {
         minimize: true,
         minimizer: [new TerserPlugin({
@@ -100,11 +101,6 @@ module.exports = {
         new MiniCssExtractPlugin({ filename: 'style.css' })
     ],
     node: {
-        __dirname: true,
-        net: 'empty',
-        tls: 'empty',
-        dns: 'empty',
-        fs: 'empty',
-        Buffer: false
+        __dirname: true
     }
 };

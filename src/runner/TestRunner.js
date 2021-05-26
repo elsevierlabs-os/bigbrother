@@ -38,7 +38,7 @@ class TestRunner {
         return !!this.browser;
     }
 
-    mapTestToNewSuite = ({ filename, content }) => new Suite(content, this.browser);
+    mapTestToNewSuite = ({ content }) => new Suite(content, this.browser);
     mapSuitesToExecution = suite => () => suite.execute();
     mapTestsToPromises = tests => tests.map(this.mapTestToNewSuite).map(this.mapSuitesToExecution);
 

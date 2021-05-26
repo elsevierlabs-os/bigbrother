@@ -197,76 +197,66 @@ class PageWrapper {
     _type = text => async () => await this.page.keyboard.type(text);
 
     async load(url) {
-        return new Promise(async (resolve, reject) => {
-            if (this.hasPage() && url) {
-                await this.setupAssetsMetrics();
-                const fullUrl = buildUrl(url);
-                const data = await performanceAnalyzer.measure(this.getKey('load'), this._load(fullUrl));
-                this.options.url = fullUrl;
-                this.storeMeasurement(data);
-                resolve(data.duration);
-            } else {
-                reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
-            }
-        });
+        if (this.hasPage() && url) {
+            await this.setupAssetsMetrics();
+            const fullUrl = buildUrl(url);
+            const data = await performanceAnalyzer.measure(this.getKey('load'), this._load(fullUrl));
+            this.options.url = fullUrl;
+            this.storeMeasurement(data);
+            return Promise.resolve(data.duration);
+        } else {
+            return Promise.reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
+        }
     }
 
     async click(selector, options = {}) {
-        return new Promise(async (resolve, reject) => {
-            if (this.hasPage()) {
-                const data = await performanceAnalyzer.measure(this.getKey('click'), this._click(selector, options));
-                this.storeMeasurement(data);
-                resolve(data.duration);
-            } else {
-                reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
-            }
-        });
+        if (this.hasPage()) {
+            const data = await performanceAnalyzer.measure(this.getKey('click'), this._click(selector, options));
+            this.storeMeasurement(data);
+            return Promise.resolve(data.duration);
+        } else {
+            return Promise.reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
+        }
     }
 
     async focus(selector) {
-        return new Promise(async (resolve, reject) => {
-            if (this.hasPage()) {
-                const data = await performanceAnalyzer.measure(this.getKey('focus'), this._focus(selector));
-                this.storeMeasurement(data);
-                resolve(data.duration);
-            } else {
-                reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
-            }
-        });
+        if (this.hasPage()) {
+            const data = await performanceAnalyzer.measure(this.getKey('focus'), this._focus(selector));
+            this.storeMeasurement(data);
+            return Promise.resolve(data.duration);
+        } else {
+            return Promise.reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
+        }
     }
 
-    async tap(select) {}
+    async tap() {}
 
     async setUserAgent(userAgent) {
-        return new Promise(async (resolve, reject) => {
-            if (this.hasPage()) {
-                const data = await performanceAnalyzer.measure(this.getKey('userAgent', this._setUserAgent(userAgent)));
-                this.storeMeasurement(data);
-                this.storePageSetting({ userAgent });
-                resolve(data.duration);
-            } else {
-                reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
-            }
-        });
+        if (this.hasPage()) {
+            const data = await performanceAnalyzer.measure(this.getKey('userAgent', this._setUserAgent(userAgent)));
+            this.storeMeasurement(data);
+            this.storePageSetting({ userAgent });
+            return Promise.resolve(data.duration);
+        } else {
+            return Promise.reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
+        }
     }
 
     async type(selector, text) {
-        return new Promise(async (resolve, reject) => {
-            if (this.hasPage()) {
-                const data = await performanceAnalyzer.measure(this.getKey('type'), this._type(selector, text));
-                this.storeMeasurement(data);
-                resolve(data.duration);
-            } else {
-                reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
-            }
-        });
+        if (this.hasPage()) {
+            const data = await performanceAnalyzer.measure(this.getKey('type'), this._type(selector, text));
+            this.storeMeasurement(data);
+            return Promise.resolve(data.duration);
+        } else {
+            return Promise.reject(PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR);
+        }
     }
 
-    async keyboard(event) {}
+    async keyboard() {}
 
     async screenshot() {}
 
-    async waitFor(selector) {}
+    async waitFor() {}
 
     toJSON(spacing = 4, stringify = true) {
         const json = {

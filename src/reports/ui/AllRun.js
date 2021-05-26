@@ -2,7 +2,7 @@ import React from 'react';
 import FailureToTestRationGraph from './graphs/FailureToTestRatioGraph';
 import PayloadInspectGraph from './graphs/PayloadInspectGraph';
 
-const AllRun = ({ data, current }) => (
+const AllRun = ({ data }) => (
     <div className="bottom-border">
         <FailureToTestRationGraph data={data} />
         <PayloadInspectGraph data={data} />

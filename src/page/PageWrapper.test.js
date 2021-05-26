@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { getPageMock } from '../testHelpers/puppeteerMock'
-import PageWrapper from './PageWrapper'
-import { CPU, NETWORK } from '../lib/constants'
+import { getPageMock } from '../testHelpers/puppeteerMock';
+import PageWrapper from './PageWrapper';
+import { CPU, NETWORK } from '../lib/constants';
 
 describe.only('PageWrapper', () => {
 

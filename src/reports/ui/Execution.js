@@ -34,6 +34,7 @@ const Test = ({ name, reason, success }) => {
     return (
         <li className={className}>
             <span className={'test-title'}>{name}</span>
+            <span className={'test-reason'}>{reason}</span>
         </li>
     );
 };

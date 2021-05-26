@@ -22,11 +22,19 @@ module.exports = {
         "mocha",
         "react"
     ],
+    "globals": {
+        "window": "readonly",
+        "document": "readonly",
+        "performance": "readonly",
+        "describe": "readonly",
+        "beforeEach": "readonly",
+        "afterEach": "readonly",
+        "it": "readonly",
+        "performance": "readonly"
+    },
     "rules": {
-        "indent": [
-            "error",
-            4
-        ],
+        "template-curly-spacing" : "off",
+        "indent": "off",
         "linebreak-style": [
             "error",
             "unix"
@@ -38,6 +46,10 @@ module.exports = {
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "react/prop-types": "off",
+        "react/jsx-key": "off",
+        "no-unused-vars": ["error", { "vars": "local" }],
+        "quotes": "off"
     }
 };

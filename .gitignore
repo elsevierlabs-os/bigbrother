@@ -15,5 +15,5 @@ node_modules/
 .recordings
 .report
 
-coverage/**.*
-.nyc_output/**/*
+coverage
+.nyc_output

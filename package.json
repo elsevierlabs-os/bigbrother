@@ -7,7 +7,7 @@
     "url": "https://github.com/SDFE/sd-browser-perf/issues"
   },
   "homepage": "https://github.com/SDFE/sd-browser-perf",
-  "license": "ISC",
+  "license": "MTI",
   "main": "dist/index.js",
   "scripts": {
     "test:ut": "NODE_ENV=test mocha --reporter mocha-better-spec-reporter ./config/test.config.js 'src/**/*.test.@(js|jsx)'",

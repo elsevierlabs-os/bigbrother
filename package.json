@@ -4,9 +4,9 @@
   "author": "Marco Stagni <m.stagni@elsevier.com>",
   "description": "Performance Testing tool",
   "bugs": {
-    "url": "https://github.com/SDFE/sd-browser-perf/issues"
+    "url": "https://github.com/elsevierlabs-os/bigbrother/issues"
   },
-  "homepage": "https://github.com/SDFE/sd-browser-perf",
+  "homepage": "https://github.com/elsevierlabs-os/bigbrother",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {

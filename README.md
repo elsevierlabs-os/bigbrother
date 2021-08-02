@@ -13,7 +13,7 @@ Similar to mocha, BigBrother can be easily included in your pipeline: if perform
 
 ## Installation
 
-`npm install --save-dev github:sdfe/sd-browser-perf#v0.3.5`
+`npm install --save-dev github:elsevierlabs-os/bigbrother#v0.5.3`
 
 ---
 

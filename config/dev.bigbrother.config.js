@@ -7,7 +7,8 @@ const config = {
     openReport: true,
     ignore: [],
     verbose: true,
-    pattern: '**/*.perf.js'
+    pattern: '**/*.perf.js',
+    puppeteerArgs: ['--no-sandbox', '--disable-setuid-sandbox']
 };
 
 module.exports = config;

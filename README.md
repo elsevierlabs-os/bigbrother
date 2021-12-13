@@ -54,7 +54,8 @@ If defined by the `--config` flag, BigBrother will use a configuration file. The
         after: 'npm run test:performance:after',
         ignore: [],
         verbose: true,
-        pattern: '**/*.performance.js'
+        pattern: '**/*.performance.js',
+        puppeteerArgs: []
     };
     
     module.exports = config;
@@ -64,6 +65,7 @@ If defined by the `--config` flag, BigBrother will use a configuration file. The
 - `baseUrl` _string_ [**MANDATORY**]: This is the baseURl used when loading the page.
 - `cacheEnabled` _true/false_: this will enable/disable cache for each page.
 - `headless` _true/false_: this will enable/disable headless mode for Puppeteer.
+- `puppeteerArgs` _list of args_: This is the list of args to be sent to Puppeteer at startup time.
 - `threshold` _float_: this represents the acceptance criteria for your tests. See 
 - `recordingsPath` _path_: this is the relative path within your project where recordings will be stored.
 - `pattern` _"**/*.performance.js"_ : this defines the test pattern to be used, and it has the same meaning of the fist variable of the cli tool.

@@ -3,11 +3,12 @@ import { printWarning } from '../lib/printer';
 import { BROWSER_CANT_CLOSE_MESSAGE, BROWSER_CANT_OPEN_PAGE_MESSAGE } from '../lib/constants';
 
 class Browser {
-    constructor({ headless = true, cacheEnabled = false } = {}) {
+    constructor({ headless = true, cacheEnabled = false, puppeteerArgs = [] } = {}) {
         this.browser = null;
 
         this.puppeteerOptions = {
-            headless
+            headless,
+            args: puppeteerArgs
         };
 
         this.pageOptions = {

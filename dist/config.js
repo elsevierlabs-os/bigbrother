@@ -17,7 +17,8 @@ var DEFAULT_CONFIGURATION = {
   reportPath: '.report',
   openReport: false,
   cwd: './',
-  threshold: 0.5
+  threshold: 0.5,
+  puppeteerArgs: []
 };
 exports.DEFAULT_CONFIGURATION = DEFAULT_CONFIGURATION;
 var config = DEFAULT_CONFIGURATION;

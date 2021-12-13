@@ -27,12 +27,15 @@ var Browser = /*#__PURE__*/function () {
         _ref$headless = _ref.headless,
         headless = _ref$headless === void 0 ? true : _ref$headless,
         _ref$cacheEnabled = _ref.cacheEnabled,
-        cacheEnabled = _ref$cacheEnabled === void 0 ? false : _ref$cacheEnabled;
+        cacheEnabled = _ref$cacheEnabled === void 0 ? false : _ref$cacheEnabled,
+        _ref$puppeteerArgs = _ref.puppeteerArgs,
+        puppeteerArgs = _ref$puppeteerArgs === void 0 ? [] : _ref$puppeteerArgs;
 
     (0, _classCallCheck2["default"])(this, Browser);
     this.browser = null;
     this.puppeteerOptions = {
-      headless: headless
+      headless: headless,
+      args: puppeteerArgs
     };
     this.pageOptions = {
       cacheEnabled: cacheEnabled

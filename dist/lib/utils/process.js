@@ -5,15 +5,19 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.executeTask = exports.onUserInterrupt = exports.killProcess = exports.spawnProcess = exports.logChildProcessEvents = exports.getProcessCWD = exports.exitProcess = exports.getEnvFlag = exports.TASKS = exports.LOCAL_DEVELOPMENT_ENV_FLAG = void 0;
+exports.executeTask = exports.onUserInterrupt = exports.killProcess = exports.spawnProcess = exports.handleChildProcessEvents = exports.getProcessCWD = exports.exitProcess = exports.getEnvFlag = exports.TASKS = exports.LOCAL_DEVELOPMENT_ENV_FLAG = void 0;
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
+var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutProperties"));
 
 var _printer = require("../printer");
 
 var _child_process = require("child_process");
 
 var _constants = require("../constants");
+
+var _excluded = ["onClose", "onError"];
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -50,29 +54,47 @@ var getProcessCWD = function getProcessCWD() {
 exports.getProcessCWD = getProcessCWD;
 
 var handleChildProcessDeath = function handleChildProcessDeath(pid) {
+  var onClose = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (f) {
+    return f;
+  };
   return function (code, signal) {
-    return (0, _printer.printInfo)("ChildProcess with pid: ".concat(pid, " died because of ").concat(signal, ", code: ").concat(code));
+    (0, _printer.printInfo)("ChildProcess with pid: ".concat(pid, " died because of ").concat(signal, ", code: ").concat(code));
+    onClose(code);
   };
 };
 
 var handleChildProcessError = function handleChildProcessError(pid) {
+  var onError = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (f) {
+    return f;
+  };
   return function (err) {
-    return (0, _printer.printInfo)("ChildProcess with pid: ".concat(pid, " received error"), err);
+    (0, _printer.printInfo)("ChildProcess with pid: ".concat(pid, " received error"), err);
+    onError(err);
   };
 };
 
-var logChildProcessEvents = function logChildProcessEvents(childProcess) {
-  childProcess.on(CLOSE_EVENT, handleChildProcessDeath(childProcess.pid));
-  childProcess.on(ERROR_EVENT, handleChildProcessError(childProcess.pid));
+var handleChildProcessEvents = function handleChildProcessEvents(childProcess) {
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      onError = _ref.onError,
+      onClose = _ref.onClose;
+
+  childProcess.on(CLOSE_EVENT, handleChildProcessDeath(childProcess.pid, onClose));
+  childProcess.on(ERROR_EVENT, handleChildProcessError(childProcess.pid, onError));
 };
 
-exports.logChildProcessEvents = logChildProcessEvents;
+exports.handleChildProcessEvents = handleChildProcessEvents;
 
-var spawnProcess = function spawnProcess(cmd, args, options) {
+var spawnProcess = function spawnProcess(cmd, args, _ref2) {
+  var onClose = _ref2.onClose,
+      onError = _ref2.onError,
+      options = (0, _objectWithoutProperties2["default"])(_ref2, _excluded);
   var childProcess = (0, _child_process.spawn)(cmd, args, _objectSpread({
     detached: true
   }, options));
-  logChildProcessEvents(childProcess);
+  handleChildProcessEvents(childProcess, {
+    onClose: onClose,
+    onError: onError
+  });
   return childProcess;
 };
 

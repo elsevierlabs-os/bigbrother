@@ -5,7 +5,9 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.AFTER = exports.BEFORE = void 0;
+exports["default"] = exports.MAIN = exports.AFTER = exports.BEFORE = void 0;
+
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -19,11 +21,17 @@ var _printer = require("../lib/printer");
 
 var _process = require("../lib/utils/process");
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 var NPM = 'npm';
 var BEFORE = 'before';
 exports.BEFORE = BEFORE;
 var AFTER = 'after';
 exports.AFTER = AFTER;
+var MAIN = 'main';
+exports.MAIN = MAIN;
 
 var ProcessRunner = /*#__PURE__*/function () {
   function ProcessRunner() {
@@ -58,14 +66,37 @@ var ProcessRunner = /*#__PURE__*/function () {
       return Promise.resolve();
     }
   }, {
-    key: "start",
-    value: function start(name, command) {
+    key: "executeMainCommand",
+    value: function executeMainCommand() {
       var _this = this;
+
+      var _getConfig3 = (0, _config.getConfig)(),
+          main = _getConfig3.main;
+
+      if (main) {
+        (0, _printer.printInfo)('Executing MAIN');
+        return new Promise(function (resolve, reject) {
+          var options = {
+            onClose: resolve,
+            onError: reject,
+            stdio: [process.stdin, process.stdout, process.stderr]
+          };
+
+          _this.start(MAIN, main, options);
+        });
+      }
+
+      return Promise.resolve();
+    }
+  }, {
+    key: "start",
+    value: function start(name, command, options) {
+      var _this2 = this;
 
       return new Promise(function (resolve, reject) {
         try {
-          var _getConfig3 = (0, _config.getConfig)(),
-              cwd = _getConfig3.cwd;
+          var _getConfig4 = (0, _config.getConfig)(),
+              cwd = _getConfig4.cwd;
 
           var _ProcessRunner$parseC = ProcessRunner.parseCommand(command),
               cmd = _ProcessRunner$parseC.cmd,
@@ -74,13 +105,13 @@ var ProcessRunner = /*#__PURE__*/function () {
           (0, _printer.printInfo)("Executing NPM command on ".concat(cwd, ", command: ").concat(command));
 
           if (ProcessRunner.isNpmCommand(cmd)) {
-            _this.processes[name] = (0, _process.spawnProcess)(NPM, args, {
+            _this2.processes[name] = (0, _process.spawnProcess)(NPM, args, _objectSpread({
               cwd: cwd
-            });
+            }, options));
           } else {
-            _this.processes[name] = (0, _process.spawnProcess)(cmd, args, {
+            _this2.processes[name] = (0, _process.spawnProcess)(cmd, args, _objectSpread({
               cwd: cwd
-            });
+            }, options));
           }
 
           resolve(name);
@@ -92,10 +123,10 @@ var ProcessRunner = /*#__PURE__*/function () {
   }, {
     key: "stop",
     value: function stop(taskId) {
-      var _this2 = this;
+      var _this3 = this;
 
       return new Promise(function (resolve, reject) {
-        var childProcess = _this2.processes[taskId];
+        var childProcess = _this3.processes[taskId];
 
         try {
           if (childProcess && !childProcess.killed) {
@@ -115,10 +146,10 @@ var ProcessRunner = /*#__PURE__*/function () {
   }, {
     key: "stopAll",
     value: function stopAll() {
-      var _this3 = this;
+      var _this4 = this;
 
       return Promise.all(Object.keys(this.processes).map(function (t) {
-        return _this3.stop(t);
+        return _this4.stop(t);
       }));
     }
   }], [{

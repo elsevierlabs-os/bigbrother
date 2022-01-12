@@ -47,12 +47,10 @@ var Runner = /*#__PURE__*/function () {
     value: function setup(configuration) {
       (0, _config.storeConfiguration)(configuration);
       (0, _process.onUserInterrupt)(Runner.stop);
-
-      _ProcessRunner["default"].executePreCommand();
     }
   }, {
-    key: "checkTargetApplicationIsRunning",
-    value: function checkTargetApplicationIsRunning() {
+    key: "ensureTargetApplicationIsRunning",
+    value: function ensureTargetApplicationIsRunning() {
       var _getConfig = (0, _config.getConfig)(),
           baseUrl = _getConfig.baseUrl,
           maxRetries = _getConfig.maxRetries,
@@ -66,28 +64,35 @@ var Runner = /*#__PURE__*/function () {
       (0, _printer.printInfo)(_constants.RUNNER_STARTING_MESSAGE);
       Runner.setup(config);
       (0, _printer.printBigBrother)();
-      Runner.checkTargetApplicationIsRunning().then(_TestRunner["default"].startBrowser).then(_FileReader["default"].readTestFiles).then(_TestRunner["default"].executeTestSuites).then(Runner.stop).then(_ReportGenerator["default"].generateReport)["catch"](_printer.printException)["finally"](Runner.cleanup);
+
+      _ProcessRunner["default"].executePreCommand().then(Runner.ensureTargetApplicationIsRunning).then(Runner.execute).then(Runner.cleanup)["catch"](_printer.printException);
     }
   }]);
   return Runner;
 }();
 
-(0, _defineProperty2["default"])(Runner, "cleanup", function () {
+(0, _defineProperty2["default"])(Runner, "cleanup", function (exitCode) {
   (0, _printer.printInfo)(_constants.RUNNER_CLEANUP_MESSAGE);
 
   _ProcessRunner["default"].executePostCommand();
 
-  _ProcessRunner["default"].stop(_ProcessRunner.BEFORE)["catch"](_printer.printException)["finally"](Runner.terminate);
+  _ProcessRunner["default"].stop(_ProcessRunner.BEFORE)["catch"](_printer.printException)["finally"](Runner.getTerminationHandler(exitCode));
 });
-(0, _defineProperty2["default"])(Runner, "terminate", function () {
-  (0, _printer.printInfo)(_constants.RUNNER_TERMINATION_MESSAGE);
-
-  _ReportGenerator["default"].openReport();
-
-  (0, _process.exitProcess)(_TestRunner["default"].getFailures().length);
+(0, _defineProperty2["default"])(Runner, "getTerminationHandler", function (exitCode) {
+  return function () {
+    (0, _printer.printInfo)(_constants.RUNNER_TERMINATION_MESSAGE);
+    (0, _process.exitProcess)(exitCode === undefined ? _TestRunner["default"].getFailures().length : exitCode);
+  };
 });
-(0, _defineProperty2["default"])(Runner, "stop", function () {
-  return _TestRunner["default"].stopBrowser();
+(0, _defineProperty2["default"])(Runner, "execute", function () {
+  var _getConfig2 = (0, _config.getConfig)(),
+      main = _getConfig2.main;
+
+  if (main) {
+    return _ProcessRunner["default"].executeMainCommand();
+  } else {
+    return _TestRunner["default"].startBrowser().then(_FileReader["default"].readTestFiles).then(_TestRunner["default"].executeTestSuites).then(_TestRunner["default"].stopBrowser).then(_ReportGenerator["default"].generateReport).then(_ReportGenerator["default"].openReport);
+  }
 });
 var _default = Runner;
 exports["default"] = _default;

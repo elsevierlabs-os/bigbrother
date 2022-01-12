@@ -6,6 +6,7 @@ import { killProcess, spawnProcess } from '../lib/utils/process';
 const NPM = 'npm';
 export const BEFORE = 'before';
 export const AFTER = 'after';
+export const MAIN = 'main';
 
 class ProcessRunner {
     constructor() {
@@ -45,7 +46,28 @@ class ProcessRunner {
         return Promise.resolve();
     }
 
-    start(name, command) {
+    executeMainCommand() {
+        const { main } = getConfig();
+        if (main) {
+            printInfo('Executing MAIN');
+            return new Promise((resolve, reject) => {
+                const options = {
+                    onClose: resolve,
+                    onError: reject,
+                    stdio: [
+                        process.stdin,
+                        process.stdout,
+                        process.stderr
+                    ]
+                };
+                this.start(MAIN, main, options);
+            });
+        }
+
+        return Promise.resolve();
+    }
+
+    start(name, command, options ) {
         return new Promise((resolve, reject) => {
             try {
                 const { cwd } = getConfig();
@@ -53,9 +75,9 @@ class ProcessRunner {
                 printInfo(`Executing NPM command on ${cwd}, command: ${command}`);
 
                 if (ProcessRunner.isNpmCommand(cmd)) {
-                    this.processes[name] = spawnProcess(NPM, args, { cwd });
+                    this.processes[name] = spawnProcess(NPM, args, { cwd, ...options });
                 } else {
-                    this.processes[name] = spawnProcess(cmd, args, { cwd });
+                    this.processes[name] = spawnProcess(cmd, args, { cwd, ...options });
                 }
                 resolve(name);
             } catch (e) {

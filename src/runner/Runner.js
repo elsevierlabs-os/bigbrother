@@ -12,43 +12,56 @@ class Runner {
     static setup(configuration) {
         storeConfiguration(configuration);
         onUserInterrupt(Runner.stop);
-        ProcessRunner.executePreCommand();
     }
 
-    static cleanup = () => {
+    static cleanup = (exitCode) => {
         printInfo(RUNNER_CLEANUP_MESSAGE);
         ProcessRunner.executePostCommand();
-        ProcessRunner.stop(BEFORE).catch(printException).finally(Runner.terminate);
+        ProcessRunner
+            .stop(BEFORE)
+            .catch(printException)
+            .finally(Runner.getTerminationHandler(exitCode));
     };
 
-    static terminate = () => {
+    static getTerminationHandler = exitCode => () => {
         printInfo(RUNNER_TERMINATION_MESSAGE);
-        ReportGenerator.openReport();
-        exitProcess(TestRunner.getFailures().length);
+        exitProcess(exitCode === undefined ?
+            TestRunner.getFailures().length :
+            exitCode
+        );
     };
 
-    static checkTargetApplicationIsRunning() {
+    static ensureTargetApplicationIsRunning() {
         const { baseUrl, maxRetries, retryTimeout } = getConfig();
         return pingEndpoint(baseUrl, maxRetries, retryTimeout);
+    }
+
+    static execute = () => {
+        const { main } = getConfig();
+        if (main) {
+            return ProcessRunner.executeMainCommand();
+        } else {
+            return TestRunner
+                .startBrowser()
+                .then(FileReader.readTestFiles)
+                .then(TestRunner.executeTestSuites)
+                .then(TestRunner.stopBrowser)
+                .then(ReportGenerator.generateReport)
+                .then(ReportGenerator.openReport);
+        }
     }
 
     static start(config) {
         printInfo(RUNNER_STARTING_MESSAGE);
         Runner.setup(config);
         printBigBrother();
-        Runner.checkTargetApplicationIsRunning()
-            .then(TestRunner.startBrowser)
-            .then(FileReader.readTestFiles)
-            .then(TestRunner.executeTestSuites)
-            .then(Runner.stop)
-            .then(ReportGenerator.generateReport)
-            .catch(printException)
-            .finally(Runner.cleanup);
+        ProcessRunner
+            .executePreCommand()
+            .then(Runner.ensureTargetApplicationIsRunning)
+            .then(Runner.execute)
+            .then(Runner.cleanup)
+            .catch(printException);
     }
-
-    static stop = () => {
-        return TestRunner.stopBrowser();
-    };
 }
 
 export default Runner;

@@ -18,21 +18,28 @@ export const getEnvFlag = flag => process && process.env && process.env[flag];
 export const exitProcess = (status = 0) => process && process.exit && process.exit(status);
 export const getProcessCWD = () => process && process.cwd && process.cwd();
 
-const handleChildProcessDeath = pid => (code, signal) =>
+const handleChildProcessDeath = (pid, onClose = f => f ) => (code, signal) => {
     printInfo(`ChildProcess with pid: ${pid} died because of ${signal}, code: ${code}`);
-const handleChildProcessError = pid => err => printInfo(`ChildProcess with pid: ${pid} received error`, err);
-
-export const logChildProcessEvents = childProcess => {
-    childProcess.on(CLOSE_EVENT, handleChildProcessDeath(childProcess.pid));
-    childProcess.on(ERROR_EVENT, handleChildProcessError(childProcess.pid));
+    onClose(code);
 };
 
-export const spawnProcess = (cmd, args, options) => {
+const handleChildProcessError = (pid, onError = f => f ) => err => {
+    printInfo(`ChildProcess with pid: ${pid} received error`, err);
+    onError(err);
+};
+
+export const handleChildProcessEvents = (childProcess, { onError, onClose } = {}) => {
+    childProcess.on(CLOSE_EVENT, handleChildProcessDeath(childProcess.pid, onClose));
+    childProcess.on(ERROR_EVENT, handleChildProcessError(childProcess.pid, onError));
+};
+
+export const spawnProcess = (cmd, args, { onClose, onError, ...options }) => {
     const childProcess = spawn(cmd, args, {
         detached: true,
         ...options
     });
-    logChildProcessEvents(childProcess);
+
+    handleChildProcessEvents(childProcess, { onClose, onError });
 
     return childProcess;
 };

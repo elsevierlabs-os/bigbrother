@@ -10,14 +10,22 @@ export const DEFAULT_CONFIGURATION = {
     reportPath: '.report',
     openReport: false,
     cwd: './',
-    threshold: 0.5
+    threshold: 0.5,
+    puppeteerArgs: [],
+    before: false,
+    main: false,
+    after: false,
+    verbose: false
 };
 
 let config = DEFAULT_CONFIGURATION;
 
 export const storeConfiguration = configuration => {
-    config = configuration;
-    printInfo('current configuration:', configuration);
+    config = {
+        ...DEFAULT_CONFIGURATION,
+        ...configuration
+    };
+    printInfo('current configuration:', config);
 };
 
 export const getConfig = () => config;

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.compareWithStoredRecording = exports.getPageRecording = exports.recordPage = exports.recordingExists = void 0;
+exports.recordingExists = exports.recordPage = exports.getPageRecording = exports.compareWithStoredRecording = void 0;
 
 var _fs = _interopRequireDefault(require("fs"));
 

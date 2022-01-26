@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getRandomColor = exports.COLORS = exports.WIDTH = exports.HEIGHT = void 0;
+exports.getRandomColor = exports.WIDTH = exports.HEIGHT = exports.COLORS = void 0;
 var HEIGHT = 400;
 exports.HEIGHT = HEIGHT;
 var WIDTH = 1500;

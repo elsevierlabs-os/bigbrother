@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deepExist = exports.deepSet = exports.deepGet = void 0;
+exports.deepSet = exports.deepGet = exports.deepExist = void 0;
 
 var deepGet = function deepGet(key, obj) {
   if (!obj) {

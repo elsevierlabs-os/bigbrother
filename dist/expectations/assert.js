@@ -9,6 +9,8 @@ exports["default"] = void 0;
 
 var _construct2 = _interopRequireDefault(require("@babel/runtime/helpers/construct"));
 
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
@@ -47,7 +49,7 @@ var AssertionError = /*#__PURE__*/function (_Error) {
     return _this;
   }
 
-  return AssertionError;
+  return (0, _createClass2["default"])(AssertionError);
 }( /*#__PURE__*/(0, _wrapNativeSuper2["default"])(Error));
 
 var assert = function assert(condition, createMessage) {

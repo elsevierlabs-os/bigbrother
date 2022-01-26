@@ -11,6 +11,30 @@ Object.defineProperty(exports, "Browser", {
     return _Browser["default"];
   }
 });
+Object.defineProperty(exports, "CPU", {
+  enumerable: true,
+  get: function get() {
+    return _constants.CPU;
+  }
+});
+Object.defineProperty(exports, "DEFAULT_CONFIGURATION", {
+  enumerable: true,
+  get: function get() {
+    return _config.DEFAULT_CONFIGURATION;
+  }
+});
+Object.defineProperty(exports, "ENV_FLAGS", {
+  enumerable: true,
+  get: function get() {
+    return _constants.ENV_FLAGS;
+  }
+});
+Object.defineProperty(exports, "NETWORK", {
+  enumerable: true,
+  get: function get() {
+    return _constants.NETWORK;
+  }
+});
 Object.defineProperty(exports, "PageWrapper", {
   enumerable: true,
   get: function get() {
@@ -23,64 +47,10 @@ Object.defineProperty(exports, "Runner", {
     return _Runner["default"];
   }
 });
-Object.defineProperty(exports, "CPU", {
-  enumerable: true,
-  get: function get() {
-    return _constants.CPU;
-  }
-});
-Object.defineProperty(exports, "NETWORK", {
-  enumerable: true,
-  get: function get() {
-    return _constants.NETWORK;
-  }
-});
 Object.defineProperty(exports, "USER_AGENTS", {
   enumerable: true,
   get: function get() {
     return _constants.USER_AGENTS;
-  }
-});
-Object.defineProperty(exports, "ENV_FLAGS", {
-  enumerable: true,
-  get: function get() {
-    return _constants.ENV_FLAGS;
-  }
-});
-Object.defineProperty(exports, "print", {
-  enumerable: true,
-  get: function get() {
-    return _printer.print;
-  }
-});
-Object.defineProperty(exports, "printException", {
-  enumerable: true,
-  get: function get() {
-    return _printer.printException;
-  }
-});
-Object.defineProperty(exports, "printInfo", {
-  enumerable: true,
-  get: function get() {
-    return _printer.printInfo;
-  }
-});
-Object.defineProperty(exports, "printError", {
-  enumerable: true,
-  get: function get() {
-    return _printer.printError;
-  }
-});
-Object.defineProperty(exports, "printWarning", {
-  enumerable: true,
-  get: function get() {
-    return _printer.printWarning;
-  }
-});
-Object.defineProperty(exports, "printNewLines", {
-  enumerable: true,
-  get: function get() {
-    return _printer.printNewLines;
   }
 });
 Object.defineProperty(exports, "exitProcess", {
@@ -101,10 +71,40 @@ Object.defineProperty(exports, "getProcessCWD", {
     return _process.getProcessCWD;
   }
 });
-Object.defineProperty(exports, "DEFAULT_CONFIGURATION", {
+Object.defineProperty(exports, "print", {
   enumerable: true,
   get: function get() {
-    return _config.DEFAULT_CONFIGURATION;
+    return _printer.print;
+  }
+});
+Object.defineProperty(exports, "printError", {
+  enumerable: true,
+  get: function get() {
+    return _printer.printError;
+  }
+});
+Object.defineProperty(exports, "printException", {
+  enumerable: true,
+  get: function get() {
+    return _printer.printException;
+  }
+});
+Object.defineProperty(exports, "printInfo", {
+  enumerable: true,
+  get: function get() {
+    return _printer.printInfo;
+  }
+});
+Object.defineProperty(exports, "printNewLines", {
+  enumerable: true,
+  get: function get() {
+    return _printer.printNewLines;
+  }
+});
+Object.defineProperty(exports, "printWarning", {
+  enumerable: true,
+  get: function get() {
+    return _printer.printWarning;
   }
 });
 Object.defineProperty(exports, "usageMessage", {

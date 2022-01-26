@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.getPuppeteerBrowserMock = exports.getPageMock = void 0;
+exports.getPuppeteerBrowserMock = exports.getPageMock = exports["default"] = void 0;
 
 var _sinon = _interopRequireDefault(require("sinon"));
 

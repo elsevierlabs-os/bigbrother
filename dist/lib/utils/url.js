@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.buildUrl = exports.isAbsoluteUrl = void 0;
+exports.isAbsoluteUrl = exports.buildUrl = void 0;
 
 var _config = require("../../config");
 

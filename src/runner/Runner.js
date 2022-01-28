@@ -11,7 +11,7 @@ import { RUNNER_CLEANUP_MESSAGE, RUNNER_STARTING_MESSAGE, RUNNER_TERMINATION_MES
 class Runner {
     static setup(configuration) {
         storeConfiguration(configuration);
-        onUserInterrupt(Runner.stop);
+        onUserInterrupt(Runner.cleanup);
     }
 
     static cleanup = (exitCode) => {
@@ -51,6 +51,11 @@ class Runner {
         }
     }
 
+    static handleException = (err) => {
+        printException(err);
+        Runner.cleanup(0);
+    }
+
     static start(config) {
         printInfo(RUNNER_STARTING_MESSAGE);
         Runner.setup(config);
@@ -60,7 +65,7 @@ class Runner {
             .then(Runner.ensureTargetApplicationIsRunning)
             .then(Runner.execute)
             .then(Runner.cleanup)
-            .catch(printException);
+            .catch(Runner.handleException);
     }
 }
 

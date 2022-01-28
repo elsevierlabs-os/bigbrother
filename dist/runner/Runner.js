@@ -46,7 +46,7 @@ var Runner = /*#__PURE__*/function () {
     key: "setup",
     value: function setup(configuration) {
       (0, _config.storeConfiguration)(configuration);
-      (0, _process.onUserInterrupt)(Runner.stop);
+      (0, _process.onUserInterrupt)(Runner.cleanup);
     }
   }, {
     key: "ensureTargetApplicationIsRunning",
@@ -65,7 +65,7 @@ var Runner = /*#__PURE__*/function () {
       Runner.setup(config);
       (0, _printer.printBigBrother)();
 
-      _ProcessRunner["default"].executePreCommand().then(Runner.ensureTargetApplicationIsRunning).then(Runner.execute).then(Runner.cleanup)["catch"](_printer.printException);
+      _ProcessRunner["default"].executePreCommand().then(Runner.ensureTargetApplicationIsRunning).then(Runner.execute).then(Runner.cleanup)["catch"](Runner.handleException);
     }
   }]);
   return Runner;
@@ -93,6 +93,10 @@ var Runner = /*#__PURE__*/function () {
   } else {
     return _TestRunner["default"].startBrowser().then(_FileReader["default"].readTestFiles).then(_TestRunner["default"].executeTestSuites).then(_TestRunner["default"].stopBrowser).then(_ReportGenerator["default"].generateReport).then(_ReportGenerator["default"].openReport);
   }
+});
+(0, _defineProperty2["default"])(Runner, "handleException", function (err) {
+  (0, _printer.printException)(err);
+  Runner.cleanup(0);
 });
 var _default = Runner;
 exports["default"] = _default;

@@ -1,13 +1,15 @@
 import puppeteer from 'puppeteer';
-import { printWarning } from '../lib/printer';
+import { printInfo, printWarning } from '../lib/printer';
 import { BROWSER_CANT_CLOSE_MESSAGE, BROWSER_CANT_OPEN_PAGE_MESSAGE } from '../lib/constants';
+import { getConfig } from '../config';
 
 class Browser {
     constructor({ headless = true, cacheEnabled = false } = {}) {
         this.browser = null;
 
         this.puppeteerOptions = {
-            headless
+            headless,
+            args: getConfig().puppeteerArgs
         };
 
         this.pageOptions = {
@@ -30,6 +32,7 @@ class Browser {
     }
 
     async launch() {
+        printInfo('Current PuppeterOptions: ', this.puppeteerOptions);
         this.browser = await puppeteer.launch(this.puppeteerOptions);
         this.hasLaunched = true;
         return this.browser;

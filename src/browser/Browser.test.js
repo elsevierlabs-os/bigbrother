@@ -28,14 +28,15 @@ describe('Browser', () => {
     });
 
     describe.only('newPage', () => {
-        let BrowserMock, printWarning;
+        let BrowserMock, printWarning, printInfo;
 
         beforeEach(() => {
             printWarning = sinon.stub();
+            printInfo = sinon.stub();
 
             BrowserMock = proxyquire.noCallThru().load('./Browser', {
                 puppeteer: getPuppeteerMock(),
-                '../lib/printer': { printWarning }
+                '../lib/printer': { printWarning, printInfo }
             }).default;
         });
 

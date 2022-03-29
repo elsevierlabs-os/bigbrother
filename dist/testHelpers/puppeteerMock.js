@@ -5,13 +5,13 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getPuppeteerBrowserMock = exports.getPageMock = exports["default"] = void 0;
+exports.getPuppeteerBrowserMock = exports.getPageMock = exports.default = void 0;
 
 var _sinon = _interopRequireDefault(require("sinon"));
 
 var getPageMock = function getPageMock() {
   return {
-    setCacheEnabled: _sinon["default"].stub(),
+    setCacheEnabled: _sinon.default.stub(),
     reset: function reset() {
       this.setCacheEnabled.reset();
     }
@@ -23,7 +23,7 @@ exports.getPageMock = getPageMock;
 var getPuppeteerBrowserMock = function getPuppeteerBrowserMock() {
   var PageMock = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getPageMock();
   return {
-    newPage: _sinon["default"].stub().resolves(PageMock),
+    newPage: _sinon.default.stub().resolves(PageMock),
     reset: function reset() {
       PageMock.reset();
       this.newPage.reset();
@@ -37,7 +37,7 @@ var getPuppeteerMock = function getPuppeteerMock() {
   var PageMock = getPageMock();
   var PuppeteerBrowserMock = getPuppeteerBrowserMock(PageMock);
   return {
-    launch: _sinon["default"].stub().resolves(PuppeteerBrowserMock),
+    launch: _sinon.default.stub().resolves(PuppeteerBrowserMock),
     reset: function reset() {
       PuppeteerBrowserMock.reset();
       this.launch.reset();
@@ -46,4 +46,4 @@ var getPuppeteerMock = function getPuppeteerMock() {
 };
 
 var _default = getPuppeteerMock;
-exports["default"] = _default;
+exports.default = _default;

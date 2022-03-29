@@ -20,11 +20,11 @@ describe.only('PageWrapper', function () {
   });
   describe('contructor', function () {
     it('should set the page name', function () {
-      var wrapper = new _PageWrapper["default"](pageMock, 'title');
+      var wrapper = new _PageWrapper.default(pageMock, 'title');
       (0, _chai.expect)(wrapper.getPageName()).to.equal('title');
     });
     it('should set the default page Settings', function () {
-      var wrapper = new _PageWrapper["default"](pageMock);
+      var wrapper = new _PageWrapper.default(pageMock);
       var pageSettings = wrapper.getPageSettings();
       (0, _chai.expect)(pageSettings.userAgent).to.equal('');
       (0, _chai.expect)(pageSettings.cpu).to.deep.equal(_constants.CPU.DEFAULT);
@@ -32,10 +32,10 @@ describe.only('PageWrapper', function () {
     });
     it('should throw an error if page is missing', function () {
       var createWrapper = function createWrapper() {
-        return new _PageWrapper["default"](null, 'title');
+        return new _PageWrapper.default(null, 'title');
       };
 
-      (0, _chai.expect)(createWrapper).to["throw"]();
+      (0, _chai.expect)(createWrapper).to.throw();
     });
   });
   describe('setNetworkSpeed', function () {

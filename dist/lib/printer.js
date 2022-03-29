@@ -24,7 +24,7 @@ var WARNING = '[*]'.yellow;
 var INFO = '[i️]'.blue;
 var ERROR = '[!!]'.red;
 var COLON = ':';
-var BIGBROTHER_HEADER = "BIGBROTHER v".concat(_package["default"].version);
+var BIGBROTHER_HEADER = "BIGBROTHER v".concat(_package.default.version);
 
 var print = function print(message) {
   return console.log(message);
@@ -45,7 +45,7 @@ var printInfo = function printInfo(message) {
   if (verbose) {
     var _console;
 
-    (_console = console).log.apply(_console, [INFO, message.blue].concat((0, _toConsumableArray2["default"])(extraMessage)));
+    (_console = console).log.apply(_console, [INFO, message.blue].concat((0, _toConsumableArray2.default)(extraMessage)));
   }
 };
 

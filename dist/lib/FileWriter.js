@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -21,10 +21,10 @@ var _replaceInFile = _interopRequireDefault(require("replace-in-file"));
 
 var FileWriter = /*#__PURE__*/function () {
   function FileWriter() {
-    (0, _classCallCheck2["default"])(this, FileWriter);
+    (0, _classCallCheck2.default)(this, FileWriter);
   }
 
-  (0, _createClass2["default"])(FileWriter, null, [{
+  (0, _createClass2.default)(FileWriter, null, [{
     key: "writeJSONToFile",
     value: function writeJSONToFile(json, destinationPath) {
       var shouldStringify = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
@@ -34,21 +34,21 @@ var FileWriter = /*#__PURE__*/function () {
         payload = JSON.stringify(payload);
       }
 
-      _fs["default"].writeFileSync(destinationPath, payload);
+      _fs.default.writeFileSync(destinationPath, payload);
     }
   }, {
     key: "copyFile",
     value: function copyFile(source, target) {
-      var rd = _fs["default"].createReadStream(source);
+      var rd = _fs.default.createReadStream(source);
 
-      var wr = _fs["default"].createWriteStream(target);
+      var wr = _fs.default.createWriteStream(target);
 
       return new Promise(function (resolve, reject) {
         rd.on('error', reject);
         wr.on('error', reject);
         wr.on('finish', resolve);
         rd.pipe(wr);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         rd.destroy();
         wr.end();
         throw error;
@@ -59,8 +59,8 @@ var FileWriter = /*#__PURE__*/function () {
     value: function copyFiles(filenames, source, target) {
       var fullFileNames = filenames.map(function (name) {
         return {
-          source: _path["default"].join(source, name),
-          target: _path["default"].join(target, name)
+          source: _path.default.join(source, name),
+          target: _path.default.join(target, name)
         };
       });
       var promises = fullFileNames.map(function (_ref) {
@@ -74,8 +74,8 @@ var FileWriter = /*#__PURE__*/function () {
     key: "checkAndCreateFolder",
     value: function checkAndCreateFolder(folderPath) {
       try {
-        if (!_fs["default"].existsSync(folderPath)) {
-          _fs["default"].mkdirSync(folderPath, {
+        if (!_fs.default.existsSync(folderPath)) {
+          _fs.default.mkdirSync(folderPath, {
             recursive: true
           });
         }
@@ -94,11 +94,11 @@ var FileWriter = /*#__PURE__*/function () {
         from: sourceString,
         to: replacement
       };
-      return (0, _replaceInFile["default"])(options);
+      return (0, _replaceInFile.default)(options);
     }
   }]);
   return FileWriter;
 }();
 
 var _default = FileWriter;
-exports["default"] = _default;
+exports.default = _default;

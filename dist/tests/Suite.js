@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -41,20 +41,20 @@ var Suite = /*#__PURE__*/function () {
   function Suite(content, browser) {
     var _this = this;
 
-    (0, _classCallCheck2["default"])(this, Suite);
-    (0, _defineProperty2["default"])(this, "formatName", function (n) {
+    (0, _classCallCheck2.default)(this, Suite);
+    (0, _defineProperty2.default)(this, "formatName", function (n) {
       return n.replace(_constants.ALL_SPACES, _constants.UNDERSCORE);
     });
-    (0, _defineProperty2["default"])(this, "getFullPageName", function (name) {
+    (0, _defineProperty2.default)(this, "getFullPageName", function (name) {
       return _this.names.map(_this.formatName).join(_constants.FULL_STOP).concat(_constants.FULL_STOP).concat(_this.formatName(name));
     });
-    (0, _defineProperty2["default"])(this, "it", function (name, f) {
+    (0, _defineProperty2.default)(this, "it", function (name, f) {
       var fullName = _this.getFullPageName(name);
 
       var asyncTest = /*#__PURE__*/function () {
-        var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
+        var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
           var success, reason, page, spinner, message, expected, received;
-          return _regenerator["default"].wrap(function _callee$(_context) {
+          return _regenerator.default.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
@@ -69,7 +69,7 @@ var Suite = /*#__PURE__*/function () {
 
                 case 4:
                   page = _context.sent;
-                  spinner = new _Spinner["default"](name);
+                  spinner = new _Spinner.default(name);
                   _context.prev = 6;
                   _context.next = 9;
                   return f(page);
@@ -102,7 +102,7 @@ var Suite = /*#__PURE__*/function () {
                     _this._afterEach();
                   }
 
-                  _ReportGenerator["default"].storePage(page);
+                  _ReportGenerator.default.storePage(page);
 
                   return _context.abrupt("return", {
                     name: name,
@@ -128,7 +128,7 @@ var Suite = /*#__PURE__*/function () {
         return asyncTest();
       });
     });
-    (0, _defineProperty2["default"])(this, "describe", function (name, f) {
+    (0, _defineProperty2.default)(this, "describe", function (name, f) {
       if (_this.root) {
         _this.rootname = name;
         _this.root = false;
@@ -146,16 +146,16 @@ var Suite = /*#__PURE__*/function () {
         _this.names.pop();
       }
     });
-    (0, _defineProperty2["default"])(this, "before", function (f) {
+    (0, _defineProperty2.default)(this, "before", function (f) {
       return _this._before = f;
     });
-    (0, _defineProperty2["default"])(this, "after", function (f) {
+    (0, _defineProperty2.default)(this, "after", function (f) {
       return _this._after = f;
     });
-    (0, _defineProperty2["default"])(this, "beforeEach", function (f) {
+    (0, _defineProperty2.default)(this, "beforeEach", function (f) {
       return _this._beforeEach = f;
     });
-    (0, _defineProperty2["default"])(this, "afterEach", function (f) {
+    (0, _defineProperty2.default)(this, "afterEach", function (f) {
       return _this._afterEach = f;
     });
     this.content = content;
@@ -166,12 +166,12 @@ var Suite = /*#__PURE__*/function () {
     this.root = true;
   }
 
-  (0, _createClass2["default"])(Suite, [{
+  (0, _createClass2.default)(Suite, [{
     key: "createPageWrapper",
     value: function () {
-      var _createPageWrapper = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(name) {
+      var _createPageWrapper = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(name) {
         var page;
-        return _regenerator["default"].wrap(function _callee2$(_context2) {
+        return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
@@ -180,7 +180,7 @@ var Suite = /*#__PURE__*/function () {
 
               case 2:
                 page = _context2.sent;
-                return _context2.abrupt("return", new _PageWrapper["default"](page, name));
+                return _context2.abrupt("return", new _PageWrapper.default(page, name));
 
               case 4:
               case "end":
@@ -199,10 +199,10 @@ var Suite = /*#__PURE__*/function () {
   }, {
     key: "execute",
     value: function () {
-      var _execute = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3() {
+      var _execute = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
         var _getConfig, cwd, args, executor;
 
-        return _regenerator["default"].wrap(function _callee3$(_context3) {
+        return _regenerator.default.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
@@ -215,12 +215,12 @@ var Suite = /*#__PURE__*/function () {
                   beforeEach: this.beforeEach,
                   after: this.after,
                   afterEach: this.afterEach,
-                  expect: _expect["default"],
+                  expect: _expect.default,
                   require: require,
                   module: module
                 };
-                executor = (0, _construct2["default"])(Function, (0, _toConsumableArray2["default"])(Object.keys(args)).concat([this.content]));
-                executor.call.apply(executor, [null].concat((0, _toConsumableArray2["default"])(Object.values(args))));
+                executor = (0, _construct2.default)(Function, (0, _toConsumableArray2.default)(Object.keys(args)).concat([this.content]));
+                executor.call.apply(executor, [null].concat((0, _toConsumableArray2.default)(Object.values(args))));
                 _context3.next = 7;
                 return (0, _functions.PromiseSerial)(this.tests);
 
@@ -245,4 +245,4 @@ var Suite = /*#__PURE__*/function () {
   return Suite;
 }();
 
-exports["default"] = Suite;
+exports.default = Suite;

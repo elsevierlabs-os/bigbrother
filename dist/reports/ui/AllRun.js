@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -15,14 +15,14 @@ var _PayloadInspectGraph = _interopRequireDefault(require("./graphs/PayloadInspe
 
 var AllRun = function AllRun(_ref) {
   var data = _ref.data;
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/_react.default.createElement("div", {
     className: "bottom-border"
-  }, /*#__PURE__*/_react["default"].createElement(_FailureToTestRatioGraph["default"], {
+  }, /*#__PURE__*/_react.default.createElement(_FailureToTestRatioGraph.default, {
     data: data
-  }), /*#__PURE__*/_react["default"].createElement(_PayloadInspectGraph["default"], {
+  }), /*#__PURE__*/_react.default.createElement(_PayloadInspectGraph.default, {
     data: data
   }));
 };
 
 var _default = AllRun;
-exports["default"] = _default;
+exports.default = _default;

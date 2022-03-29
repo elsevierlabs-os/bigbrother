@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -15,15 +15,15 @@ var _ora = _interopRequireDefault(require("ora"));
 
 var Spinner = /*#__PURE__*/function () {
   function Spinner(text) {
-    (0, _classCallCheck2["default"])(this, Spinner);
+    (0, _classCallCheck2.default)(this, Spinner);
     this.text = text;
-    this.instance = (0, _ora["default"])({
+    this.instance = (0, _ora.default)({
       text: text,
       spinner: 'dots12'
     }).start();
   }
 
-  (0, _createClass2["default"])(Spinner, [{
+  (0, _createClass2.default)(Spinner, [{
     key: "complete",
     value: function complete() {
       this.instance.succeed(this.text);
@@ -45,4 +45,4 @@ var Spinner = /*#__PURE__*/function () {
 }();
 
 var _default = Spinner;
-exports["default"] = _default;
+exports.default = _default;

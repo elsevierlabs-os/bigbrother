@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 
@@ -19,25 +19,25 @@ var _PageRecorder = require("../page/PageRecorder");
 
 var Expectation = /*#__PURE__*/function () {
   function Expectation(value) {
-    (0, _classCallCheck2["default"])(this, Expectation);
+    (0, _classCallCheck2.default)(this, Expectation);
     this.value = value;
-    this.type = (0, _typeof2["default"])(value);
+    this.type = (0, _typeof2.default)(value);
   }
 
-  (0, _createClass2["default"])(Expectation, [{
+  (0, _createClass2.default)(Expectation, [{
     key: "toExist",
     value: function toExist(message) {
-      return (0, _assert["default"])(this.value, message || 'Expected %s to exist', this.value);
+      return (0, _assert.default)(this.value, message || 'Expected %s to exist', this.value);
     }
   }, {
     key: "toBeLessThan",
     value: function toBeLessThan(value) {
-      return (0, _assert["default"])(this.value < value, 'Expected %s to be less than %s', this.value, value);
+      return (0, _assert.default)(this.value < value, 'Expected %s to be less than %s', this.value, value);
     }
   }, {
     key: "toBeEqual",
     value: function toBeEqual(value, message) {
-      return (0, _assert["default"])(this.value === value, message || 'Expected %s to be equal to %s', this.value, value);
+      return (0, _assert.default)(this.value === value, message || 'Expected %s to be equal to %s', this.value, value);
     }
   }, {
     key: "toMatchRecording",
@@ -59,16 +59,16 @@ var Expectation = /*#__PURE__*/function () {
   }, {
     key: "toBeWithinRange",
     value: function toBeWithinRange(min, max, message) {
-      return (0, _assert["default"])(min < this.value && this.value < max, message || 'Expected %s to be between %s and %s', this.value, min, max);
+      return (0, _assert.default)(min < this.value && this.value < max, message || 'Expected %s to be between %s and %s', this.value, min, max);
     }
   }, {
     key: "toBeMoreThan",
     value: function toBeMoreThan(value) {
-      return (0, _assert["default"])(this.value > value, 'Expected %s to be more than %s', this.value, value);
+      return (0, _assert.default)(this.value > value, 'Expected %s to be more than %s', this.value, value);
     }
   }]);
   return Expectation;
 }();
 
 var _default = Expectation;
-exports["default"] = _default;
+exports.default = _default;

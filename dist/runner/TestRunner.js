@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
@@ -33,45 +33,45 @@ var TestRunner = /*#__PURE__*/function () {
   function TestRunner() {
     var _this = this;
 
-    (0, _classCallCheck2["default"])(this, TestRunner);
-    (0, _defineProperty2["default"])(this, "startBrowser", function () {
+    (0, _classCallCheck2.default)(this, TestRunner);
+    (0, _defineProperty2.default)(this, "startBrowser", function () {
       (0, _.printInfo)(_constants.BROWSER_STARTING_MESSAGE);
-      _this.browser = new _Browser["default"]((0, _config.getConfig)());
+      _this.browser = new _Browser.default((0, _config.getConfig)());
       return _this.browser.launch();
     });
-    (0, _defineProperty2["default"])(this, "stopBrowser", function () {
+    (0, _defineProperty2.default)(this, "stopBrowser", function () {
       if (_this.hasBrowser()) {
         return _this.browser.close();
       }
 
       return Promise.reject(_constants.BROWSER_NOT_INITIALISED);
     });
-    (0, _defineProperty2["default"])(this, "mapTestToNewSuite", function (_ref) {
+    (0, _defineProperty2.default)(this, "mapTestToNewSuite", function (_ref) {
       var content = _ref.content;
-      return new _Suite["default"](content, _this.browser);
+      return new _Suite.default(content, _this.browser);
     });
-    (0, _defineProperty2["default"])(this, "mapSuitesToExecution", function (suite) {
+    (0, _defineProperty2.default)(this, "mapSuitesToExecution", function (suite) {
       return function () {
         return suite.execute();
       };
     });
-    (0, _defineProperty2["default"])(this, "mapTestsToPromises", function (tests) {
+    (0, _defineProperty2.default)(this, "mapTestsToPromises", function (tests) {
       return tests.map(_this.mapTestToNewSuite).map(_this.mapSuitesToExecution);
     });
-    (0, _defineProperty2["default"])(this, "executeTestSuites", function () {
+    (0, _defineProperty2.default)(this, "executeTestSuites", function () {
       var tests = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       return (0, _functions.PromiseSerial)(_this.mapTestsToPromises(tests)).then(_this.evaluateResults);
     });
-    (0, _defineProperty2["default"])(this, "isFailedTest", function (_ref2) {
+    (0, _defineProperty2.default)(this, "isFailedTest", function (_ref2) {
       var success = _ref2.success;
       return !success;
     });
-    (0, _defineProperty2["default"])(this, "extractFailuresFromSuites", function () {
+    (0, _defineProperty2.default)(this, "extractFailuresFromSuites", function () {
       return _this.suites.reduce(function (total, suite) {
-        return [].concat((0, _toConsumableArray2["default"])(total), (0, _toConsumableArray2["default"])(suite.filter(_this.isFailedTest)));
+        return [].concat((0, _toConsumableArray2.default)(total), (0, _toConsumableArray2.default)(suite.filter(_this.isFailedTest)));
       }, []);
     });
-    (0, _defineProperty2["default"])(this, "evaluateResults", function () {
+    (0, _defineProperty2.default)(this, "evaluateResults", function () {
       var suites = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       _this.suites = suites;
       _this.failures = _this.extractFailuresFromSuites();
@@ -87,7 +87,7 @@ var TestRunner = /*#__PURE__*/function () {
         (0, _printer.printRunnerSuccess)(suitesCount);
       }
     });
-    (0, _defineProperty2["default"])(this, "printFailures", function () {
+    (0, _defineProperty2.default)(this, "printFailures", function () {
       (0, _.printNewLines)();
 
       _this.getFailures().forEach(function (_ref3) {
@@ -103,7 +103,7 @@ var TestRunner = /*#__PURE__*/function () {
     this.browser = null;
   }
 
-  (0, _createClass2["default"])(TestRunner, [{
+  (0, _createClass2.default)(TestRunner, [{
     key: "hasBrowser",
     value: function hasBrowser() {
       return !!this.browser;
@@ -127,4 +127,4 @@ var TestRunner = /*#__PURE__*/function () {
 
 var _default = new TestRunner();
 
-exports["default"] = _default;
+exports.default = _default;

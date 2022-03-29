@@ -15,7 +15,7 @@ var createDashboard = function createDashboard() {
   console.log(currentReport.testRunner, data);
   var container = document.getElementById('container');
 
-  _reactDom["default"].render( /*#__PURE__*/_react["default"].createElement(_App["default"], {
+  _reactDom.default.render( /*#__PURE__*/_react.default.createElement(_App.default, {
     current: currentReport.testRunner,
     data: data,
     config: config

@@ -1,2 +1,6 @@
 {
+    "https://github.com/advisories/GHSA-93q8-gq69-wqmw": {
+        "active": true,
+        "notes": "moderate vulnerability in ansi-regex: https://elsevier.atlassian.net/browse/SDS-3301"
+    }
 }

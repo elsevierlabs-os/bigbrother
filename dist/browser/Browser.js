@@ -21,6 +21,8 @@ var _printer = require("../lib/printer");
 
 var _constants = require("../lib/constants");
 
+var _config = require("../config");
+
 var Browser = /*#__PURE__*/function () {
   function Browser() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
@@ -32,7 +34,8 @@ var Browser = /*#__PURE__*/function () {
     (0, _classCallCheck2.default)(this, Browser);
     this.browser = null;
     this.puppeteerOptions = {
-      headless: headless
+      headless: headless,
+      args: (0, _config.getConfig)().puppeteerArgs
     };
     this.pageOptions = {
       cacheEnabled: cacheEnabled
@@ -88,15 +91,16 @@ var Browser = /*#__PURE__*/function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
+                (0, _printer.printInfo)('Current PuppeterOptions: ', this.puppeteerOptions);
+                _context2.next = 3;
                 return _puppeteer.default.launch(this.puppeteerOptions);
 
-              case 2:
+              case 3:
                 this.browser = _context2.sent;
                 this.hasLaunched = true;
                 return _context2.abrupt("return", this.browser);
 
-              case 5:
+              case 6:
               case "end":
                 return _context2.stop();
             }

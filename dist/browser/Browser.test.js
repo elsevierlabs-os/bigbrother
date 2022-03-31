@@ -37,13 +37,15 @@ describe('Browser', function () {
     });
   });
   describe.only('newPage', function () {
-    var BrowserMock, printWarning;
+    var BrowserMock, printWarning, printInfo;
     beforeEach(function () {
       printWarning = _sinon.default.stub();
+      printInfo = _sinon.default.stub();
       BrowserMock = _proxyquire.default.noCallThru().load('./Browser', {
         puppeteer: (0, _puppeteerMock.default)(),
         '../lib/printer': {
-          printWarning: printWarning
+          printWarning: printWarning,
+          printInfo: printInfo
         }
       }).default;
     });

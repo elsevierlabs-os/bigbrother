@@ -1,38 +1,24 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
 var _ = require("..");
-
 var _Browser = _interopRequireDefault(require("../browser/Browser"));
-
 var _config = require("../config");
-
 var _Suite = _interopRequireDefault(require("../tests/Suite"));
-
 var _functions = require("../lib/functions");
-
 var _printer = require("../lib/printer");
-
 var _constants = require("../lib/constants");
-
 var TestRunner = /*#__PURE__*/function () {
   function TestRunner() {
     var _this = this;
-
     (0, _classCallCheck2.default)(this, TestRunner);
     (0, _defineProperty2.default)(this, "startBrowser", function () {
       (0, _.printInfo)(_constants.BROWSER_STARTING_MESSAGE);
@@ -43,7 +29,6 @@ var TestRunner = /*#__PURE__*/function () {
       if (_this.hasBrowser()) {
         return _this.browser.close();
       }
-
       return Promise.reject(_constants.BROWSER_NOT_INITIALISED);
     });
     (0, _defineProperty2.default)(this, "mapTestToNewSuite", function (_ref) {
@@ -78,10 +63,8 @@ var TestRunner = /*#__PURE__*/function () {
       var failuresCount = _this.failures.length;
       var suitesCount = suites.length;
       (0, _printer.printDelimiter)();
-
       if (failuresCount > 0) {
         (0, _printer.printRunnerFailure)(suitesCount, failuresCount);
-
         _this.printFailures();
       } else {
         (0, _printer.printRunnerSuccess)(suitesCount);
@@ -89,10 +72,9 @@ var TestRunner = /*#__PURE__*/function () {
     });
     (0, _defineProperty2.default)(this, "printFailures", function () {
       (0, _.printNewLines)();
-
       _this.getFailures().forEach(function (_ref3) {
         var name = _ref3.name,
-            reason = _ref3.reason;
+          reason = _ref3.reason;
         (0, _printer.printTitleTest)(name);
         (0, _printer.printFailedTest)(reason.message);
         (0, _.printNewLines)(1);
@@ -102,7 +84,6 @@ var TestRunner = /*#__PURE__*/function () {
     this.suites = [];
     this.browser = null;
   }
-
   (0, _createClass2.default)(TestRunner, [{
     key: "hasBrowser",
     value: function hasBrowser() {
@@ -124,7 +105,5 @@ var TestRunner = /*#__PURE__*/function () {
   }]);
   return TestRunner;
 }();
-
 var _default = new TestRunner();
-
 exports.default = _default;

@@ -1,45 +1,30 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 var _glob = _interopRequireDefault(require("glob"));
-
 var _fs = _interopRequireDefault(require("fs"));
-
 var _config = require("../config");
-
 var _printer = require("./printer");
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
 var NODE_MODULES_IGNORE_PATTERN = 'node_modules/**/*.*';
-
 var FileReader = /*#__PURE__*/function () {
   function FileReader() {
     (0, _classCallCheck2.default)(this, FileReader);
   }
-
   (0, _createClass2.default)(FileReader, null, [{
     key: "getIgnoredFiles",
     value: function getIgnoredFiles() {
       var _getConfig = (0, _config.getConfig)(),
-          ignore = _getConfig.ignore;
-
+        ignore = _getConfig.ignore;
       return [NODE_MODULES_IGNORE_PATTERN].concat((0, _toConsumableArray2.default)(ignore));
     }
   }, {
@@ -51,17 +36,14 @@ var FileReader = /*#__PURE__*/function () {
     key: "readFolderContent",
     value: function readFolderContent(folderPath, pattern) {
       var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
       var globOptions = _objectSpread({
         cwd: folderPath
       }, options);
-
       if (!pattern) {
         (0, _printer.printInfo)(folderPath, pattern, options);
         (0, _printer.printFilePatternError)(pattern);
         return Promise.reject();
       }
-
       return FileReader.getFiles(pattern, globOptions);
     }
   }, {
@@ -70,15 +52,12 @@ var FileReader = /*#__PURE__*/function () {
       var globOptions = {
         ignore: FileReader.getIgnoredFiles()
       };
-
       var _getConfig2 = (0, _config.getConfig)(),
-          pattern = _getConfig2.pattern;
-
+        pattern = _getConfig2.pattern;
       if (!pattern) {
         (0, _printer.printFilePatternError)(pattern);
         return Promise.reject();
       }
-
       return FileReader.getFiles(pattern, globOptions).then(FileReader.onFilesFound);
     }
   }, {
@@ -131,6 +110,5 @@ var FileReader = /*#__PURE__*/function () {
   }]);
   return FileReader;
 }();
-
 var _default = FileReader;
 exports.default = _default;

@@ -1,18 +1,13 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-
 require("colors");
-
 var _commandLineUsage = _interopRequireDefault(require("command-line-usage"));
-
 var _package = _interopRequireDefault(require("../../package"));
-
 var usage = (0, _commandLineUsage.default)([{
   header: 'BigBrother'.bold.green,
   content: 'BigBrother is a test runner built on top of Puppeteer, that allows you to ' + 'evaluate and measure the performance of your application, under specific CPU and Network configurations.' + '\n' + '\n' + 'BigBrother provides also a small assertion library, and the chance to record/evaluate snapshots of' + "the page you're evaluating."

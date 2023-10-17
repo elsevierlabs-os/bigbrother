@@ -1,22 +1,17 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 var AssetsHandler = /*#__PURE__*/function () {
   function AssetsHandler() {
     (0, _classCallCheck2.default)(this, AssetsHandler);
     this.assets = {};
   }
-
   (0, _createClass2.default)(AssetsHandler, [{
     key: "reset",
     value: function reset() {
@@ -42,7 +37,6 @@ var AssetsHandler = /*#__PURE__*/function () {
     key: "get",
     value: function get(key) {
       var _this = this;
-
       return this._filterKeys(key).map(function (k) {
         return _this.assets[k];
       });
@@ -55,6 +49,5 @@ var AssetsHandler = /*#__PURE__*/function () {
   }]);
   return AssetsHandler;
 }();
-
 var _default = AssetsHandler;
 exports.default = _default;

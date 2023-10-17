@@ -1,14 +1,11 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.USER_AGENTS = exports.UNDERSCORE = exports.TARGET_CHANGED_EVENT = exports.SPACE = exports.RUNNER_TERMINATION_MESSAGE = exports.RUNNER_STARTING_MESSAGE = exports.RUNNER_CLEANUP_MESSAGE = exports.RESOURCE_INFO_TYPE = exports.REPORT_TARGET_STRING = exports.REPORT_STATIC_FILES_NODE_MODULES = exports.REPORT_STATIC_FILES_FOLDER = exports.REPORT_STATIC_FILES_ALL_PATTERN = exports.REPORT_OPEN_DISABLED = exports.REPORT_INDEX_HTML = exports.REPORT_GENERATION_STARTED = exports.REPORT_FOLDER_CREATED = exports.REPORT_FOLDER_ALREADY_EXISTS = exports.REPORT_FILE_PATTERN = exports.REPORT_FILENAME_ROOT = exports.REPORT_FILENAME_EXTENSION = exports.REPORT_CURRENT_REPORT_TARGET_STRING = exports.REPORT_ABOUT_TO_OPEN = exports.REPORT_ABOUT_TO_GENERATE = exports.RECORDING_EXT = exports.PATTERN_DOESNT_MATCH_ERROR = exports.PAINT_INFO_TYPE = exports.PAGE_LOAD_OPTIONS = exports.PAGEWRAPPER_PAGE_NOT_INITIALISED_ERROR = exports.PAGEWRAPPER_MISSING_PAGE_ERROR = exports.NETWORK_RESPONSE_RECEIVED = exports.NETWORK_ENABLE = exports.NETWORK_DATA_RECEIVED = exports.NETWORK_CONDITIONS_MESSAGE = exports.NETWORK_ASSETS_MIMETYPES = exports.NETWORK = exports.NAVIGATION_INFO_TYPE = exports.FULL_STOP = exports.FULL_REPORT_MID = exports.FULL_REPORT_FILENAME = exports.ENV_FLAGS = exports.EMPTY = exports.CPU_CONDITIONS_MESSAGE = exports.CPU = exports.BROWSER_STARTING_MESSAGE = exports.BROWSER_NOT_INITIALISED = exports.BROWSER_CANT_OPEN_PAGE_MESSAGE = exports.BROWSER_CANT_CLOSE_MESSAGE = exports.ALL_SPACES = void 0;
-
 var _package = _interopRequireDefault(require("../../package"));
-
 var NETWORK = {
   WIFI: {
     offline: false,

@@ -1,15 +1,10 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 var _chai = require("chai");
-
 var _puppeteerMock = require("../testHelpers/puppeteerMock");
-
 var _PageWrapper = _interopRequireDefault(require("./PageWrapper"));
-
 var _constants = require("../lib/constants");
-
 describe.only('PageWrapper', function () {
   var pageMock;
   beforeEach(function () {
@@ -34,7 +29,6 @@ describe.only('PageWrapper', function () {
       var createWrapper = function createWrapper() {
         return new _PageWrapper.default(null, 'title');
       };
-
       (0, _chai.expect)(createWrapper).to.throw();
     });
   });

@@ -1,21 +1,13 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _chai = require("chai");
-
 var _sinon = _interopRequireDefault(require("sinon"));
-
 var _proxyquire = _interopRequireDefault(require("proxyquire"));
-
 var _Browser = _interopRequireDefault(require("./Browser"));
-
 var _puppeteerMock = _interopRequireDefault(require("../testHelpers/puppeteerMock"));
-
 describe('Browser', function () {
   describe('contructor', function () {
     it('default should set right options', function () {
@@ -58,10 +50,8 @@ describe('Browser', function () {
               browser = new BrowserMock();
               _context.next = 3;
               return browser.newPage();
-
             case 3:
               (0, _chai.expect)(printWarning.called).to.equal(true);
-
             case 4:
             case "end":
               return _context.stop();
@@ -78,15 +68,12 @@ describe('Browser', function () {
               browser = new BrowserMock();
               _context2.next = 3;
               return browser.launch();
-
             case 3:
               _context2.next = 5;
               return browser.newPage();
-
             case 5:
               page = _context2.sent;
               (0, _chai.expect)(page).to.not.equal(undefined);
-
             case 7:
             case "end":
               return _context2.stop();
@@ -103,15 +90,12 @@ describe('Browser', function () {
               browser = new BrowserMock();
               _context3.next = 3;
               return browser.launch();
-
             case 3:
               _context3.next = 5;
               return browser.newPage();
-
             case 5:
               page = _context3.sent;
               (0, _chai.expect)(page.setCacheEnabled.called).to.equal(true);
-
             case 7:
             case "end":
               return _context3.stop();

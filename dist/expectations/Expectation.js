@@ -1,29 +1,21 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 var _assert = _interopRequireDefault(require("./assert"));
-
 var _PageRecorder = require("../page/PageRecorder");
-
 var Expectation = /*#__PURE__*/function () {
   function Expectation(value) {
     (0, _classCallCheck2.default)(this, Expectation);
     this.value = value;
     this.type = (0, _typeof2.default)(value);
   }
-
   (0, _createClass2.default)(Expectation, [{
     key: "toExist",
     value: function toExist(message) {
@@ -49,7 +41,6 @@ var Expectation = /*#__PURE__*/function () {
        *   if the page does not exist, save the json inside the recordings folder. and return OK
        * */
       var page = this.value;
-
       if ((0, _PageRecorder.recordingExists)(page)) {
         (0, _PageRecorder.compareWithStoredRecording)(page);
       } else {
@@ -69,6 +60,5 @@ var Expectation = /*#__PURE__*/function () {
   }]);
   return Expectation;
 }();
-
 var _default = Expectation;
 exports.default = _default;
